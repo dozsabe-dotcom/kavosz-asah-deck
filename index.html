@@ -20,7 +20,9 @@ deck-stage section.slide:last-child{break-after:auto;page-break-after:auto}
   --black:#0a0a0e;--ink:#14141a;--bordo:#4a0f14;
   --line:rgba(10,10,14,.08);--line-strong:rgba(10,10,14,.14);
   --muted:rgba(10,10,14,.58);--muted-2:rgba(10,10,14,.72);
-  --white:#fff;--paper:#fafafa;--green:#1f8f4a;--amber:#e8a23a
+  --white:#fff;--paper:#fafafa;--green:#1f8f4a;--amber:#e8a23a;
+  --anim-dur:840ms;--anim-delay:200ms;--anim-stagger:70ms;--anim-ease:cubic-bezier(.22,.61,.36,1);
+  --loop-dur:2.4s;--loop-ease:ease-in-out
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:#111;color:var(--ink);font-family:'Lexend',system-ui,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased}
@@ -96,10 +98,7 @@ b,strong{font-weight:500;color:inherit}
 .ico.solid-ink{background:var(--ink);color:#fff}
 .ico.solid-green{background:var(--green);color:#fff}
 /* NUMBERS */
-.bignum{font-family:Outfit;font-weight:700;font-size:33px;line-height:.9;color:var(--red);letter-spacing:-.04em}
-.hang-num{font-family:Outfit;font-weight:700;font-size:33px;line-height:.85;letter-spacing:-.05em;color:var(--red);flex-shrink:0}
-.hang-num.sm{font-size:33px}
-.stat-num{font-family:Outfit;font-weight:700;font-size:33px;line-height:.9;letter-spacing:-.04em;color:var(--red)}
+.bignum{font-family:Outfit;font-weight:700;font-size:33px;line-height:.9;letter-spacing:-.04em;color:var(--red);flex-shrink:0}
 .stat-label{font-family:Lexend;font-size:16px;font-weight:300;color:var(--muted);margin-top:4px;letter-spacing:.01em}
 .section-tag{font-family:'Outfit';font-size:19px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-2)}
 .slide.dark .section-tag{color:rgba(255,255,255,.6)}
@@ -133,9 +132,11 @@ b,strong{font-weight:500;color:inherit}
 .quoteblk::before{content:"„";position:absolute;left:18px;top:-6px;font-family:Outfit;font-size:74px;font-weight:700;color:var(--red);line-height:1}
 .slide.dark .quoteblk::before{color:#ff6271}
 /* CARD TEXT */
-.ct{font-family:Outfit;font-weight:600;font-size:23px;line-height:1.15;margin-bottom:8px}
+.ct{font-family:Outfit;font-weight:800;font-size:23px;line-height:1.2;margin-bottom:8px}
 .ct-r{color:var(--red)}
 .ct-k{color:var(--ink)}
+.ct-w{color:#fff}
+.ct-g{color:#90C840}
 .cp{font-family:Lexend;font-size:20px;color:rgba(10,10,14,.72);line-height:1.52;margin:0}
 /* TABLES */
 .dtable{width:100%;border-collapse:collapse}
@@ -252,11 +253,8 @@ section[data-label="34"] .glass-strong table td:not(:first-child){background:#ff
 /* Dark slide brand logo — mix-blend-mode removes black background from PNG */
 .slide.dark .hdr .brand img{mix-blend-mode:screen}
 /* Slide 35 lifecycle diagram animations */
-@keyframes lpcRotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-@keyframes lpcArrowBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 @keyframes lpcArrowPulse{0%,100%{opacity:.5;transform:translateX(0)}50%{opacity:1;transform:translateX(5px)}}
-@keyframes lpcPillGlow{0%,100%{box-shadow:0 0 0 0 rgba(212,32,54,0)}50%{box-shadow:0 2px 20px 2px rgba(212,32,54,.55)}}
-@keyframes lpcDashSpin{from{stroke-dashoffset:0}to{stroke-dashoffset:-300}}
+@keyframes lpcDashSpin{from{stroke-dashoffset:0}to{stroke-dashoffset:-330}}
 
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -362,7 +360,7 @@ section[data-label="34"] .glass-strong table td:not(:first-child){background:#ff
   font-size:23px!important;font-weight:600!important;font-family:Outfit,sans-serif!important;font-style:normal!important}
 
 /* ── DISPLAY: named classes + inline Outfit 700 at old large sizes ── */
-.stage .hang-num,.stage .bignum,.stage .stat-num{
+.stage .bignum{
   font-size:40px!important;font-weight:700!important;font-family:Outfit,sans-serif!important;font-style:normal!important}
 /* Legacy large-size inline numbers (64, 52, 44px) → 44px display */
 .stage [style*="font-size:58px"],
@@ -394,6 +392,12 @@ section[data-label="40"] [style*="font-size:15px"]:not([style*="Lexend"]){
 .stage [style*="font-weight:700"][style*="font-size:10px"]{
   font-size:19px!important;font-weight:600!important;font-family:Outfit,sans-serif!important;font-style:normal!important}
 
+/* Slides 23–24: analysis boxes — match slide 10 text style */
+section[data-label="23"] .glass-strong p,
+section[data-label="24"] .glass-strong p{font-size:20px!important;line-height:1.52!important}
+section[data-label="23"] .glass-strong,
+section[data-label="24"] .glass-strong{padding:24px!important}
+
 /* ── QUOTES: italic Outfit/Lexend — LAST so they win source-order ── */
 .stage .quoteblk{
   font-size:25px!important;font-weight:400!important;font-family:Outfit,sans-serif!important;font-style:italic!important}
@@ -411,9 +415,9 @@ section[data-label="40"] [style*="font-size:15px"]:not([style*="Lexend"]){
 /* REVIEW — space-constrained slides → body-sm 16px + compact padding */
 section[data-label="13"] .glass-strong table th,section[data-label="14"] .glass-strong table th,section[data-label="15"] .glass-strong table th,section[data-label="16"] .glass-strong table th,section[data-label="17"] .glass-strong table th,section[data-label="18"] .glass-strong table th,section[data-label="19"] .glass-strong table th,section[data-label="20"] .glass-strong table th,section[data-label="23"] .glass-strong table th,section[data-label="32"] .glass-strong table th,section[data-label="33"] .glass-strong table th,section[data-label="34"] .glass-strong table th{font-size:16px!important;padding:4px 6px!important;line-height:1.25!important}
 section[data-label="13"] .glass-strong table td,section[data-label="14"] .glass-strong table td,section[data-label="15"] .glass-strong table td,section[data-label="16"] .glass-strong table td,section[data-label="17"] .glass-strong table td,section[data-label="18"] .glass-strong table td,section[data-label="19"] .glass-strong table td,section[data-label="20"] .glass-strong table td,section[data-label="23"] .glass-strong table td,section[data-label="32"] .glass-strong table td,section[data-label="33"] .glass-strong table td,section[data-label="34"] .glass-strong table td{font-size:16px!important;font-variant-numeric:tabular-nums!important;padding:3px 6px!important;line-height:1.3!important}
-/* ── SLIDE 02: boxes higher, quote anchored bottom ── */
-section[data-label="02"] .body-wrap{justify-content:flex-start!important;padding-top:8px!important}
-section[data-label="02"] .body-wrap .quoteblk{margin-top:auto!important}
+/* ── SLIDE 02: centered group, no top-cramp ── */
+section[data-label="02"] .body-wrap{justify-content:center!important;padding-top:0!important}
+@media(max-width:900px){section[data-label="02"] .d02-cards{flex-direction:column!important}}
 /* ── SLIDES 13-16: th no-wrap, one line ── */
 section[data-label="13"] .glass-strong table th,section[data-label="14"] .glass-strong table th,section[data-label="15"] .glass-strong table th,section[data-label="16"] .glass-strong table th{white-space:nowrap!important}
 /* ── SLIDES 17-18: Jelen 2026 col nowrap + Csoport col compact ── */
@@ -426,6 +430,57 @@ section[data-label="17"] .dtable th:first-child,section[data-label="18"] .dtable
 /* ── slide 21 box title → body-sm 16px ── */
 section[data-label="21"] .glass-strong div[style*="font-size:13px"]{font-size:16px!important;line-height:1.3!important}
 section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not(th){font-size:16px!important;line-height:1.35!important}
+section[data-label="21"] .ct.ct-k span[style*="var(--red)"]{margin-right:10px}
+
+/* ═══ PRESENTATION MODE — screen only ═══════════════════════
+   Slides stack as absolute layers; deck-stage is scaled+translated
+   to fill the viewport while keeping 16:9 aspect ratio.
+   Print media: none of these rules apply → PDF output unchanged.
+════════════════════════════════════════════════════════════ */
+/* ══ ANIMATION ENGINE ═══════════════════════════════════════════════════
+   PDF-invariant: animations ONLY fire in presenter mode (.prs-mode body)
+   via JS-driven inline animation on .anim-el elements.
+   Print resets all to visible final state.
+════════════════════════════════════════════════════════════════════════ */
+@keyframes aFadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes aFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes aScaleIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+@keyframes aExpandX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.anim-expand{transform-origin:left center!important}
+@media print{.anim-el{animation:none!important;opacity:1!important;transform:none!important}}
+
+/* ══ LOOP ANIMATION ENGINE ════════════════════════════════════════════════
+   Continuous micro-motion — ONLY on active slide (.prs-on), ONLY in
+   presenter mode. PDF/print: all loops off via universal reset below.
+   prefers-reduced-motion: all loops off.
+════════════════════════════════════════════════════════════════════════ */
+section.slide.prs-on [data-szuro]{
+  animation:lpcArrowPulse var(--loop-dur) var(--loop-ease) infinite;
+}
+section[data-label="35"].prs-on #lpcRing35{
+  animation:lpcDashSpin 4s linear infinite;
+}
+@media(prefers-reduced-motion:reduce){
+  [data-szuro],[id="lpcRing35"]{animation:none!important}
+}
+@media print{
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+
+@media screen{
+  /* SCROLL MODE — presentation mode ideiglenesen kikapcsolva
+  html{overflow:hidden;height:100%}
+  body{overflow:hidden!important;width:100vw!important;height:100vh!important;background:#0a0a0e!important;position:relative!important;margin:0!important;padding:0!important}
+  deck-stage{position:absolute!important;top:0!important;left:0!important;height:1080px!important;transform-origin:0 0;overflow:hidden!important}
+  deck-stage section.slide{position:absolute!important;top:0!important;left:0!important;margin:0!important;opacity:0;transition:opacity .38s cubic-bezier(.4,0,.2,1);pointer-events:none!important;z-index:0}
+  deck-stage section.slide.prs-on{opacity:1!important;pointer-events:auto!important;z-index:2!important}
+  deck-stage section.slide.prs-out{opacity:0!important;z-index:1!important}
+  */
+  html{overflow:auto;height:auto}
+  body{overflow:auto!important;background:#111!important}
+  deck-stage{position:static!important;transform:none!important;height:auto!important;overflow:visible!important}
+  deck-stage section.slide{position:relative!important;opacity:1!important;pointer-events:auto!important;z-index:auto!important;margin-bottom:8px!important}
+}
 </style>
 </head>
 <body>
@@ -456,12 +511,14 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
     <div class="stage">
       <div class="eyebrow">KÜLDETÉSÜNK</div>
       <h1 class="h-lg">Küldetésünk</h1>
-      <div class="body-wrap" style="flex-direction:column;gap:24px">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;text-align:center">
-          <div class="glass-strong" style="padding:24px;"><div class="ct ct-r">Fejlesztés, ami valóban működik</div><p class="cp">Szervezetek működését valós operatív szinten megismerve, olyan fejlesztési és működésoptimalizálási megoldásokat alakítunk ki, amelyek mérhető hatékonyságnövekedést és stabilabb napi működést eredményeznek.</p></div>
-          <div class="glass-strong" style="padding:24px;"><div class="ct ct-r">Rendszer, nem javaslat</div><p class="cp">Feladatunk, hogy objektív elemzés és gyakorlati megvalósítás révén, hosszú távon fenntartható működési rendszereket alakítsunk ki. Nem csupán javaslatokat készítünk, hanem aktívan támogatjuk azok beépülését a szervezetek mindennapi működésébe.</p></div>
+      <div class="body-wrap" style="flex-direction:column;gap:0">
+        <div style="width:100%;display:flex;flex-direction:column;gap:56px">
+          <div class="d02-cards" style="display:flex;gap:40px">
+            <div class="glass-strong" style="flex:1 1 0;padding:24px;"><div class="ct ct-r">Fejlesztés, ami valóban működik</div><p class="cp">Szervezetek működését valós operatív szinten megismerve, olyan fejlesztési és működésoptimalizálási megoldásokat alakítunk ki, amelyek mérhető hatékonyságnövekedést és stabilabb napi működést eredményeznek.</p></div>
+            <div class="glass-strong" style="flex:1 1 0;padding:24px;"><div class="ct ct-r">Rendszer, nem javaslat</div><p class="cp">Feladatunk, hogy objektív elemzés és gyakorlati megvalósítás révén, hosszú távon fenntartható működési rendszereket alakítsunk ki. Nem csupán javaslatokat készítünk, hanem aktívan támogatjuk azok beépülését a szervezetek mindennapi működésébe.</p></div>
+          </div>
+          <div class="quoteblk" style="font-size:23px;">Nem csupán javaslatokat készítünk – aktívan támogatjuk azok beépülését a szervezetek mindennapi működésébe.</div>
         </div>
-        <div class="quoteblk" style="font-size:23px;margin-top:auto">Nem csupán javaslatokat készítünk – aktívan támogatjuk azok beépülését a szervezetek mindennapi működésébe.</div>
       </div>
     </div>
     <div class="ftr"><div>asahline.hu</div><div class="pg">02 / 41</div></div>
@@ -479,27 +536,27 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
         <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;align-items:stretch">
           <div class="glass-strong" style="padding:22px;display:flex;flex-direction:column;gap:0">
       <div style="font-family:Outfit;font-weight:800;font-size:47px;color:var(--red);line-height:.88;margin-bottom:8px">1</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.15;margin-bottom:8px">Gyorsjelentés</div>
+      <div class="ct ct-k">Gyorsjelentés</div>
       <div style="width:36px;height:2px;background:var(--red);border-radius:2px;margin-bottom:10px"></div>
       <div style="flex:1"><ul class="dots"><li style="font-size:18px;margin:4px 0">Szűk keresztmetszetek azonosítása</li><li style="font-size:18px;margin:4px 0">Alap stratégia a hatékonyságért</li></ul></div></div>
           <div class="glass-strong" style="padding:22px;display:flex;flex-direction:column;gap:0">
       <div style="font-family:Outfit;font-weight:800;font-size:47px;color:var(--red);line-height:.88;margin-bottom:8px">2</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.15;margin-bottom:8px">Munkaprofil módszertan</div>
+      <div class="ct ct-k">Munkaprofil módszertan</div>
       <div style="width:36px;height:2px;background:var(--red);border-radius:2px;margin-bottom:10px"></div>
       <div style="flex:1"><ul class="dots"><li style="font-size:18px;margin:4px 0">Elemzési keretrendszer</li><li style="font-size:18px;margin:4px 0">Módszer és célok</li></ul></div></div>
           <div class="glass-strong" style="padding:22px;display:flex;flex-direction:column;gap:0">
       <div style="font-family:Outfit;font-weight:800;font-size:47px;color:var(--red);line-height:.88;margin-bottom:8px">3</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.15;margin-bottom:8px">Aggregált státuszjelentés</div>
+      <div class="ct ct-k">Aggregált státuszjelentés</div>
       <div style="width:36px;height:2px;background:var(--red);border-radius:2px;margin-bottom:10px"></div>
       <div style="flex:1"><ul class="dots"><li style="font-size:18px;margin:4px 0">Működési folyamatok elemzése</li><li style="font-size:18px;margin:4px 0">Elsődleges feladatok elemzése</li><li style="font-size:18px;margin:4px 0">Ügyintézői kompetenciák</li><li style="font-size:18px;margin:4px 0">Munkafolyamat hatékonyság hőtérkép</li><li style="font-size:18px;margin:4px 0">Ügyintézői hatékonyság hőtérkép</li></ul></div></div>
           <div class="glass-strong" style="padding:22px;display:flex;flex-direction:column;gap:0">
       <div style="font-family:Outfit;font-weight:800;font-size:47px;color:var(--red);line-height:.88;margin-bottom:8px">4</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.15;margin-bottom:8px">Azonosított fejlesztési irányok</div>
+      <div class="ct ct-k">Azonosított fejlesztési irányok</div>
       <div style="width:36px;height:2px;background:var(--red);border-radius:2px;margin-bottom:10px"></div>
       <div style="flex:1"><ul class="dots"><li style="font-size:18px;margin:4px 0">Jövőkép – szolgáltatási modell</li><li style="font-size:18px;margin:4px 0">Szervezeti struktúra</li><li style="font-size:18px;margin:4px 0">Fő kihívások stratégiai szerepe</li><li style="font-size:18px;margin:4px 0">Működési hatékonyság</li><li style="font-size:18px;margin:4px 0">Ügyfélélmény fejlesztés</li><li style="font-size:18px;margin:4px 0">Humán működés</li><li style="font-size:18px;margin:4px 0">Fejlesztési roadmap (3 fázis)</li><li style="font-size:18px;margin:4px 0">Ügyfél életpálya</li></ul></div></div>
           <div class="glass-strong" style="padding:22px;display:flex;flex-direction:column;gap:0">
       <div style="font-family:Outfit;font-weight:800;font-size:47px;color:var(--red);line-height:.88;margin-bottom:8px">5</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.15;margin-bottom:8px">Összegzés</div>
+      <div class="ct ct-k">Összegzés</div>
       <div style="width:36px;height:2px;background:var(--red);border-radius:2px;margin-bottom:10px"></div>
       <div style="flex:1"><ul class="dots"><li style="font-size:18px;margin:4px 0">Főbb megállapítások</li><li style="font-size:18px;margin:4px 0">ASaH Line értékajánlat</li><li style="font-size:18px;margin:4px 0">Következő lépések</li></ul></div></div>
         </div>
@@ -535,9 +592,10 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
       <div class="body-wrap" style="flex-direction:column;gap:16px">
         <div class="quoteblk" style="font-size:22px;flex-shrink:0">„A hálózat növekedésének korlátja már nem a piac, hanem a ügyintézői kapacitás működési elaprózódása."</div>
         <div class="glass-strong" style="padding:24px;flex:1;display:flex;flex-direction:column;justify-content:center">
-          <div style="max-width:860px;margin:0 auto;width:100%">
-            <div class="ct ct-k" style="margin-bottom:8px">A vizsgált irodákban már most látható:</div>
-            <ul class="dots"><li style="font-size:18px;margin:4px 0"><b>A ügyintézői idő jelentős része adminisztratív működésben ég el</b></li><li style="font-size:18px;margin:4px 0"><b>Az ügyfélkezelési minőség irodánkként jelentősen eltér</b></li><li style="font-size:18px;margin:4px 0"><b>A működés sok esetben személyfüggő, nem rendszerfüggő</b></li><li style="font-size:18px;margin:4px 0"><b>Az ügyfélgondozás és portfólióépítés nem része a napi tevékenységnek</b></li><li style="font-size:18px;margin:4px 0"><b style="color:var(--red)">A hálózat növekedésének korlátja már nem az ügyféligény</b></li></ul>
+          <div class="ct ct-k" style="margin-bottom:12px;text-align:left">A vizsgált irodákban már most látható:</div>
+          <div style="display:flex;gap:32px">
+            <ul class="dots" style="flex:1;margin:0"><li style="font-size:18px;margin:4px 0"><b>A ügyintézői idő jelentős része adminisztratív működésben ég el</b></li><li style="font-size:18px;margin:4px 0"><b>Az ügyfélkezelési minőség irodánkként jelentősen eltér</b></li><li style="font-size:18px;margin:4px 0"><b>A működés sok esetben személyfüggő, nem rendszerfüggő</b></li></ul>
+            <ul class="dots" style="flex:1;margin:0"><li style="font-size:18px;margin:4px 0"><b>Az ügyfélgondozás és portfólióépítés nem része a napi tevékenységnek</b></li><li style="font-size:18px;margin:4px 0"><b style="color:var(--red)">A hálózat növekedésének korlátja már nem az ügyféligény</b></li></ul>
           </div>
         </div>
         <div style="padding:24px;background:rgba(212,32,54,.06);border:1px solid rgba(212,32,54,.15);border-radius:14px;flex-shrink:0;display:flex;flex-direction:row;gap:28px;align-items:center">
@@ -559,13 +617,13 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
       <h1 class="h-lg">Kereslet megvan, a rendszer a szűk keresztmetszet</h1>
       <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:18px">
       <div style="display:flex;gap:18px;justify-content:center;flex-shrink:0">
-        <div style="background:linear-gradient(135deg,#1a5a2f,#0d3a1d);border-radius:30px;padding:9px 30px;font-family:Outfit;font-weight:700;font-size:20px;color:#fff;border:2px solid rgba(31,143,74,.5)">Kampányok</div>
-        <div style="background:linear-gradient(135deg,#1a5a2f,#0d3a1d);border-radius:30px;padding:9px 30px;font-family:Outfit;font-weight:700;font-size:20px;color:#fff;border:2px solid rgba(31,143,74,.5)">Támogatás</div>
-        <div style="background:linear-gradient(135deg,#1a5a2f,#0d3a1d);border-radius:30px;padding:9px 30px;font-family:Outfit;font-weight:700;font-size:20px;color:#fff;border:2px solid rgba(31,143,74,.5)">Stratégia</div>
+        <div style="background:linear-gradient(135deg,#1f8f4a,#146634);border-radius:30px;padding:9px 30px;font-family:Outfit;font-weight:700;font-size:20px;color:#fff;border:2px solid rgba(255,255,255,.25)">Kampányok</div>
+        <div style="background:linear-gradient(135deg,#1f8f4a,#146634);border-radius:30px;padding:9px 30px;font-family:Outfit;font-weight:700;font-size:20px;color:#fff;border:2px solid rgba(255,255,255,.25)">Támogatás</div>
+        <div style="background:linear-gradient(135deg,#1f8f4a,#146634);border-radius:30px;padding:9px 30px;font-family:Outfit;font-weight:700;font-size:20px;color:#fff;border:2px solid rgba(255,255,255,.25)">Stratégia</div>
       </div>
       <div class="body-wrap" style="flex-direction:row;gap:22px">
         <div style="flex:1;display:flex;flex-direction:column;gap:0">
-          <div style="background:linear-gradient(135deg,#1a5a2f,#0d3a1d);border-radius:18px;overflow:hidden;flex:1">
+          <div style="background:linear-gradient(135deg,#1f8f4a,#146634);border-radius:18px;overflow:hidden;flex:1">
             <div style="background:rgba(31,143,74,.25);padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.1)">
               <div style="font-family:Outfit;font-weight:700;font-size:31px;color:#fff">KAVOSZ / Imput oldal</div>
               <div style="font-family:Lexend;font-size:13px;color:rgba(255,255,255,.6);margin-top:3px">„A rendszer bemenete adott"</div>
@@ -577,12 +635,12 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
         </div>
         <div style="flex:0 0 80px;display:flex;align-items:center;justify-content:center">
           <div style="text-align:center">
-            <div style="font-size:36px;color:var(--red)">→</div>
+            <div data-szuro style="font-size:36px;color:var(--red)">→</div>
             <div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--red);letter-spacing:.08em;margin-top:4px">SZŰRŐ</div>
           </div>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;gap:0">
-          <div style="background:linear-gradient(135deg,#4a0f14,#2a0608);border-radius:18px;overflow:hidden;flex:1">
+          <div data-panel="output" style="background:linear-gradient(135deg,#4a0f14,#2a0608);border-radius:18px;overflow:hidden;flex:1">
             <div style="background:rgba(212,32,54,.3);padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.1)">
               <div style="font-family:Outfit;font-weight:700;font-size:31px;color:#fff">SZKP irodahálózat / Output oldal</div>
               <div style="font-family:Lexend;font-size:13px;color:rgba(255,255,255,.6);margin-top:3px">„A kimenet, a szűk keresztmetszet optimális működés minőségén múlik."</div>
@@ -614,14 +672,14 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
       <div class="divider-line" style="margin:4px 0"></div>
       <ul class="dots"><li style="font-size:18px;margin:4px 0">Kapacitásvesztés</li><li style="font-size:18px;margin:4px 0">Ügyfélélmény romlása</li><li style="font-size:18px;margin:4px 0">Ügyintézői kiégés</li><li style="font-size:18px;margin:4px 0">Alacsonyabb konverzió</li></ul>
     </div>
-        <div style="flex:0 0 32px;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:31px">→</div>
+        <div data-szuro style="flex:0 0 32px;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:31px">→</div>
         <div class="glass-strong" style="padding:20px;flex:1;display:flex;flex-direction:column;gap:12px">
       <div style="font-family:Outfit;font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Megoldás</div>
       <div class="ct ct-r">Mi a folyamatok működését tesszük kontrollálttá, mérhetővé és skálázhatóvá</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <ul class="dots"><li style="font-size:18px;margin:4px 0">Adminisztráció csökkentése ügyintézői munkakörben</li><li style="font-size:18px;margin:4px 0">Standardizált működés</li><li style="font-size:18px;margin:4px 0">CRM rendszer bevezetése következetes használatának kialakítása</li><li style="font-size:18px;margin:4px 0">Teljesítmény mérés, valódi döntéstámogató rendszer kialakítása</li><li style="font-size:18px;margin:4px 0">Portfóliómenedzsment szemlélet kialakítása</li><li style="font-size:18px;margin:4px 0">Hibrid működési modell elindítása</li><li style="font-size:18px;margin:4px 0">AI támogatás</li></ul>
     </div>
-        <div style="flex:0 0 32px;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:31px">→</div>
+        <div data-szuro style="flex:0 0 32px;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:31px">→</div>
         <div class="glass-strong" style="padding:20px;flex:1;display:flex;flex-direction:column;gap:12px">
       <div style="font-family:Outfit;font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Eredmény</div>
       <div class="ct ct-r">Együttműködés hozadéka</div>
@@ -649,28 +707,28 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
       <div class="body-wrap" style="flex-direction:row;gap:20px;align-items:stretch">
         <div class="glass-strong" style="padding:20px;flex:1;display:flex;flex-direction:column;gap:8px">
       <div style="font-family:Outfit;font-weight:800;font-size:47px;color:var(--red);line-height:.85">01</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Munkaprofil program</div>
+      <div class="ct ct-k">Munkaprofil program</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <p class="cp">Működés folyamat diagnosztizálása — a valódi értékteremtő és a kapacitást elapró tevékenységek azonosítása</p>
     </div>
-        <div style="flex:0 0 24px;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:31px">→</div>
+        <div data-szuro style="flex:0 0 24px;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:31px">→</div>
         <div class="glass-strong" style="padding:20px;flex:1;display:flex;flex-direction:column;gap:8px">
       <div style="font-family:Outfit;font-weight:800;font-size:47px;color:var(--red);line-height:.85">02</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Szervezetfejlesztés</div>
+      <div class="ct ct-k">Szervezetfejlesztés</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <p class="cp">Fejlesztési irányvonal azonosítása és javaslat.<br><b style="color:var(--red)">Felmérés után 6 hónap áll rendelkezésre a bevezetésre (GDPR) hálózati szinten</b></p>
     </div>
-        <div style="flex:0 0 24px;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:31px">→</div>
+        <div data-szuro style="flex:0 0 24px;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:31px">→</div>
         <div class="glass-strong" style="padding:20px;flex:1;display:flex;flex-direction:column;gap:8px">
       <div style="font-family:Outfit;font-weight:800;font-size:47px;color:var(--red);line-height:.85">03</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Implementáció</div>
+      <div class="ct ct-k">Implementáció</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <p class="cp">Üzleti szemlélet, folyamatok beillesztése a napi működésbe — a változásokat azonnal, következetesen és szervezeti szinten kell implementálni</p>
     </div>
-        <div style="flex:0 0 24px;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:31px">→</div>
+        <div data-szuro style="flex:0 0 24px;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:31px">→</div>
         <div class="glass-strong" style="padding:20px;flex:1;display:flex;flex-direction:column;gap:8px">
       <div style="font-family:Outfit;font-weight:800;font-size:47px;color:var(--red);line-height:.85">04</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Stabilizáció</div>
+      <div class="ct ct-k">Stabilizáció</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <p class="cp">Fenntartható, kontrollált működés biztosítása hosszú távon</p>
     </div>
@@ -778,9 +836,9 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
     <div class="stage">
       <div class="eyebrow">FELADATOK SZERKEZETI EGYSÉGE</div>
       <h1 class="h-lg">Feladatok szerkezeti egysége</h1>
-      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:-4px">(Vizsgált irodák aggregált eredménye)</div>
+      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:8px">(Vizsgált irodák aggregált eredménye)</div>
       <div class="body-wrap" style="flex-direction:row;gap:22px;align-items:stretch">
-        <div style="flex:1;display:flex;flex-direction:column;gap:10px">
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px">
           <div style="position:relative;height:480px;width:100%;overflow:visible;margin-top:30px"><canvas id="c13"></canvas></div>
           <div class="glass-strong" style="padding:10px;overflow:auto;margin-top:auto">
             <table class="dtable" style="font-size:12px">
@@ -797,7 +855,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
             </table>
           </div>
         </div>
-        <div style="flex:1;display:flex;flex-direction:column;gap:12px;justify-content:flex-end">
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;justify-content:flex-start">
           <div class="glass-strong" style="padding:18px;"><div class="ct ct-r">Észrevételek</div><ul class="dots" style="margin-top:6px"><li style="font-size:16px;margin:4px 0">Az <b>elsődleges feladatok 80,3 %-os aránya</b> azt mutatja, hogy a munkavállalók alapvetően saját munkakörükre koncentrálnak, ez jó hatékonysági szintnek tekinthető.</li><li style="font-size:16px;margin:4px 0">A <b>másodlagos feladatok 9,9 %-os aránya</b> arra utal, hogy:<ul class="dots" style="margin-top:3px"><li style="font-size:15px;margin:2px 0">a szervezet rugalmas működésű</li><li style="font-size:15px;margin:2px 0">a munkatársak együttműködőek</li><li style="font-size:15px;margin:2px 0">vannak, akik osztott munkakörben tevékenykednek</li><li style="font-size:15px;margin:2px 0">Vagyis a munkavállalók részt vesznek más folyamatokban, vagy több szerepkört látnak el.</li></ul></li><li style="font-size:16px;margin:4px 0">A <b>rendelkezésre állási idő</b> nem kirívó, ebből hatékonyságnövelés csak korlátozottan érhető el.</li><li style="font-size:16px;margin:4px 0"><b>Utazással eltöltött idő minimális</b>, nem befolyásolja a teljesítményt.</li></ul></div>
           <div class="glass-strong" style="padding:18px;"><div class="ct ct-k">Fejlesztési lehetőség</div><ul class="checks" style="margin-top:6px"><li style="font-size:16px;margin:4px 0">A feladatok szerkezeti megoszlása megfelelő.</li><li style="font-size:16px;margin:4px 0">Osztott munkakört betöltő munkavállalók esetén fordul elő, hogy az elsődleges feladatok aránya alacsonyabb, de ott is az SZKP tevékenység a domináns.</li></ul></div>
           <div class="glass-strong" style="padding:18px;visibility:hidden;pointer-events:none" aria-hidden="true"><div class="ct ct-k">Jelen 2026 – VOSZ 2025 vizsgálati eredmények</div><p style="font-family:Lexend;font-size:15px;color:rgba(10,10,14,.72);line-height:1.52;margin:6px 0 0">Mindkét szervezetnél a személyes kapcsolat dominál. A telefonos kapcsolat hasonló funkciót lát el. Az e-mail jelenlét erőteljesebb. VOSZ esetén on-line kapcsolatot nem mértünk még!</p></div>
@@ -815,9 +873,9 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
     <div class="stage">
       <div class="eyebrow">KOMMUNIKÁCIÓS CSATORNÁK SZERKEZETI EGYSÉGE</div>
       <h1 class="h-lg">Kommunikációs csatornák szerkezeti egysége</h1>
-      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:-4px">(Vizsgált irodák aggregált eredménye)</div>
+      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:8px">(Vizsgált irodák aggregált eredménye)</div>
       <div class="body-wrap" style="flex-direction:row;gap:22px;align-items:stretch">
-        <div style="flex:1;display:flex;flex-direction:column;gap:10px">
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px">
           <div style="position:relative;height:480px;width:100%;overflow:visible;margin-top:30px"><canvas id="c14"></canvas></div>
           <div class="glass-strong" style="padding:10px;overflow:auto;margin-top:auto">
             <table class="dtable" style="font-size:12px">
@@ -827,14 +885,14 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
               <tbody>
                 <tr><td style="padding:4px 8px">Telefon</td><td style="padding:4px 8px">37 h 41 min</td><td style="padding:4px 8px">36 min</td><td style="padding:4px 8px;font-weight:500">17,80 %</td><td style="padding:4px 8px">16,43 %</td></tr>
                 <tr style="background:rgba(0,0,0,.02)"><td style="padding:4px 8px">E-mail</td><td style="padding:4px 8px">15 h 45 min</td><td style="padding:4px 8px">15 min</td><td style="padding:4px 8px;font-weight:500">7,40 %</td><td style="padding:4px 8px">11,85 %</td></tr>
-                <tr><td style="padding:4px 8px">Személyes</td><td style="padding:4px 8px">149 h 16 min</td><td style="padding:4px 8px">2 h 22 min</td><td style="padding:4px 8px;font-weight:500;color:var(--red)">70,30 %</td><td style="padding:4px 8px">71,72 %</td></tr>
+                <tr><td style="padding:4px 8px">Személyes</td><td style="padding:4px 8px">149 h 16 min</td><td style="padding:4px 8px">2 h 22 min</td><td style="padding:4px 8px;font-weight:500">70,30 %</td><td style="padding:4px 8px">71,72 %</td></tr>
                 <tr style="background:rgba(0,0,0,.02)"><td style="padding:4px 8px">Online</td><td style="padding:4px 8px">9 h 30 min</td><td style="padding:4px 8px">9 min</td><td style="padding:4px 8px;font-weight:500">4,50 %</td><td style="padding:4px 8px">nincs adat</td></tr>
                 <tr style="background:rgba(20,20,26,.06)"><td style="padding:4px 8px;font-weight:600">Teljes rögzített idő</td><td style="padding:4px 8px;font-weight:600">212 h 22 min</td><td style="padding:4px 8px;font-weight:600">3 h 22 min</td><td style="padding:4px 8px;font-weight:600">100,00 %</td><td style="padding:4px 8px;font-weight:600">100,00 %</td></tr>
               </tbody>
             </table>
           </div>
         </div>
-        <div style="flex:1;display:flex;flex-direction:column;gap:12px;justify-content:flex-end">
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;justify-content:flex-start">
           <div class="glass-strong" style="padding:18px;"><div class="ct ct-r">Észrevételek</div><ul class="dots" style="margin-top:6px"><li style="font-size:16px;margin:4px 0">Az ügyintézői tevékenység döntően személyes ügyfélkapcsolatokra épül (70,3%), amely a bizalmi alapú ügyintézői tevékenység sajátosságait tükrözi.</li><li style="font-size:16px;margin:4px 0">A telefonos kommunikáció (17,8%) elsősorban operatív támogató szerepet tölt be, gyors státuszegyeztetés, időpont-egyeztetés, hiánypótlások kezelése, sürgős ügyek kezelésére szolgál.</li><li style="font-size:16px;margin:4px 0">Az e-mail (7,4%) és online (4,5%) csatornák kisebb aránya arra utal, hogy a digitális ügyintézés jelenleg kiegészítő funkciót lát el.</li></ul></div>
           <div class="glass-strong" style="padding:18px;"><div class="ct ct-k">Fejlesztési lehetőség</div><p style="font-family:Lexend;font-size:15px;color:rgba(10,10,14,.72);margin:6px 0 6px">A hatékonyság javítása érdekében érdemes lehet vizsgálni:</p><ul class="checks"><li style="font-size:15px;margin:3px 0">mely személyes ügyek válthatók ki online konzultációval</li><li style="font-size:15px;margin:3px 0">milyen adminisztratív lépések automatizálhatóak</li><li style="font-size:15px;margin:3px 0">növelhető-e az online ügyfélkommunikáció aránya</li><li style="font-size:15px;margin:3px 0">csökkenthető-e a személyes ügyintézés időigénye a digitális előkészítéssel</li></ul></div>
           <div class="glass-strong" style="padding:18px;"><div class="ct ct-k">Jelen 2026 – VOSZ 2025 vizsgálati eredmények</div><p style="font-family:Lexend;font-size:15px;color:rgba(10,10,14,.72);line-height:1.52;margin:6px 0 0">Mindkét szervezetnél a személyes kapcsolat dominál. A telefonos kapcsolat hasonló funkciót lát el. Az e-mail jelenlét erőteljesebb. VOSZ esetén on-line kapcsolatot nem mértünk még!</p></div>
@@ -852,7 +910,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
     <div class="stage">
       <div class="eyebrow">KOMMUNIKÁCIÓS KAPCSOLAT SZERKEZETI EGYSÉGE</div>
       <h1 class="h-lg">Kommunikációs kapcsolat szerkezeti egysége</h1>
-      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:-4px">(Vizsgált irodák aggregált eredménye)</div>
+      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:8px">(Vizsgált irodák aggregált eredménye)</div>
       <div class="body-wrap" style="flex-direction:row;gap:16px;align-items:stretch">
         <div style="flex:0 0 34%;display:flex;flex-direction:column;gap:10px">
           <div class="glass-strong" style="padding:10px;flex:1">
@@ -862,7 +920,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
                 <tr><th style="padding:4px 7px">Kategória</th><th style="padding:4px 7px">Összes idő (min)</th><th style="padding:4px 7px">Napi idő (h)</th><th style="padding:4px 7px">Jelen 2026</th><th style="padding:4px 7px">VOSZ 2025</th></tr>
               </thead>
               <tbody>
-                <tr><td style="padding:3px 7px">Ügyfél</td><td style="padding:3px 7px">162 h 5 min</td><td style="padding:3px 7px">2 h 34 min</td><td style="padding:3px 7px;font-weight:500;color:var(--red)">73,80 %</td><td style="padding:3px 7px">74,74 %</td></tr>
+                <tr><td style="padding:3px 7px">Ügyfél</td><td style="padding:3px 7px">162 h 5 min</td><td style="padding:3px 7px">2 h 34 min</td><td style="padding:3px 7px;font-weight:500">73,80 %</td><td style="padding:3px 7px">74,74 %</td></tr>
                 <tr style="background:rgba(0,0,0,.02)"><td style="padding:3px 7px">KAVOSZ (belső)</td><td style="padding:3px 7px">7 h 36 min</td><td style="padding:3px 7px">7 min</td><td style="padding:3px 7px;font-weight:500">3,50 %</td><td style="padding:3px 7px">9,89 %</td></tr>
                 <tr><td style="padding:3px 7px">Munkatárs</td><td style="padding:3px 7px">16 h 12 min</td><td style="padding:3px 7px">16 min</td><td style="padding:3px 7px;font-weight:500">7,40 %</td><td style="padding:3px 7px">6,00 %</td></tr>
                 <tr style="background:rgba(0,0,0,.02)"><td style="padding:3px 7px">Partner (Finanszírozó)</td><td style="padding:3px 7px">33 h 35 min</td><td style="padding:3px 7px">32 min</td><td style="padding:3px 7px;font-weight:500">15,30 %</td><td style="padding:3px 7px">9,38 %</td></tr>
@@ -879,14 +937,14 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
               <tbody>
                 <tr><td style="padding:3px 7px">Egyeztetés</td><td style="padding:3px 7px">58 h 48 min</td><td style="padding:3px 7px">56 min</td><td style="padding:3px 7px;font-weight:500">31,74 %</td><td style="padding:3px 7px">Nincs adat</td></tr>
                 <tr style="background:rgba(0,0,0,.02)"><td style="padding:3px 7px">Megbeszélés</td><td style="padding:3px 7px">7 h 28 min</td><td style="padding:3px 7px">13 min</td><td style="padding:3px 7px;font-weight:500">7,23 %</td><td style="padding:3px 7px">Nincs adat</td></tr>
-                <tr><td style="padding:3px 7px">Ügyintézés / Fin. közvetítés</td><td style="padding:3px 7px">113 h 5 min</td><td style="padding:3px 7px">1 h 48 min</td><td style="padding:3px 7px;font-weight:500;color:var(--red)">61,03 %</td><td style="padding:3px 7px">Nincs adat</td></tr>
+                <tr><td style="padding:3px 7px">Ügyintézés / Fin. közvetítés</td><td style="padding:3px 7px">113 h 5 min</td><td style="padding:3px 7px">1 h 48 min</td><td style="padding:3px 7px;font-weight:500">61,03 %</td><td style="padding:3px 7px">Nincs adat</td></tr>
                 <tr style="background:rgba(20,20,26,.06)"><td style="padding:3px 7px;font-weight:600">Teljes</td><td style="padding:3px 7px;font-weight:600">185 h 17 min</td><td style="padding:3px 7px;font-weight:600">2 h 9 min</td><td style="padding:3px 7px;font-weight:600">100,00 %</td><td style="padding:3px 7px;font-weight:600">Nincs adat</td></tr>
               </tbody>
             </table>
           </div>
         </div>
         <div style="flex:0 0 360px;display:flex;flex-direction:column;gap:12px">
-          <div class="glass-strong" style="padding:18px;overflow:visible;flex:1"><div style="font-family:Outfit;font-weight:700;font-size:18px;color:var(--ink);margin-bottom:8px">Kapcsolati partner szerinti megoszlás</div><div style="position:relative;height:320px;width:100%;overflow:visible"><canvas id="c15a"></canvas></div></div>
+          <div class="glass-strong" style="padding:18px;overflow:visible;flex:1"><div style="font-family:Outfit;font-weight:700;font-size:18px;color:var(--ink);margin-bottom:20px">Kapcsolati partner szerinti megoszlás</div><div style="position:relative;height:320px;width:100%;overflow:visible"><canvas id="c15a"></canvas></div></div>
           <div class="glass-strong" style="padding:18px;overflow:visible;flex:1"><div style="font-family:Outfit;font-weight:700;font-size:18px;color:var(--ink);margin-bottom:8px">Kommunikáció típusa</div><div style="position:relative;height:320px;width:100%;overflow:visible"><canvas id="c15b"></canvas></div></div>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;gap:12px">
@@ -907,7 +965,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
     <div class="stage">
       <div class="eyebrow">KOMMUNIKÁCIÓS KAPCSOLAT ÜGYFELEKKEL</div>
       <h1 class="h-lg">Kommunikációs kapcsolat ügyfelekkel</h1>
-      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:-4px">(Vizsgált irodák aggregált eredménye)</div>
+      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:8px">(Vizsgált irodák aggregált eredménye)</div>
       <div class="body-wrap" style="flex-direction:row;gap:16px;align-items:stretch">
         <div style="flex:0 0 34%;display:flex;flex-direction:column;gap:10px">
           <div class="glass-strong" style="padding:10px;flex:1">
@@ -918,7 +976,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
               </thead>
               <tbody>
                 <tr><td style="padding:3px 7px">Új ügyfél</td><td style="padding:3px 7px">41 h 51 min</td><td style="padding:3px 7px">40 min</td><td style="padding:3px 7px;font-weight:500">25,70 %</td><td style="padding:3px 7px">Nincs adat</td></tr>
-                <tr style="background:rgba(0,0,0,.02)"><td style="padding:3px 7px">Meglévő ügyfél</td><td style="padding:3px 7px">121 h</td><td style="padding:3px 7px">1 h 56 min</td><td style="padding:3px 7px;font-weight:500;color:var(--red)">74,30 %</td><td style="padding:3px 7px">Nincs adat</td></tr>
+                <tr style="background:rgba(0,0,0,.02)"><td style="padding:3px 7px">Meglévő ügyfél</td><td style="padding:3px 7px">121 h</td><td style="padding:3px 7px">1 h 56 min</td><td style="padding:3px 7px;font-weight:500">74,30 %</td><td style="padding:3px 7px">Nincs adat</td></tr>
                 <tr style="background:rgba(20,20,26,.06)"><td style="padding:3px 7px;font-weight:600">Teljes</td><td style="padding:3px 7px;font-weight:600">162 h 51 min</td><td style="padding:3px 7px;font-weight:600">2 h 36 min</td><td style="padding:3px 7px;font-weight:600">100,00 %</td><td style="padding:3px 7px;font-weight:600">100,00 %</td></tr>
               </tbody>
             </table>
@@ -930,7 +988,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
                 <tr><th style="padding:4px 7px">Kategória</th><th style="padding:4px 7px">Összes idő (min)</th><th style="padding:4px 7px">Napi idő (h)</th><th style="padding:4px 7px">Jelen 2026</th><th style="padding:4px 7px">VOSZ 2025</th></tr>
               </thead>
               <tbody>
-                <tr><td style="padding:3px 7px">Személy</td><td style="padding:3px 7px">35 h 31 min</td><td style="padding:3px 7px">34 min</td><td style="padding:3px 7px;font-weight:500;color:var(--red)">84,87 %</td><td style="padding:3px 7px">Nincs adat</td></tr>
+                <tr><td style="padding:3px 7px">Személy</td><td style="padding:3px 7px">35 h 31 min</td><td style="padding:3px 7px">34 min</td><td style="padding:3px 7px;font-weight:500">84,87 %</td><td style="padding:3px 7px">Nincs adat</td></tr>
                 <tr style="background:rgba(0,0,0,.02)"><td style="padding:3px 7px">Telefon</td><td style="padding:3px 7px">4 h 43 min</td><td style="padding:3px 7px">5 min</td><td style="padding:3px 7px;font-weight:500">11,27 %</td><td style="padding:3px 7px">Nincs adat</td></tr>
                 <tr><td style="padding:3px 7px">E-mail</td><td style="padding:3px 7px">1 h 9 min</td><td style="padding:3px 7px">1 min</td><td style="padding:3px 7px;font-weight:500">2,75 %</td><td style="padding:3px 7px">Nincs adat</td></tr>
                 <tr style="background:rgba(0,0,0,.02)"><td style="padding:3px 7px">Online</td><td style="padding:3px 7px">28 min</td><td style="padding:3px 7px">0,4 min</td><td style="padding:3px 7px;font-weight:500">1,11 %</td><td style="padding:3px 7px">Nincs adat</td></tr>
@@ -943,11 +1001,11 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
           <div class="glass-strong" style="padding:18px;overflow:visible;flex:1"><div style="font-family:Outfit;font-weight:700;font-size:18px;color:var(--ink);margin-bottom:8px">Ügyfél típus</div><div style="position:relative;height:320px;width:100%;overflow:visible"><canvas id="c16a"></canvas></div></div>
           <div class="glass-strong" style="padding:18px;flex:1"><div style="font-family:Outfit;font-weight:700;font-size:18px;color:var(--ink);margin-bottom:8px">Ügyfélkommunikáció csatornái</div><div style="position:relative;height:320px;width:100%;overflow:visible"><canvas id="c16b"></canvas></div></div>
         </div>
-        <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px">
           <div style="font-family:Outfit;font-weight:700;font-size:20px;color:var(--ink);padding:0 2px 2px">Észrevételek</div>
-          <div class="glass-strong" style="padding:18px;"><div class="ct ct-k">Erősségek</div><ul class="checks" style="margin-top:6px"><li style="font-size:16px;margin:4px 0">Erős személyes ügyfélkapcsolatok</li><li style="font-size:16px;margin:4px 0">Magas bizalmi működés</li><li style="font-size:16px;margin:4px 0">Jó személyes konverzió</li><li style="font-size:16px;margin:4px 0">Stabil kapcsolati háló</li></ul></div>
-          <div class="glass-strong" style="padding:18px;"><div class="ct ct-r">Gyengeségek</div><ul class="dots" style="margin-top:6px"><li style="font-size:16px;margin:4px 0">Rendkívül alacsony digitális ügyfélszerzés</li><li style="font-size:16px;margin:4px 0">Gyenge online konverzió</li><li style="font-size:16px;margin:4px 0">E-mail csatorna alul használtsága</li><li style="font-size:16px;margin:4px 0">Nehezen skálázható működés</li></ul></div>
-          <div style="background:linear-gradient(135deg,rgba(212,32,54,.09),rgba(212,32,54,.03));border:2px solid rgba(212,32,54,.3);border-radius:12px;padding:18px;"><div class="ct ct-r">Stratégiai prioritás</div><p style="font-family:Lexend;font-size:15px;color:rgba(10,10,14,.72);line-height:1.52;margin:6px 0 6px">A szervezet a személyes értékesítési erősséget megtartva, fokozatosan digitalizálja az ügyfélszerzést és ügyfélkezelést, ezáltal:</p><ul class="dots"><li style="font-size:15px;margin:3px 0">növeli a hatékonyságot,</li><li style="font-size:15px;margin:3px 0">csökkenti az ügyintéző leterheltségét,</li><li style="font-size:15px;margin:3px 0">javítja az ügyfélélményt,</li><li style="font-size:15px;margin:3px 0">stabilabb növekedést tesz lehetővé.</li></ul></div>
+          <div class="glass-strong" style="padding:14px;"><div class="ct ct-k">Erősségek</div><ul class="checks" style="margin-top:6px"><li style="font-size:16px;margin:4px 0">Erős személyes ügyfélkapcsolatok</li><li style="font-size:16px;margin:4px 0">Magas bizalmi működés</li><li style="font-size:16px;margin:4px 0">Jó személyes konverzió</li><li style="font-size:16px;margin:4px 0">Stabil kapcsolati háló</li></ul></div>
+          <div class="glass-strong" style="padding:14px;"><div class="ct ct-r">Gyengeségek</div><ul class="dots" style="margin-top:6px"><li style="font-size:16px;margin:4px 0">Rendkívül alacsony digitális ügyfélszerzés</li><li style="font-size:16px;margin:4px 0">Gyenge online konverzió</li><li style="font-size:16px;margin:4px 0">E-mail csatorna alul használtsága</li><li style="font-size:16px;margin:4px 0">Nehezen skálázható működés</li></ul></div>
+          <div style="background:linear-gradient(135deg,rgba(212,32,54,.09),rgba(212,32,54,.03));border:2px solid rgba(212,32,54,.3);border-radius:12px;padding:14px;"><div class="ct ct-r">Stratégiai prioritás</div><p style="font-family:Lexend;font-size:15px;color:rgba(10,10,14,.72);line-height:1.52;margin:6px 0 6px">A szervezet a személyes értékesítési erősséget megtartva, fokozatosan digitalizálja az ügyfélszerzést és ügyfélkezelést, ezáltal:</p><ul class="dots"><li style="font-size:15px;margin:3px 0">növeli a hatékonyságot,</li><li style="font-size:15px;margin:3px 0">csökkenti az ügyintéző leterheltségét,</li><li style="font-size:15px;margin:3px 0">javítja az ügyfélélményt,</li><li style="font-size:15px;margin:3px 0">stabilabb növekedést tesz lehetővé.</li></ul></div>
         </div>
       </div>
     </div>
@@ -962,7 +1020,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
     <div class="stage">
       <div class="eyebrow">ELSŐDLEGES FELADATOK SZERKEZETI EGYSÉGE</div>
       <h1 class="h-lg">Elsődleges feladatok szerkezeti egysége</h1>
-      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:-4px">(Vizsgált irodák aggregált eredménye)</div>
+      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:8px">(Vizsgált irodák aggregált eredménye)</div>
       <div class="body-wrap" style="flex-direction:column;gap:14px">
         <!-- Arányos 100%-os csík -->
         <div style="width:100%;display:flex;align-items:flex-start;flex-shrink:0;gap:1px;margin-bottom:8px">
@@ -999,11 +1057,11 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
     <div style="font-family:Outfit;font-size:14px;color:var(--ink);text-align:center;padding:2px 1px;line-height:1.1">Banki ügyintézés</div>
   </div>
   <div style="flex:0.9;display:flex;flex-direction:column">
-    <div style="height:95px;background:#525262;border-radius:6px 6px 0 0"></div>
+    <div style="height:95px;background:#525262;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:center"><span style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">0,90%</span></div>
     <div style="font-family:Outfit;font-size:12px;color:var(--ink);text-align:center;padding:2px 1px;line-height:1.1">Ügyf.gondozás</div>
   </div>
   <div style="flex:0.6;display:flex;flex-direction:column">
-    <div style="height:95px;background:#C8950A;border-radius:6px 6px 0 0"></div>
+    <div style="height:95px;background:#C8950A;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:center"><span style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">0,60%</span></div>
     <div style="font-family:Outfit;font-size:12px;color:var(--ink);text-align:center;line-height:1.1">Ügyfélszerzés</div>
   </div>
 </div>
@@ -1012,10 +1070,10 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
           <div style="display:flex;gap:22px;flex:1;min-height:0">
             <div class="glass-strong" style="flex:0 0 36%;padding:14px;overflow:auto;min-width:0;align-self:start;box-sizing:border-box"><table class="dtable" style="width:100%"><thead><tr><th>Csoport</th><th>Elsődleges feladatok</th><th>Jelen 2026</th><th>Összesen</th><th>VOSZ 2025</th><th>Összesen</th></tr></thead><tbody><tr style="background:rgba(212,32,54,.05)"><td style="font-weight:700;font-family:Outfit;font-size:13px">Ügyintézés</td><td>Ügyintézés befogadással</td><td style="text-align:center;font-weight:500">23,40 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)">32,4 %</td><td style="text-align:center">16,37 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500">39,29 %</td></tr><tr style=""><td style="font-weight:700;font-family:Outfit;font-size:13px"></td><td>Finanszírozás közvetítés</td><td style="text-align:center;font-weight:500">4,60 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)"></td><td style="text-align:center">10,53 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500"></td></tr><tr style=""><td style="font-weight:700;font-family:Outfit;font-size:13px"></td><td>Finanszírozás felülvizsgálat</td><td style="text-align:center;font-weight:500">4,40 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)"></td><td style="text-align:center">12,32 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500"></td></tr><tr style="background:rgba(212,32,54,.05)"><td style="font-weight:700;font-family:Outfit;font-size:13px">Operatív feladatok</td><td>Időpontegyeztetés</td><td style="text-align:center;font-weight:500">1,90 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)">66,2 %</td><td style="text-align:center">1,45 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500">59,63 %</td></tr><tr style=""><td style="font-weight:700;font-family:Outfit;font-size:13px"></td><td>Ügyfél kezelés</td><td style="text-align:center;font-weight:500">6,00 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)"></td><td style="text-align:center">3,17 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500"></td></tr><tr style=""><td style="font-weight:700;font-family:Outfit;font-size:13px"></td><td>Adminisztráció</td><td style="text-align:center;font-weight:500">47,80 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)"></td><td style="text-align:center">40,72 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500"></td></tr><tr style=""><td style="font-weight:700;font-family:Outfit;font-size:13px"></td><td>Banki ügyintézés</td><td style="text-align:center;font-weight:500">1,80 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)"></td><td style="text-align:center">2,03 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500"></td></tr><tr style=""><td style="font-weight:700;font-family:Outfit;font-size:13px"></td><td>Munkaszervezés</td><td style="text-align:center;font-weight:500">8,70 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)"></td><td style="text-align:center">12,26 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500"></td></tr><tr style="background:rgba(212,32,54,.05)"><td style="font-weight:700;font-family:Outfit;font-size:13px">Ügyfél-portfólió</td><td>Ügyfélgondozás</td><td style="text-align:center;font-weight:500">0,90 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)">1,5 %</td><td style="text-align:center">0,00 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500">1,15 %</td></tr><tr style=""><td style="font-weight:700;font-family:Outfit;font-size:13px"></td><td>Ügyfélszerzés</td><td style="text-align:center;font-weight:500">0,60 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)"></td><td style="text-align:center">1,15 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500"></td></tr><tr style=""><td style="font-weight:700;font-family:Outfit;font-size:13px"></td><td>CRM – ügyfélkapcsolat rögzítés</td><td style="text-align:center;font-weight:500">0,00 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)"></td><td style="text-align:center">0,00 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500"></td></tr></tbody></table></div>
             <div style="flex:1;display:flex;flex-direction:column;gap:12px;min-width:0">
-              <div class="glass-strong" style="padding:20px;overflow:auto"><div class="ct ct-r">Észrevételek</div><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:6px 0 0"><b>Adminisztráció dominál a munkanapot</b><br>A legnagyobb időráfordítás az adminisztrációra (47,8%) jut, amiből következik, hogy az ügyintézők munkaidejének közel fele nem közvetlen ügyfélérték-teremtéssel telik, hanem háttérfolyamatokkal.</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:8px 0 0"><b>Az ügyintézői finanszírozás közvetítő szerepe nem domináns</b><br>A teljes ügyintézői tevékenység (32,4%), ami alapvető szakmai fókuszt jelent, de ez az arány akár magasabb is lehetne. Ügyintézés befogadással: 23,4% · Finanszírozás közvetítés: 4,6% · Finanszírozás felülvizsgálat: 4,4%<br>Ez azt mutatja, hogy a befogadás jelentős kapacitást köt le, miközben a magas hozzáadott értékű szakmai munka aránya viszonylag alacsony.</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:8px 0 0"><b>Ügyfélportfólió – hosszú távú ügyfélkapcsolat gondozás</b><br>Ilyen jellegű tevékenység nem jellemzi a napi munkafolyamatokat (1,5%)</p></div>
+              <div class="glass-strong" style="padding:14px;overflow:auto"><div class="ct ct-r">Észrevételek</div><ul class="dots"><li style="margin:3px 0"><b>Adminisztráció dominál a munkanapot</b> — a legnagyobb időráfordítás (47,8%): az ügyintézők munkaidejének <b style="color:var(--red)">közel fele háttérfolyamatokkal</b> telik, nem közvetlen ügyfélérték-teremtéssel</li><li style="margin:3px 0"><b>Az ügyintézői finanszírozás közvetítő szerepe nem domináns</b> — teljes ügyintézés (32,4%): befogadással 23,4% · közvetítés 4,6% · felülvizsgálat 4,4% → <b style="color:var(--red)">magas hozzáadott értékű szakmai munka aránya alacsony</b></li><li style="margin:3px 0"><b>Ügyfélportfólió</b> – hosszú távú ügyfélkapcsolat gondozás nem jellemzi a napi munkafolyamatokat (1,5%): <b>Ügyfélgondozás 0,90%</b> · <b>Ügyfélszerzés 0,60%</b></li></ul></div>
             </div>
           </div>
-          <div class="glass-strong" style="padding:18px;flex-shrink:0"><div class="ct ct-k">Jelen 2026 – VOSZ 2025 vizsgálati eredmények</div><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.52;margin:0">A szervezeteknél az adminisztráció dominálja a munkanapot. A VOSZ-nál a finanszírozás közvetítés erőteljesebb, ami az eltérő motivációs rendszerre is visszavezethető. Az ügyfélgondozás – hosszú távú ügyfélkapcsolat a felmérés idején nem volt prioritás.</p></div>
+          <div class="glass-strong" style="padding:14px;flex-shrink:0"><div class="ct ct-k">Jelen 2026 – VOSZ 2025 vizsgálati eredmények</div><p style="font-family:Lexend;color:rgba(10,10,14,.72);line-height:1.45;margin:0">A szervezeteknél az <b>adminisztráció dominálja a munkanapot</b>. A VOSZ-nál a finanszírozás közvetítés erőteljesebb, ami az eltérő motivációs rendszerre visszavezethető. Az <b style="color:var(--red)">ügyfélgondozás – hosszú távú ügyfélkapcsolat a felmérés idején nem volt prioritás</b>.</p></div>
         </div>
       </div>
     </div>
@@ -1030,61 +1088,58 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
     <div class="stage">
       <div class="eyebrow">ELSŐDLEGES FELADATOK – OPERATÍV FELADATOK / ÜGYFÉLPORTFÓLIÓ</div>
       <h1 class="h-lg">Elsődleges feladatok – Operatív feladatok / Ügyfélportfólió</h1>
-      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:-4px">(Vizsgált irodák aggregált eredménye)</div>
-      <div class="body-wrap" style="flex-direction:column;gap:14px">
+      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:8px">(Vizsgált irodák aggregált eredménye)</div>
+      <div class="body-wrap" style="flex-direction:column;gap:10px">
         <!-- Arányos csík – slide 17 stílusban -->
-        <div style="flex-shrink:0;margin-bottom:6px">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+        <div style="flex-shrink:0;margin-bottom:2px">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;margin-bottom:5px">
             <span style="font-family:Outfit;font-size:13px;font-weight:700;color:var(--muted)">Operatív feladatok és Ügyfél-portfólió kezelés</span>
-            <div style="display:flex;gap:14px">
-              <div style="display:flex;align-items:center;gap:5px"><div style="width:11px;height:11px;background:#70AD47;border-radius:2px"></div><span style="font-size:12px;font-family:Lexend">Operatív feladatok</span></div>
-              <div style="display:flex;align-items:center;gap:5px"><div style="width:11px;height:11px;background:#C8950A;border-radius:2px"></div><span style="font-size:12px;font-family:Lexend">Ügyfél-portfólió</span></div>
-            </div>
+            <div style="display:flex;align-items:center;gap:6px;justify-content:center"><div style="width:11px;height:11px;background:#70AD47;border-radius:2px"></div><span style="font-size:12px;font-family:Lexend;font-weight:700">Operatív feladatok &nbsp;66,2%</span></div>
+            <div style="display:flex;align-items:center;gap:5px;justify-content:flex-end"><div style="width:11px;height:11px;background:#C8950A;border-radius:2px"></div><span style="font-size:12px;font-family:Lexend">Ügyfél-portfólió</span></div>
           </div>
           <div style="width:100%;display:flex;align-items:flex-start;gap:1px">
             <div style="flex:47.8;display:flex;flex-direction:column">
-              <div style="height:95px;background:#70AD47;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:6px 6px 0 0;gap:1px">
-                <span style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff;line-height:1">Operatív feladatok</span>
-                <span style="font-family:Outfit;font-weight:800;font-size:23px;color:#fff;line-height:1">66,2%</span>
+              <div style="height:95px;background:#70AD47;display:flex;align-items:center;justify-content:center;border-radius:6px 6px 0 0">
+                <span style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">47,8%</span>
               </div>
-              <div style="font-family:Outfit;font-size:14px;color:var(--ink);text-align:center;padding:2px 1px;line-height:1.2">(Adminisztráció 47,8%)</div>
+              <div style="font-family:Outfit;font-size:14px;color:var(--ink);text-align:center;padding:2px 1px;line-height:1.2">Adminisztráció</div>
             </div>
             <div style="flex:8.7;display:flex;flex-direction:column">
-              <div style="height:95px;background:#70AD47;opacity:.78;display:flex;align-items:center;justify-content:center;border-radius:6px 6px 0 0"><span style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">8,7%</span></div>
+              <div style="height:95px;background:#70AD47;display:flex;align-items:center;justify-content:center;border-radius:6px 6px 0 0"><span style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">8,7%</span></div>
               <div style="font-family:Outfit;font-size:14px;color:var(--ink);text-align:center;padding:2px 1px;line-height:1.1">Munka-<br>szervezés</div>
             </div>
             <div style="flex:6.0;display:flex;flex-direction:column">
-              <div style="height:95px;background:#70AD47;opacity:.65;display:flex;align-items:center;justify-content:center;border-radius:6px 6px 0 0"><span style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">6,0%</span></div>
+              <div style="height:95px;background:#70AD47;display:flex;align-items:center;justify-content:center;border-radius:6px 6px 0 0"><span style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">6,0%</span></div>
               <div style="font-family:Outfit;font-size:14px;color:var(--ink);text-align:center;padding:2px 1px;line-height:1.1">Ügyfél<br>kezelés</div>
             </div>
             <div style="flex:1.9;display:flex;flex-direction:column">
-              <div style="height:95px;background:#70AD47;opacity:.52;display:flex;align-items:center;justify-content:center;border-radius:6px 6px 0 0"><span style="font-family:Outfit;font-weight:700;font-size:13px;color:#fff">1,9%</span></div>
+              <div style="height:95px;background:#70AD47;display:flex;align-items:center;justify-content:center;border-radius:6px 6px 0 0"><span style="font-family:Outfit;font-weight:700;font-size:13px;color:#fff">1,9%</span></div>
               <div style="font-family:Outfit;font-size:12px;color:var(--ink);text-align:center;padding:2px 1px;line-height:1.1">Időpont<br>egyeztetés</div>
             </div>
             <div style="flex:1.8;display:flex;flex-direction:column">
-              <div style="height:95px;background:#70AD47;opacity:.50;display:flex;align-items:center;justify-content:center;border-radius:6px 6px 0 0"><span style="font-family:Outfit;font-weight:700;font-size:13px;color:#fff">1,8%</span></div>
+              <div style="height:95px;background:#70AD47;display:flex;align-items:center;justify-content:center;border-radius:6px 6px 0 0"><span style="font-family:Outfit;font-weight:700;font-size:13px;color:#fff">1,8%</span></div>
               <div style="font-family:Outfit;font-size:12px;color:var(--ink);text-align:center;padding:2px 1px;line-height:1.1">Banki<br>ügyintézés</div>
             </div>
             <div style="flex:0.9;display:flex;flex-direction:column">
-              <div style="height:95px;background:#C8950A;border-radius:6px 6px 0 0"></div>
-              <div style="font-family:Outfit;font-size:12px;color:var(--ink);text-align:center;padding:2px 1px;line-height:1.1">Ügyfél-<br>gondozás<br>0,9%</div>
+              <div style="height:95px;background:#C8950A;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:center"><span style="font-family:Outfit;font-weight:700;font-size:13px;color:#fff">0,90%</span></div>
+              <div style="font-family:Outfit;font-size:12px;color:var(--ink);text-align:center;padding:2px 1px;line-height:1.1">Ügyfél-<br>gondozás</div>
             </div>
             <div style="flex:0.6;display:flex;flex-direction:column">
-              <div style="height:95px;background:#C8950A;opacity:.75;border-radius:6px 6px 0 0"></div>
-              <div style="font-family:Outfit;font-size:12px;color:var(--ink);text-align:center;line-height:1.1">Ügyfél-<br>szerzés<br>0,6%</div>
+              <div style="height:95px;background:#C8950A;opacity:.75;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:center"><span style="font-family:Outfit;font-weight:700;font-size:13px;color:#fff">0,60%</span></div>
+              <div style="font-family:Outfit;font-size:12px;color:var(--ink);text-align:center;line-height:1.1">Ügyfél-<br>szerzés</div>
             </div>
           </div>
         </div>
         <!-- Táblázat + szövegdobozok + alsó sor -->
-        <div style="display:flex;flex-direction:column;flex:1;min-height:0;gap:12px">
+        <div style="display:flex;flex-direction:column;flex:1;min-height:0;gap:8px">
           <div style="display:flex;gap:22px;flex:1;min-height:0">
             <div class="glass-strong" style="flex:0 0 36%;padding:14px;overflow:auto;min-width:0;align-self:start;box-sizing:border-box"><table class="dtable" style="width:100%"><thead><tr><th>Csoport</th><th>Feladat</th><th>Jelen 2026</th><th>Összesen</th><th>VOSZ 2025</th><th>Összesen</th></tr></thead><tbody><tr style="background:rgba(212,32,54,.05)"><td style="font-weight:700;font-family:Outfit;font-size:13px">Operatív feladatok</td><td>Időpontegyeztetés</td><td style="text-align:center;font-weight:500">1,90 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)">66,2 %</td><td style="text-align:center">1,45 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500">59,63 %</td></tr><tr style=""><td style="font-weight:700;font-family:Outfit;font-size:13px"></td><td>Ügyfél kezelés</td><td style="text-align:center;font-weight:500">6,00 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)"></td><td style="text-align:center">3,17 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500"></td></tr><tr style=""><td style="font-weight:700;font-family:Outfit;font-size:13px"></td><td>Adminisztráció</td><td style="text-align:center;font-weight:500">47,80 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)"></td><td style="text-align:center">40,72 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500"></td></tr><tr style=""><td style="font-weight:700;font-family:Outfit;font-size:13px"></td><td>Banki ügyintézés</td><td style="text-align:center;font-weight:500">1,80 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)"></td><td style="text-align:center">2,03 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500"></td></tr><tr style=""><td style="font-weight:700;font-family:Outfit;font-size:13px"></td><td>Munkaszervezés</td><td style="text-align:center;font-weight:500">8,70 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)"></td><td style="text-align:center">12,26 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500"></td></tr><tr style="background:rgba(212,32,54,.05)"><td style="font-weight:700;font-family:Outfit;font-size:13px">Ügyfél-portfólió</td><td>Ügyfélgondozás</td><td style="text-align:center;font-weight:500">0,90 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)">1,5 %</td><td style="text-align:center">0,00 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500">1,15 %</td></tr><tr style=""><td style="font-weight:700;font-family:Outfit;font-size:13px"></td><td>Ügyfélszerzés</td><td style="text-align:center;font-weight:500">0,60 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)"></td><td style="text-align:center">1,15 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500"></td></tr><tr style=""><td style="font-weight:700;font-family:Outfit;font-size:13px"></td><td>CRM – ügyfélkapcsolat rögzítés</td><td style="text-align:center;font-weight:500">0,00 %</td><td style="text-align:center;background:rgba(212,32,54,.08);font-weight:600;color:var(--red)"></td><td style="text-align:center">0,00 %</td><td style="text-align:center;background:rgba(80,80,88,.08);font-weight:500"></td></tr></tbody></table></div>
-            <div style="flex:1;display:flex;flex-direction:column;gap:12px;min-width:0">
-            <div class="glass-strong" style="padding:18px;flex:1;overflow:auto"><div class="ct ct-r">Észrevételek</div><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:5px 0 4px">Rendkívül alacsony ügyfélszerzési aktivitás – gyakorlatilag elhanyagolható (0,6%).</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0 0 4px">Ügyfélgondozás szinte nem létezik – proaktív kapcsolattartás nem jellemző (0,9%).</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0 0 4px">CRM használat nincs, rendszer hiányában (0,0%).</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0 0 4px">Munkaszervezésre a koordinátori szerep jellemző (8,7%).</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0 0 4px">Kevés idő jut üzletfejlesztésre és ügyfélkapcsolatok mélyítésére.</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0">Reaktív működés feltételezhető az adatok alapján.</p></div>
-            <div class="glass-strong" style="padding:18px;flex-shrink:0"><div class="ct ct-k">Összegzés</div><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:5px 0 4px">A működés jelenleg erősen operatív és adminisztratív jellegű. Az ügyintézők jelentős kapacitást fordítanak koordinációs feladatokra miközben:</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0 0 3px">az aktív ügyfélszerzés,</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0 0 3px">az ügyfélgondozás,</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0">Valamint a CRM alapú működés minimális szerepet kap.</p></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0">
+            <div class="glass-strong" style="padding:14px;flex:1;overflow:auto"><div class="ct ct-r">Észrevételek</div><ul class="dots"><li style="margin:3px 0"><b>Rendkívül alacsony ügyfélszerzési aktivitás</b> – gyakorlatilag elhanyagolható <b style="color:var(--red)">(0,6%)</b></li><li style="margin:3px 0"><b>Ügyfélgondozás szinte nem létezik</b> – proaktív kapcsolattartás nem jellemző <b style="color:var(--red)">(0,9%)</b></li><li style="margin:3px 0"><b>CRM használat nincs</b>, rendszer hiányában <b style="color:var(--red)">(0,0%)</b></li><li style="margin:3px 0"><b>Munkaszervezésre a koordinátori szerep</b> jellemző (8,7%)</li><li style="margin:3px 0">Kevés idő jut <b>üzletfejlesztésre</b> és ügyfélkapcsolatok mélyítésére</li><li style="margin:3px 0"><b style="color:var(--red)">Reaktív működés</b> feltételezhető az adatok alapján</li></ul></div>
+            <div class="glass-strong" style="padding:14px;flex-shrink:0"><div class="ct ct-k">Összegzés</div><p style="font-family:Lexend;color:rgba(10,10,14,.72);line-height:1.45;margin:5px 0 4px">A működés jelenleg <b>erősen operatív és adminisztratív jellegű</b>. Az ügyintézők <b style="color:var(--red)">jelentős kapacitást fordítanak koordinációs feladatokra</b> miközben:</p><ul class="dots"><li style="margin:3px 0">az aktív ügyfélszerzés,</li><li style="margin:3px 0">az ügyfélgondozás,</li><li style="margin:3px 0">valamint a <b style="color:var(--red)">CRM alapú működés minimális szerepet kap</b></li></ul></div>
           </div>
           </div>
-          <div class="glass-strong" style="padding:18px;flex-shrink:0"><div class="ct ct-k">Jelen 2026 – VOSZ 2025 vizsgálati eredmények</div><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.52;margin:5px 0 0">A VOSZ esetében sem volt jellemző az ügyfélportfólió építés. Az operatív feladatok időráfordítás kedvezőbb aránya itt az ügyintézésre fordított nagyobb időarányt jelentett.</p></div>
+          <div class="glass-strong" style="padding:14px;flex-shrink:0"><div class="ct ct-k">Jelen 2026 – VOSZ 2025 vizsgálati eredmények</div><p style="font-family:Lexend;color:rgba(10,10,14,.72);line-height:1.45;margin:5px 0 0">A VOSZ esetében sem volt jellemző az <b>ügyfélportfólió építés</b>. Az operatív feladatok időráfordítás kedvezőbb aránya itt az ügyintézésre fordított <b style="color:var(--red)">nagyobb időarányt</b> jelentett.</p></div>
         </div>
       </div>
     </div>
@@ -1106,7 +1161,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
           <div style="font-family:Outfit;font-weight:700;font-size:15px;color:var(--ink)">Ügyintézés folyamatának szerkezete</div>
           <div style="position:relative;height:210px;width:100%"><canvas id="c19"></canvas></div>
           <div style="display:flex;gap:8px;align-items:stretch">
-            <div class="glass-strong" style="padding:7px;flex:3;min-width:0;overflow:hidden"><table class="dtable" style="width:100%"><thead><tr><th style="padding:2px 4px" colspan="2">Ügyintézés</th><th style="padding:2px 4px;text-align:right">Optimális</th><th style="padding:2px 4px;text-align:right">Jelen 2026</th><th style="padding:2px 4px;text-align:right">VOSZ 2025</th></tr></thead><tbody><tr><td style="padding:2px 4px;font-weight:500;width:54px" rowspan="7">Ügyintézés<br>folyamata</td><td style="padding:2px 4px">Üdvözlés / Bevezetés</td><td style="padding:2px 4px;text-align:right">5,00 %</td><td style="padding:2px 4px;text-align:right;color:var(--red);font-weight:500">9,40 %</td><td style="padding:2px 4px;text-align:right">5,57 %</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 4px">Igényfelmérés</td><td style="padding:2px 4px;text-align:right">20,00 %</td><td style="padding:2px 4px;text-align:right;font-weight:500">11,60 %</td><td style="padding:2px 4px;text-align:right">25,17 %</td></tr><tr><td style="padding:2px 4px">Előnyök / kockázatok</td><td style="padding:2px 4px;text-align:right">15,00 %</td><td style="padding:2px 4px;text-align:right;font-weight:500">12,70 %</td><td style="padding:2px 4px;text-align:right">1,86 %</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 4px">Feltételek</td><td style="padding:2px 4px;text-align:right">30,00 %</td><td style="padding:2px 4px;text-align:right;color:var(--red);font-weight:500">39,90 %</td><td style="padding:2px 4px;text-align:right">45,28 %</td></tr><tr><td style="padding:2px 4px">Összegzés</td><td style="padding:2px 4px;text-align:right">20,00 %</td><td style="padding:2px 4px;text-align:right;font-weight:500">23,90 %</td><td style="padding:2px 4px;text-align:right">20,54 %</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 4px">Jövőbeni kontakt</td><td style="padding:2px 4px;text-align:right">5,00 %</td><td style="padding:2px 4px;text-align:right;font-weight:500">2,50 %</td><td style="padding:2px 4px;text-align:right">1,58 %</td></tr><tr><td style="padding:2px 4px">CRM rögzítés</td><td style="padding:2px 4px;text-align:right">5,00 %</td><td style="padding:2px 4px;text-align:right;font-weight:500">0,00 %</td><td style="padding:2px 4px;text-align:right">0,00 %</td></tr></tbody></table></div>
+            <div class="glass-strong" style="padding:7px;flex:3;min-width:0;overflow:hidden"><table class="dtable" style="width:100%"><thead><tr><th style="padding:2px 4px" colspan="2">Ügyintézés</th><th style="padding:2px 4px;text-align:right">Optimális</th><th style="padding:2px 4px;text-align:right">Jelen 2026</th><th style="padding:2px 4px;text-align:right">VOSZ 2025</th></tr></thead><tbody><tr><td style="padding:2px 4px;font-weight:500;width:54px" rowspan="7">Ügyintézés<br>folyamata</td><td style="padding:2px 4px">Üdvözlés / Bevezetés</td><td style="padding:2px 4px;text-align:right">5,00 %</td><td style="padding:2px 4px;text-align:right;font-weight:500">9,40 %</td><td style="padding:2px 4px;text-align:right">5,57 %</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 4px">Igényfelmérés</td><td style="padding:2px 4px;text-align:right">20,00 %</td><td style="padding:2px 4px;text-align:right;font-weight:500">11,60 %</td><td style="padding:2px 4px;text-align:right">25,17 %</td></tr><tr><td style="padding:2px 4px">Előnyök / kockázatok</td><td style="padding:2px 4px;text-align:right">15,00 %</td><td style="padding:2px 4px;text-align:right;font-weight:500">12,70 %</td><td style="padding:2px 4px;text-align:right">1,86 %</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 4px">Feltételek</td><td style="padding:2px 4px;text-align:right">30,00 %</td><td style="padding:2px 4px;text-align:right;font-weight:500">39,90 %</td><td style="padding:2px 4px;text-align:right">45,28 %</td></tr><tr><td style="padding:2px 4px">Összegzés</td><td style="padding:2px 4px;text-align:right">20,00 %</td><td style="padding:2px 4px;text-align:right;font-weight:500">23,90 %</td><td style="padding:2px 4px;text-align:right">20,54 %</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 4px">Jövőbeni kontakt</td><td style="padding:2px 4px;text-align:right">5,00 %</td><td style="padding:2px 4px;text-align:right;font-weight:500">2,50 %</td><td style="padding:2px 4px;text-align:right">1,58 %</td></tr><tr><td style="padding:2px 4px">CRM rögzítés</td><td style="padding:2px 4px;text-align:right">5,00 %</td><td style="padding:2px 4px;text-align:right;font-weight:500">0,00 %</td><td style="padding:2px 4px;text-align:right">0,00 %</td></tr></tbody></table></div>
             <div class="glass-strong" style="padding:7px;flex:2;min-width:0;overflow:hidden"><table class="dtable" style="width:100%"><thead><tr><th style="padding:2px 4px" colspan="2">Ügyintézés folyamata vizsgált területek</th><th style="padding:2px 4px;text-align:right">Jelen 2026</th><th style="padding:2px 4px;text-align:right"></th></tr></thead><tbody><tr><td colspan="2" style="padding:2px 4px">Ügyintézés befogadás</td><td style="padding:2px 4px;text-align:right;font-weight:500">23,40 %</td><td style="padding:2px 4px;text-align:right;vertical-align:middle" rowspan="2">28,00 %</td></tr><tr style="background:rgba(0,0,0,.02)"><td colspan="2" style="padding:2px 4px">Finanszírozás közvetítés</td><td style="padding:2px 4px;text-align:right;font-weight:500">4,60 %</td></tr><tr style="background:rgba(20,20,26,.06)"><td colspan="2" style="padding:2px 4px;font-weight:600">Ügyletek száma összesen</td><td style="padding:2px 4px"></td><td style="padding:2px 4px;font-weight:600;text-align:right">216 db</td></tr><tr><td colspan="2" style="padding:2px 4px;font-weight:600">Ügyletekre fordított idő</td><td style="padding:2px 4px"></td><td style="padding:2px 4px;font-weight:600;text-align:right">114 h 1 min</td></tr><tr style="background:rgba(0,0,0,.02)"><td colspan="2" style="padding:2px 4px;font-weight:600">Ügyletre fordított átlag</td><td style="padding:2px 4px"></td><td style="padding:2px 4px;font-weight:600;text-align:right">21,2 min</td></tr></tbody></table></div>
           </div>
           <div style="margin-top:6px;padding:10px 12px;background:rgba(212,32,54,.04);border-radius:10px;border-left:3px solid rgba(212,32,54,.35)">
@@ -1133,22 +1188,26 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
       <div class="eyebrow">ÜGYINTÉZÉS FOLYAMATA — TERMÉKPORTFÓLIÓ</div>
       <h1 class="h-lg">Ügyintézés folyamata — szerkezeti összkép</h1>
       <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:8px">(Vizsgált irodák aggregált eredménye)</div>
-      <div class="body-wrap" style="flex-direction:row;gap:22px">
-        <!-- LEFT 50%: two stacked charts -->
+      <div class="body-wrap" style="flex-direction:row;gap:14px">
+        <!-- LEFT: c20a → szövegdoboz (középre) → c20 (alulra) -->
         <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-width:0">
           <div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink)">Ügyintézés – Finanszírozás közvetítés jellege</div>
-          <div style="position:relative;height:150px;width:100%"><canvas id="c20a"></canvas></div>
-          <div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);margin-top:4px">Termékportfólió időráfordítás aránya</div>
-          <div style="position:relative;height:220px;width:100%"><canvas id="c20"></canvas></div>
-          <div style="margin-top:auto;padding:10px 14px;background:rgba(212,32,54,.06);border-radius:10px;border:1px solid rgba(212,32,54,.15);text-align:center">
-            <span style="font-family:Outfit;font-weight:600;color:var(--ink)">A termékportfólió az ügyintézés befogadással és a finanszírozás közvetítés során ajánlott termékeket tartalmazza!</span>
+          <div style="position:relative;height:180px;width:100%"><canvas id="c20a"></canvas></div>
+          <div style="flex:1;display:flex;align-items:center">
+            <div style="padding:10px 14px;background:rgba(212,32,54,.06);border-radius:10px;border:1px solid rgba(212,32,54,.15);text-align:center;width:100%">
+              <span style="font-family:Outfit;font-weight:600;color:var(--ink)">A termékportfólió az ügyintézés befogadással és a finanszírozás közvetítés során ajánlott termékeket tartalmazza!</span>
+            </div>
           </div>
-          <div class="glass-strong" style="padding:8px;"><div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);margin-bottom:4px">Ügyintézés jellege — csatorna</div><table class="dtable" style="width:100%"><thead><tr><th style="padding:2px 5px">Ügyintézés jellege</th><th style="padding:2px 5px;text-align:right">Ügyint. (db)</th><th style="padding:2px 5px;text-align:right">Iroda 3 mnap (db)</th><th style="padding:2px 5px;text-align:right">Arány (%)</th></tr></thead><tbody><tr><td style="padding:2px 5px">Személyes</td><td style="padding:2px 5px;text-align:right">196 db</td><td style="padding:2px 5px;text-align:right">9,33 db</td><td style="padding:2px 5px;text-align:right;font-weight:500;color:var(--red)">90,74 %</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 5px">Telefon</td><td style="padding:2px 5px;text-align:right">20 db</td><td style="padding:2px 5px;text-align:right">0,95 db</td><td style="padding:2px 5px;text-align:right;font-weight:500">9,26 %</td></tr><tr><td style="padding:2px 5px">E-mail</td><td style="padding:2px 5px;text-align:right">0 db</td><td style="padding:2px 5px;text-align:right">0 db</td><td style="padding:2px 5px;text-align:right;font-weight:500">0,00 %</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 5px">Online</td><td style="padding:2px 5px;text-align:right">0 db</td><td style="padding:2px 5px;text-align:right">0 db</td><td style="padding:2px 5px;text-align:right;font-weight:500">0,00 %</td></tr><tr style="background:rgba(20,20,26,.06)"><td style="padding:2px 5px;font-weight:600">Összesen</td><td style="padding:2px 5px;text-align:right;font-weight:600">216 db</td><td style="padding:2px 5px;text-align:right;font-weight:600">10,28 db</td><td style="padding:2px 5px;text-align:right;font-weight:600">100,00 %</td></tr></tbody></table></div>
+          <div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink)">Termékportfólió időráfordítás aránya</div>
+          <div style="position:relative;height:264px;width:100%"><canvas id="c20"></canvas></div>
         </div>
-        <!-- RIGHT 50%: text + tables -->
-        <div style="flex:1;display:flex;flex-direction:column;gap:10px;min-width:0">
-          <div class="glass-strong" style="padding:14px;"><div class="ct ct-r">Szerkezeti összkép</div><ul class="dots"><li style="font-size:12px;margin:3px 0"><b>Személyes ügyintézés dominál (90,7%)</b> — az ügyintézések közel teljes egésze személyes jelenlétet igényel</li><li style="font-size:12px;margin:3px 0"><b>Telefon: 9,3%</b> — minimális, e-mail és online csatorna: 0%</li><li style="font-size:12px;margin:3px 0"><b>Folyószámla hitel (49,7%)</b> teszi ki az ügyletek felét — erős termékkoncentráció</li><li style="font-size:12px;margin:3px 0">Hibrid ügyintézés és digitális csatornák hiánya → <b style="color:var(--red)">kapacitáskorlát és skálázhatósági probléma</b></li><li style="font-size:12px;margin:3px 0"><b>Folyószámla hitel mindkét szervezetnél dominál</b> (49,7% vs 55,9%); beruházási hitel VOSZ-nál magasabb (14,7% vs 5,6%)</li></ul></div>
-          <div class="glass-strong" style="padding:8px;margin-top:auto"><div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);margin-bottom:4px">Termék típusok — ügyintézések száma</div><table class="dtable" style="width:100%"><thead><tr><th style="padding:2px 5px">Ügyintézés jellege</th><th style="padding:2px 5px;text-align:right">Ügyint. (db)</th><th style="padding:2px 5px;text-align:right">Iroda (db)</th></tr></thead><tbody><tr><td style="padding:2px 5px">Folyószámla hitel</td><td style="padding:2px 5px;text-align:right;font-weight:500;color:var(--red)">110 db</td><td style="padding:2px 5px;text-align:right">5,23 db</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 5px">Beruházási hitel</td><td style="padding:2px 5px;text-align:right">13 db</td><td style="padding:2px 5px;text-align:right">0,61 db</td></tr><tr><td style="padding:2px 5px">Mikróhitel</td><td style="padding:2px 5px;text-align:right">11 db</td><td style="padding:2px 5px;text-align:right">0,52 db</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 5px">Lízing</td><td style="padding:2px 5px;text-align:right">27 db</td><td style="padding:2px 5px;text-align:right">1,28 db</td></tr><tr><td style="padding:2px 5px">Likviditási hitel</td><td style="padding:2px 5px;text-align:right">27 db</td><td style="padding:2px 5px;text-align:right">1,28 db</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 5px">Agrár beruházási hitel</td><td style="padding:2px 5px;text-align:right">5 db</td><td style="padding:2px 5px;text-align:right">0,23 db</td></tr><tr><td style="padding:2px 5px">Agrár forgóeszköz hitel</td><td style="padding:2px 5px;text-align:right">2 db</td><td style="padding:2px 5px;text-align:right">0,09 db</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 5px">Agrár Kártya</td><td style="padding:2px 5px;text-align:right">21 db</td><td style="padding:2px 5px;text-align:right">1 db</td></tr><tr style="background:rgba(20,20,26,.06)"><td style="padding:2px 5px;font-weight:600">Összesen</td><td style="padding:2px 5px;text-align:right;font-weight:600">216 db</td><td style="padding:2px 5px;text-align:right;font-weight:600">10,28 db</td></tr></tbody></table></div>
+        <!-- RIGHT: [Ügyintézés table | Szerkezeti összkép] egymás mellett → Termék típusok -->
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0">
+          <div style="display:flex;gap:8px;align-items:stretch">
+            <div class="glass-strong" style="flex:1;padding:8px;min-width:0;display:flex;flex-direction:column"><div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);margin-bottom:4px">Ügyintézés jellege — csatorna</div><table class="dtable" style="width:100%;flex:1;height:1px"><thead><tr><th style="padding:2px 5px">Ügyintézés jellege</th><th style="padding:2px 5px;text-align:right">Ügyint. (db)</th><th style="padding:2px 5px;text-align:right">Iroda 3 mnap (db)</th><th style="padding:2px 5px;text-align:right">Arány (%)</th></tr></thead><tbody><tr><td style="padding:2px 5px">Személyes</td><td style="padding:2px 5px;text-align:right">196 db</td><td style="padding:2px 5px;text-align:right">9,33 db</td><td style="padding:2px 5px;text-align:right;font-weight:500">90,74 %</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 5px">Telefon</td><td style="padding:2px 5px;text-align:right">20 db</td><td style="padding:2px 5px;text-align:right">0,95 db</td><td style="padding:2px 5px;text-align:right;font-weight:500">9,26 %</td></tr><tr><td style="padding:2px 5px">E-mail</td><td style="padding:2px 5px;text-align:right">0 db</td><td style="padding:2px 5px;text-align:right">0 db</td><td style="padding:2px 5px;text-align:right;font-weight:500">0,00 %</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 5px">Online</td><td style="padding:2px 5px;text-align:right">0 db</td><td style="padding:2px 5px;text-align:right">0 db</td><td style="padding:2px 5px;text-align:right;font-weight:500">0,00 %</td></tr><tr style="background:rgba(20,20,26,.06)"><td style="padding:2px 5px;font-weight:600">Összesen</td><td style="padding:2px 5px;text-align:right;font-weight:600">216 db</td><td style="padding:2px 5px;text-align:right;font-weight:600">10,28 db</td><td style="padding:2px 5px;text-align:right;font-weight:600">100,00 %</td></tr></tbody></table></div>
+            <div class="glass-strong" style="flex:1;padding:12px;min-width:0"><div class="ct ct-r">Szerkezeti összkép</div><p style="font-family:Lexend;color:rgba(10,10,14,.72);line-height:1.5;margin:0 0 3px">A portfólió erősen a:</p><ul class="dots"><li style="margin:2px 0">rövid távú finanszírozás</li><li style="margin:2px 0">likviditáskezelés</li><li style="margin:2px 0">és operatív működés támogatása</li></ul><p style="font-family:Lexend;color:rgba(10,10,14,.72);line-height:1.5;margin:4px 0">felé tolódik, míg a</p><ul class="dots"><li style="margin:2px 0">hosszú távú fejlesztési</li><li style="margin:2px 0">beruházási célú finanszírozás</li></ul><p style="font-family:Lexend;color:rgba(10,10,14,.72);line-height:1.5;margin:4px 0 0">jóval kisebb súlyú</p></div>
+          </div>
+          <div class="glass-strong" style="padding:8px;margin-top:auto"><div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);margin-bottom:4px">Termék típusok — ügyintézések száma</div><table class="dtable" style="width:100%"><thead><tr><th style="padding:2px 5px">Termék</th><th style="padding:2px 5px;text-align:right">Ügyint. (db)</th><th style="padding:2px 5px;text-align:right">Iroda (db)</th></tr></thead><tbody><tr><td style="padding:2px 5px">Folyószámla hitel</td><td style="padding:2px 5px;text-align:right;font-weight:500">110 db</td><td style="padding:2px 5px;text-align:right">5,23 db</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 5px">Beruházási hitel</td><td style="padding:2px 5px;text-align:right">13 db</td><td style="padding:2px 5px;text-align:right">0,61 db</td></tr><tr><td style="padding:2px 5px">Mikróhitel</td><td style="padding:2px 5px;text-align:right">11 db</td><td style="padding:2px 5px;text-align:right">0,52 db</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 5px">Lízing</td><td style="padding:2px 5px;text-align:right">27 db</td><td style="padding:2px 5px;text-align:right">1,28 db</td></tr><tr><td style="padding:2px 5px">Likviditási hitel</td><td style="padding:2px 5px;text-align:right">27 db</td><td style="padding:2px 5px;text-align:right">1,28 db</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 5px">Agrár beruházási hitel</td><td style="padding:2px 5px;text-align:right">5 db</td><td style="padding:2px 5px;text-align:right">0,23 db</td></tr><tr><td style="padding:2px 5px">Agrár forgóeszköz hitel</td><td style="padding:2px 5px;text-align:right">2 db</td><td style="padding:2px 5px;text-align:right">0,09 db</td></tr><tr style="background:rgba(0,0,0,.02)"><td style="padding:2px 5px">Agrár Kártya</td><td style="padding:2px 5px;text-align:right">21 db</td><td style="padding:2px 5px;text-align:right">1 db</td></tr><tr style="background:rgba(20,20,26,.06)"><td style="padding:2px 5px;font-weight:600">Összesen</td><td style="padding:2px 5px;text-align:right;font-weight:600">216 db</td><td style="padding:2px 5px;text-align:right;font-weight:600">10,28 db</td></tr></tbody></table></div>
         </div>
       </div>
     </div>
@@ -1163,12 +1222,12 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
     <div class="stage">
       <div class="eyebrow">ÜGYINTÉZŐI KOMPETENCIA VIZSGÁLAT</div>
       <h1 class="h-lg">Kompetencia vizsgálat — Kritériumok</h1>
-      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:-4px">(Vizsgált irodák aggregált eredménye)</div>
+      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:8px">(Vizsgált irodák aggregált eredménye)</div>
       <div class="body-wrap" style="flex-direction:row;gap:20px;align-items:stretch">
         <div style="flex:1;display:flex;flex-direction:column;gap:10px;justify-content:center">
           <div class="glass-strong" style="padding:24px;"><div class="ct ct-r">Vizsgálati kritériumok</div><p class="cp">A megfigyelés célja annak feltárása volt, hogy az ügyintézők milyen kompetenciákkal és fejlesztési potenciállal rendelkeznek a tanácsadói szerepkör irányába történő továbblépéshez.</p></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <div class="glass-strong" style="padding:7px 10px"><div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);line-height:1.2;margin-bottom:2px"><span style="color:var(--red);font-weight:800">01</span> Csapatmunka együttműködés</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Képes csapatmunkára, partnerekkel kollégákkal, munkatársakkal képes együtt dolgozni!</div></div><div class="glass-strong" style="padding:7px 10px"><div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);line-height:1.2;margin-bottom:2px"><span style="color:var(--red);font-weight:800">02</span> Türelem és stressztűrő képesség</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Türelmesen, stresszmentesen végzi feladatát, még ha az ügyfelek sürgetnek is, így megmarad pontos, precíz minőségi munkavégzése.</div></div><div class="glass-strong" style="padding:7px 10px"><div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);line-height:1.2;margin-bottom:2px"><span style="color:var(--red);font-weight:800">03</span> Problémamegoldó készségek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Gyorsan hatékonyan reagál a felmerülő problémákra. Segíti az ügyfeleket a hitelkérelmek elbírálásával, dokumentációkkal vagy egyéb kérdésekkel kapcsolatos nehézségek megoldásában.</div></div><div class="glass-strong" style="padding:7px 10px"><div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);line-height:1.2;margin-bottom:2px"><span style="color:var(--red);font-weight:800">04</span> Digitális és informatikai ismeretek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Modern pénzügyi rendszerek és alkalmazások ismerete, az online hiteltermékekhez, adatokhoz, tranzakciókhoz. Banki és ügyfélszolgálati szoftverek ismerete.</div></div><div class="glass-strong" style="padding:7px 10px"><div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);line-height:1.2;margin-bottom:2px"><span style="color:var(--red);font-weight:800">05</span> Értékesítési és tanácsadói készségek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Segíti az ügyfeleket a megfelelő hitelkérelmek kiválasztásában, az ügyfél szükségletekhez leginkább illeszkedő finanszírozási megoldásokat ajánlja.</div></div><div class="glass-strong" style="padding:7px 10px"><div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);line-height:1.2;margin-bottom:2px"><span style="color:var(--red);font-weight:800">06</span> Jogszabályi vagy szabályozási ismeretek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Tisztában van a vonatkozó pénzügyi jogszabályokkal, hitelkérelmi eljárásokkal, hitelnyújtás szabályaival, adatvédelmi előírásokkal. Betartja a pénzmosás elleni előírásokat és egyéb szabályozásokat.</div></div><div class="glass-strong" style="padding:7px 10px"><div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);line-height:1.2;margin-bottom:2px"><span style="color:var(--red);font-weight:800">07</span> Szervezési és adminisztrációs készségek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Képes a dokumentációk kezelésére, hiteligények feldolgozására és az adminisztrációs tevékenysége precíz, pontos. Időgazdálkodási és prioritáskezelés is megfigyelhető a tevékenységében</div></div><div class="glass-strong" style="padding:7px 10px"><div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);line-height:1.2;margin-bottom:2px"><span style="color:var(--red);font-weight:800">08</span> Ügyfélszolgálati készségek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Hatékonyan kezeli az ügyfelek kérdéseit és problémáit. Empátiával kezeli az ügyfél igényeket, gyorsan, precízen segíti őket a hiteltermékekkel kapcsolatos döntések meghozatalában.</div></div><div class="glass-strong" style="padding:7px 10px"><div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);line-height:1.2;margin-bottom:2px"><span style="color:var(--red);font-weight:800">09</span> Kommunikációs készségek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Erős szóbeli és írásbeli kommunikációs készséggel rendelkezik. Világosan érthetően magyarázza a hiteltermékek előnyeit, feltételeit, kockázatait, hitelkérelem folyamatát.</div></div><div class="glass-strong" style="padding:7px 10px"><div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--ink);line-height:1.2;margin-bottom:2px"><span style="color:var(--red);font-weight:800">10</span> Pénzügyi és banki ismeretek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Érti a hiteltermékek működését, kamatozási feltételeket, törlesztési konstrukciókat. Ismeri a különböző típusú hiteleket és ezeket tudja is ismertetni</div></div>
+            <div class="glass-strong" style="padding:7px 10px"><div class="ct ct-k"><span style="color:var(--red);font-weight:800">01</span> Csapatmunka együttműködés</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Képes csapatmunkára, partnerekkel kollégákkal, munkatársakkal képes együtt dolgozni!</div></div><div class="glass-strong" style="padding:7px 10px"><div class="ct ct-k"><span style="color:var(--red);font-weight:800">02</span> Türelem és stressztűrő képesség</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Türelmesen, stresszmentesen végzi feladatát, még ha az ügyfelek sürgetnek is, így megmarad pontos, precíz minőségi munkavégzése.</div></div><div class="glass-strong" style="padding:7px 10px"><div class="ct ct-k"><span style="color:var(--red);font-weight:800">03</span> Problémamegoldó készségek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Gyorsan hatékonyan reagál a felmerülő problémákra. Segíti az ügyfeleket a hitelkérelmek elbírálásával, dokumentációkkal vagy egyéb kérdésekkel kapcsolatos nehézségek megoldásában.</div></div><div class="glass-strong" style="padding:7px 10px"><div class="ct ct-k"><span style="color:var(--red);font-weight:800">04</span> Digitális és informatikai ismeretek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Modern pénzügyi rendszerek és alkalmazások ismerete, az online hiteltermékekhez, adatokhoz, tranzakciókhoz. Banki és ügyfélszolgálati szoftverek ismerete.</div></div><div class="glass-strong" style="padding:7px 10px"><div class="ct ct-k"><span style="color:var(--red);font-weight:800">05</span> Értékesítési és tanácsadói készségek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Segíti az ügyfeleket a megfelelő hitelkérelmek kiválasztásában, az ügyfél szükségletekhez leginkább illeszkedő finanszírozási megoldásokat ajánlja.</div></div><div class="glass-strong" style="padding:7px 10px"><div class="ct ct-k"><span style="color:var(--red);font-weight:800">06</span> Jogszabályi vagy szabályozási ismeretek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Tisztában van a vonatkozó pénzügyi jogszabályokkal, hitelkérelmi eljárásokkal, hitelnyújtás szabályaival, adatvédelmi előírásokkal. Betartja a pénzmosás elleni előírásokat és egyéb szabályozásokat.</div></div><div class="glass-strong" style="padding:7px 10px"><div class="ct ct-k"><span style="color:var(--red);font-weight:800">07</span> Szervezési és adminisztrációs készségek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Képes a dokumentációk kezelésére, hiteligények feldolgozására és az adminisztrációs tevékenysége precíz, pontos. Időgazdálkodási és prioritáskezelés is megfigyelhető a tevékenységében</div></div><div class="glass-strong" style="padding:7px 10px"><div class="ct ct-k"><span style="color:var(--red);font-weight:800">08</span> Ügyfélszolgálati készségek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Hatékonyan kezeli az ügyfelek kérdéseit és problémáit. Empátiával kezeli az ügyfél igényeket, gyorsan, precízen segíti őket a hiteltermékekkel kapcsolatos döntések meghozatalában.</div></div><div class="glass-strong" style="padding:7px 10px"><div class="ct ct-k"><span style="color:var(--red);font-weight:800">09</span> Kommunikációs készségek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Erős szóbeli és írásbeli kommunikációs készséggel rendelkezik. Világosan érthetően magyarázza a hiteltermékek előnyeit, feltételeit, kockázatait, hitelkérelem folyamatát.</div></div><div class="glass-strong" style="padding:7px 10px"><div class="ct ct-k"><span style="color:var(--red);font-weight:800">10</span> Pénzügyi és banki ismeretek</div><div style="font-family:Lexend;font-size:11px;color:var(--muted-2);line-height:1.3">Érti a hiteltermékek működését, kamatozási feltételeket, törlesztési konstrukciókat. Ismeri a különböző típusú hiteleket és ezeket tudja is ismertetni</div></div>
           </div>
         </div>
       </div>
@@ -1184,14 +1243,14 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
     <div class="stage">
       <div class="eyebrow">ÜGYINTÉZŐI KOMPETENCIA VIZSGÁLAT — EREDMÉNYEK</div>
       <h1 class="h-lg">Kompetencia vizsgálat — Eredmények</h1>
-      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:-4px">(Vizsgált irodák aggregált eredménye)</div>
+      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:8px">(Vizsgált irodák aggregált eredménye)</div>
       <div class="body-wrap" style="flex-direction:column;gap:6px">
         <div style="display:flex;gap:22px;align-items:flex-start">
-          <div style="flex:1;display:flex;flex-direction:column;gap:10px">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px">
           <div class="glass-strong" style="padding:16px;"><div class="ct ct-r">Miért volt fontos a kompetenciafelmérés?</div><p style="font-family:Lexend;color:rgba(10,10,14,.72);line-height:1.52;margin:0">A felmérés célja annak vizsgálata volt, hogy az ügyintézők rendelkeznek-e azokkal az alapkompetenciákkal, amelyekre építve hosszabb távon finanszírozási tanácsadói szerepkör alakítható ki. A vizsgálat segítségével azonosíthatók a meglévő erősségek, valamint a fejlesztendő területek, így megalapozható egy célzott kompetenciafejlesztési program.</p></div>
           <div class="glass-strong" style="padding:16px"><div class="ct ct-r">A KAVOSZ számára várható előnyök</div><ul class="checks"><li style="font-size:13px;margin:4px 0">A meglévő munkatársak tudatos fejlesztésével csökkenthető a külső toborzás szükségessége.</li><li style="font-size:13px;margin:4px 0">Növelhető az ügyfelek számára nyújtott szakmai hozzáadott érték.</li><li style="font-size:13px;margin:4px 0">Erősíthető a tanácsadói szemlélet és az ügyfélkapcsolatok minősége.</li><li style="font-size:13px;margin:4px 0">Javítható az értékesítési és finanszírozási lehetőségek feltárásának hatékonysága.</li><li style="font-size:13px;margin:4px 0">Támogatható a karrierút- és utánpótlás-tervezés.</li><li style="font-size:13px;margin:4px 0">Hosszú távon növelhető a szervezet versenyképessége és ügyfélmegtartó képessége.</li></ul></div>
         </div>
-          <div style="flex:1;display:flex;flex-direction:column">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
             <div style="position:relative;height:450px;width:100%;overflow:visible"><canvas id="c22"></canvas></div>
           </div>
         </div>
@@ -1209,7 +1268,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
     <div class="stage">
       <div class="eyebrow">MUNKAFOLYAMAT HATÉKONYSÁG — HŐTÉRKÉP</div>
       <h1 class="h-lg">Munkafolyamat hatékonyság — Hőtérkép</h1>
-      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:-4px">(Vizsgált irodák aggregált eredménye)</div>
+      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:8px">(Vizsgált irodák aggregált eredménye)</div>
       <div class="body-wrap" style="flex-direction:column;gap:14px;align-items:stretch">
         <!-- TOP: table 70% + callout 30%, equal height -->
         <div style="display:flex;gap:14px;align-items:stretch;flex:0 0 auto">
@@ -1223,9 +1282,9 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
         </div>
         <!-- BOTTOM: 3 analysis boxes side by side -->
         <div style="display:flex;gap:14px;flex:0 0 auto;align-items:stretch">
-          <div class="glass-strong" style="padding:14px;flex:1"><div class="ct ct-r">Észrevétel</div><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0">A vizsgált területek többsége magas standardizáltságot mutat — egységes és szabályozott működésre utal, viszont inkább szokásjog, mint írott eljárásrend alapján. A szervezet működését erős szabályozottság és jó digitális alapok támogatják, ugyanakkor a <b>mérhetőség</b> fejlesztése szinte minden területen indokolt. A legnagyobb fejlesztési potenciál az <b>automatizálás és adatvezérelt működés</b> erősítésében rejlik.</p></div>
-          <div class="glass-strong" style="padding:14px;flex:1"><div class="ct ct-r">Ügyfélélmény</div><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:4px 0 0">Folyamatok átláthatóak, kiszámíthatóak, támogatást biztosítanak</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:6px 0 0">A digitális időpontfoglaló kényelmes és modern ügyfélkapcsolati megoldást jelent</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:6px 0 0">Időhatékony az ügyintézés</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:6px 0 0">Felülvizsgálat során megfelelő tájékoztatás és biztonságérzet, de proaktív keresztértékesítési lehetőségek kihasználatlanok</p></div>
-          <div class="glass-strong" style="padding:14px;flex:1"><div class="ct ct-r">Mérhetőség</div><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0">Kevés strukturált adat áll rendelkezésre a vezetői elemzésekhez és a fejlesztési lehetőségek azonosítására. A mérhetőség hiánya rendszerszintű problémaként azonosítható — szinte minden folyamatterületen kritikus értéket mutat.</p></div>
+          <div class="glass-strong" style="padding:14px;flex:1"><div class="ct ct-r">Észrevétel</div><p style="font-family:Lexend;font-size:20px;color:rgba(10,10,14,.72);line-height:1.52;margin:0">A vizsgált területek többsége magas standardizáltságot mutat — egységes és szabályozott működésre utal, viszont inkább szokásjog, mint írott eljárásrend alapján. A szervezet működését erős szabályozottság és jó digitális alapok támogatják, ugyanakkor a <b>mérhetőség</b> fejlesztése szinte minden területen indokolt. A legnagyobb fejlesztési potenciál az <b>automatizálás és adatvezérelt működés</b> erősítésében rejlik.</p></div>
+          <div class="glass-strong" style="padding:14px;flex:1"><div class="ct ct-r">Ügyfélélmény</div><p style="font-family:Lexend;font-size:20px;color:rgba(10,10,14,.72);line-height:1.52;margin:4px 0 0">Folyamatok átláthatóak, kiszámíthatóak, támogatást biztosítanak</p><p style="font-family:Lexend;font-size:20px;color:rgba(10,10,14,.72);line-height:1.52;margin:6px 0 0">A digitális időpontfoglaló kényelmes és modern ügyfélkapcsolati megoldást jelent</p><p style="font-family:Lexend;font-size:20px;color:rgba(10,10,14,.72);line-height:1.52;margin:6px 0 0">Időhatékony az ügyintézés</p><p style="font-family:Lexend;font-size:20px;color:rgba(10,10,14,.72);line-height:1.52;margin:6px 0 0">Felülvizsgálat során megfelelő tájékoztatás és biztonságérzet, de proaktív keresztértékesítési lehetőségek kihasználatlanok</p></div>
+          <div class="glass-strong" style="padding:14px;flex:1"><div class="ct ct-r">Mérhetőség</div><p style="font-family:Lexend;font-size:20px;color:rgba(10,10,14,.72);line-height:1.52;margin:0">Kevés strukturált adat áll rendelkezésre a vezetői elemzésekhez és a fejlesztési lehetőségek azonosítására. A mérhetőség hiánya rendszerszintű problémaként azonosítható — szinte minden folyamatterületen kritikus értéket mutat.</p></div>
         </div>
       </div>
     </div>
@@ -1240,7 +1299,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
     <div class="stage">
       <div class="eyebrow">ÜGYINTÉZŐI HATÉKONYSÁG — HŐTÉRKÉP</div>
       <h1 class="h-lg">Ügyintézői hatékonyság — Hőtérkép</h1>
-      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:-4px">(Vizsgált irodák aggregált eredménye)</div>
+      <div style="font-family:Lexend;font-size:19px;color:var(--muted);margin-top:8px">(Vizsgált irodák aggregált eredménye)</div>
       <div class="body-wrap" style="flex-direction:column;gap:14px;align-items:stretch">
         <!-- TOP: table 70% + callout 30%, equal height -->
         <div style="display:flex;gap:14px;align-items:stretch;flex:0 0 auto">
@@ -1262,8 +1321,8 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
         </div>
         <!-- BOTTOM: Észrevétel + Megállapítások 50-50 -->
         <div style="display:flex;gap:14px;flex:0 0 auto;align-items:stretch">
-          <div class="glass-strong" style="padding:14px;flex:1"><div class="ct ct-r">Észrevétel</div><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0">A személyes ügyintézés pozitív ügyfélélményt biztosít, azonban a folyamatok alacsony mérhetősége és automatizáltsága hosszú távon korlátozhatja a skálázhatóságot és a hatékonyságot. A legnagyobb fejlesztési lehetőség az utánkövetési folyamatok, a CRM-rendszer bevezetése, valamint az adatvezérelt működés kialakítása terén azonosítható. Az ügyintézés folyamata irodánként egyedi, egységes iránymutatás nem jellemző.</p></div>
-          <div class="glass-strong" style="padding:14px;flex:1"><div class="ct ct-r">Megállapítások</div><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0 0 4px"><b>Kapcsolatfelvétel — ügyfélszerzés:</b> a hatékonyság nagymértékben egyéni gyakorlatoktól függ</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0 0 4px"><b>Igényfelmérés:</b> folyamat strukturáltsága korlátozott, a személyes odafigyelés kompenzál</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0 0 4px"><b>Tanácsadási folyamat:</b> magas ügyfélélmény, de háttérfolyamatok (mérhetőség, automatizáltság) kritikusak</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0 0 4px"><b>Adminisztráció / CRM:</b> nem ügyfélkezelő rendszerben dolgoznak → ügyfélgondozás nem valósulhat meg</p><p style="font-family:Lexend;font-size:13px;color:rgba(10,10,14,.72);line-height:1.5;margin:0"><b>Utókövetés:</b> kritikusan alacsony minden dimenzióban — rendszerszintű fejlesztés szükséges</p></div>
+          <div class="glass-strong" style="padding:14px;flex:1"><div class="ct ct-r">Észrevétel</div><p style="font-family:Lexend;font-size:20px;color:rgba(10,10,14,.72);line-height:1.52;margin:0">A személyes ügyintézés pozitív ügyfélélményt biztosít, azonban a folyamatok alacsony mérhetősége és automatizáltsága hosszú távon korlátozhatja a skálázhatóságot és a hatékonyságot. A legnagyobb fejlesztési lehetőség az utánkövetési folyamatok, a CRM-rendszer bevezetése, valamint az adatvezérelt működés kialakítása terén azonosítható. Az ügyintézés folyamata irodánként egyedi, egységes iránymutatás nem jellemző.</p></div>
+          <div class="glass-strong" style="padding:14px;flex:1"><div class="ct ct-r">Megállapítások</div><p style="font-family:Lexend;font-size:20px;color:rgba(10,10,14,.72);line-height:1.52;margin:0 0 4px"><b>Kapcsolatfelvétel — ügyfélszerzés:</b> a hatékonyság nagymértékben egyéni gyakorlatoktól függ</p><p style="font-family:Lexend;font-size:20px;color:rgba(10,10,14,.72);line-height:1.52;margin:0 0 4px"><b>Igényfelmérés:</b> folyamat strukturáltsága korlátozott, a személyes odafigyelés kompenzál</p><p style="font-family:Lexend;font-size:20px;color:rgba(10,10,14,.72);line-height:1.52;margin:0 0 4px"><b>Tanácsadási folyamat:</b> magas ügyfélélmény, de háttérfolyamatok (mérhetőség, automatizáltság) kritikusak</p><p style="font-family:Lexend;font-size:20px;color:rgba(10,10,14,.72);line-height:1.52;margin:0 0 4px"><b>Adminisztráció / CRM:</b> nem ügyfélkezelő rendszerben dolgoznak → ügyfélgondozás nem valósulhat meg</p><p style="font-family:Lexend;font-size:20px;color:rgba(10,10,14,.72);line-height:1.52;margin:0"><b>Utókövetés:</b> kritikusan alacsony minden dimenzióban — rendszerszintű fejlesztés szükséges</p></div>
         </div>
       </div>
     <div class="ftr"><div>asahline.hu</div><div class="pg">24 / 41</div></div>
@@ -1289,15 +1348,15 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
 <section class="slide" data-label="26">
   <img class="bg" src="assets/bg-light-a.png" alt="">
   <div class="content">
-    <div class="hdr"><div class="brand"><img src="assets/logo-text-dark.png" alt="ASaH Line"></div><div style="font-family:Outfit;font-size:18px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(10,10,14,.5)">JÖVŐKÉP</div></div>
+    <div class="hdr"><div class="brand"><img src="assets/logo-text-dark.png" alt="ASaH Line"></div><div style="font-family:Outfit;font-size:16px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(10,10,14,.5)">JÖVŐKÉP</div></div>
     <div class="stage">
       <div class="eyebrow">JÖVŐKÉP — SZOLGÁLTATÁSI MODELL FEJLESZTÉSE</div>
       <h1 class="h-lg">Jövőkép — Szolgáltatási modell fejlesztése</h1>
       <!-- MAI → JÖVŐBENI label bar -->
       <div style="display:flex;gap:0;align-items:center;margin-top:14px;margin-bottom:6px;flex-shrink:0">
-        <div style="flex:3;font-family:Outfit;font-weight:800;font-size:23px;letter-spacing:.1em;text-transform:uppercase;color:#c0304a">MAI MŰKÖDÉS</div>
+        <div style="flex:3;font-family:Outfit;font-weight:800;font-size:23px;letter-spacing:.1em;text-transform:uppercase;color:#c0304a;text-align:center">MAI MŰKÖDÉS</div>
         <div style="flex:0 0 60px;text-align:center;font-size:24px;color:var(--muted)">→</div>
-        <div style="flex:7;font-family:Outfit;font-weight:800;font-size:23px;letter-spacing:.1em;text-transform:uppercase;color:#1a5fa0">JÖVŐBENI MŰKÖDÉS</div>
+        <div style="flex:7;font-family:Outfit;font-weight:800;font-size:23px;letter-spacing:.1em;text-transform:uppercase;color:#1a5fa0;text-align:center">JÖVŐBENI MŰKÖDÉS</div>
       </div>
       <div class="body-wrap" style="flex-direction:column;gap:8px">
         <!-- PANELS ROW -->
@@ -1306,11 +1365,11 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
           <!-- MAI MŰKÖDÉS — red panel, 30% -->
           <div style="flex:3;background:linear-gradient(135deg,#b01a2d,#7a0e1d);border-radius:18px 0 0 18px;padding:20px;display:flex;flex-direction:column;gap:10px">
             <div style="font-family:Outfit;font-weight:800;font-size:23px;color:rgba(255,255,255,.95);flex-shrink:0">1. Pillér — Jelenlegi hálózat</div>
-            <div style="display:flex;flex-direction:column;gap:5px;flex:1;min-height:0">
-              <div style="flex:1;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 12px;font-family:Outfit;font-size:16px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Tájékoztatás</div>
-              <div style="flex:1;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 12px;font-family:Outfit;font-size:16px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Kérelemkezelés</div>
-              <div style="flex:1;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 12px;font-family:Outfit;font-size:16px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Adminisztráció</div>
-              <div style="flex:1;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 12px;font-family:Outfit;font-size:16px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Ügyfélkiszolgálás</div>
+            <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-height:0">
+              <div style="flex:1;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 12px;font-family:Outfit;font-size:18px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Tájékoztatás</div>
+              <div style="flex:1;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 12px;font-family:Outfit;font-size:18px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Kérelemkezelés</div>
+              <div style="flex:1;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 12px;font-family:Outfit;font-size:18px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Adminisztráció</div>
+              <div style="flex:1;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:4px 12px;font-family:Outfit;font-size:18px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Ügyfélkiszolgálás</div>
             </div>
             <div style="flex-shrink:0">
               <div style="font-family:Outfit;font-weight:700;font-size:15px;color:rgba(255,255,255,.7);margin-bottom:5px">Jelenlegi folyamat:</div>
@@ -1330,17 +1389,17 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
           </div>
 
           <!-- JÖVŐBENI MŰKÖDÉS — blue panel, 70% -->
-          <div style="flex:7;background:linear-gradient(135deg,#1a5fa0,#0d3a6e);border-radius:0 18px 18px 0;padding:20px;display:flex;flex-direction:column;gap:10px">
+          <div data-panel="future" style="flex:7;background:linear-gradient(135deg,#1a5fa0,#0d3a6e);border-radius:0 18px 18px 0;padding:20px;display:flex;flex-direction:column;gap:10px">
             <div style="font-family:Outfit;font-weight:700;font-size:18px;color:#fff;text-align:center;padding:10px 14px;background:rgba(255,255,255,.1);border-radius:8px;flex-shrink:0">A KAVOSZ az ország legnagyobb vállalkozásfinanszírozási hálózatából a vállalkozások első számú finanszírozási partnerévé válik.</div>
             <!-- Finanszírozási Tanácsadó – single column -->
             <div style="flex:1;border:1.5px solid rgba(255,255,255,.22);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px;background:rgba(255,255,255,.05);min-height:0">
               <div style="font-family:Outfit;font-weight:700;font-size:18px;color:#7ec8f8;margin-bottom:4px;flex-shrink:0">Finanszírozási Tanácsadó</div>
               <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-height:0">
-                <div style="flex:1;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:3px 10px;font-family:Outfit;font-size:16px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Proaktív ügyfélgondozás</div>
-                <div style="flex:1;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:3px 10px;font-family:Outfit;font-size:16px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Ügyfélszerzés</div>
-                <div style="flex:1;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:3px 10px;font-family:Outfit;font-size:16px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Termékajánlás</div>
-                <div style="flex:1;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:3px 10px;font-family:Outfit;font-size:16px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Vállalkozói életút támogatás</div>
-                <div style="flex:1;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:3px 10px;font-family:Outfit;font-size:16px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Ügyfél portfólió építés</div>
+                <div style="flex:1;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:3px 10px;font-family:Outfit;font-size:18px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Proaktív ügyfélgondozás</div>
+                <div style="flex:1;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:3px 10px;font-family:Outfit;font-size:18px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Ügyfélszerzés</div>
+                <div style="flex:1;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:3px 10px;font-family:Outfit;font-size:18px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Termékajánlás</div>
+                <div style="flex:1;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:3px 10px;font-family:Outfit;font-size:18px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Vállalkozói életút támogatás</div>
+                <div style="flex:1;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:3px 10px;font-family:Outfit;font-size:18px;font-weight:700;color:#fff;text-align:center;display:flex;align-items:center;justify-content:center">Ügyfél portfólió építés</div>
               </div>
               <div style="flex-shrink:0;display:flex;align-items:center;gap:4px;flex-wrap:wrap;justify-content:center;margin-top:4px">
                 <div style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);border-radius:5px;padding:3px 8px;font-family:Outfit;font-size:15px;font-weight:700;color:#fff">Megkeres</div>
@@ -1356,7 +1415,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
         </div><!-- /PANELS ROW -->
 
         <!-- FULL-WIDTH QUOTE -->
-        <div style="flex-shrink:0;font-family:Lexend;font-size:20px;color:var(--ink);font-style:italic;font-weight:400;text-align:center;padding:14px 24px;background:rgba(26,95,160,.07);border:1.5px solid rgba(26,95,160,.25);border-radius:10px">„A KAVOSZ jövőbeni növekedésének kulcsa, hogy az ügyintézői szerepből finanszírozási tanácsadó szerepkör felé lépjen."</div>
+        <div class="quoteblk" style="flex-shrink:0;font-size:20px">A KAVOSZ jövőbeni növekedésének kulcsa, hogy az ügyintézői szerepből finanszírozási tanácsadó szerepkör felé lépjen.</div>
       </div>
     </div>
     <div class="ftr"><div>asahline.hu</div><div class="pg">26 / 41</div></div>
@@ -1367,53 +1426,55 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
 <section class="slide" data-label="27">
   <img class="bg" src="assets/bg-light-b.png" alt="">
   <div class="content">
-    <div class="hdr"><div class="brand"><img src="assets/logo-text-dark.png" alt="ASaH Line"></div><div style="font-family:Outfit;font-size:18px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(10,10,14,.5)">SZERVEZETI STRUKTÚRA</div></div>
+    <div class="hdr"><div class="brand"><img src="assets/logo-text-dark.png" alt="ASaH Line"></div><div style="font-family:Outfit;font-size:16px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(10,10,14,.5)">SZERVEZETI STRUKTÚRA</div></div>
     <div class="stage" style="padding:0;position:relative">
       <div style="position:absolute;inset:0">
 
-        <!-- HEADER: eyebrow + title + subtitle (top-left) -->
-        <div style="position:absolute;left:80px;top:110px;width:760px">
+        <!-- HEADER: eyebrow + title + divider + label (top-left) -->
+        <div style="position:absolute;left:80px;top:110px;width:660px">
           <div class="eyebrow" style="margin-bottom:6px">JÖVŐKÉPHEZ ILLESZKEDŐ SZERVEZETI STRUKTÚRA</div>
-          <h1 class="h-md" style="margin-bottom:4px">Jövőképhez illeszkedő szervezeti struktúra</h1>
-          <div style="font-family:Lexend;font-size:11px;color:var(--muted)">KAVOSZ IRODA — Szervezeti struktúra</div>
+          <h1 class="h-lg" style="margin-bottom:4px">Jövőképhez illeszkedő szervezeti struktúra</h1>
+          <div style="width:52px;height:3px;background:var(--red);border-radius:2px;margin-top:10px;margin-bottom:10px"></div>
+          <div style="font-family:Outfit;font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--ink)">KAVOSZ IRODA — Szervezeti struktúra</div>
+        </div>
+
+        <!-- LEFT QUOTE -->
+        <div style="position:absolute;left:60px;top:360px;width:590px;font-family:Outfit;font-weight:700;font-size:19px;line-height:1.55;color:var(--ink);text-align:center;padding:20px 28px">
+          „A KAVOSZ jövőbeni szervezete nem az ügyintézők lecserélésére épül, hanem magasabb hozzáadott értékű ügyfélkapcsolati és finanszírozási kompetencia felépítésére."
         </div>
 
         <!-- TOP-RIGHT LAW REFERENCE -->
-        <div style="position:absolute;left:1277px;top:193px;width:580px;font-family:Lexend;font-size:11px;color:var(--muted);line-height:1.5">Hpt. 2013. évi CCXXXVII. törvény — a hitelintézetekről és a pénzügyi vállalkozásokról szóló törvényi kereteket betartva fejlesztjük az ügyintézőket tanácsadóvá, hogy ne lépjék át a szigorúan szabályozott jogkörüket.</div>
+        <div style="position:absolute;left:1290px;top:200px;width:560px;font-family:Lexend;font-size:13px;color:var(--muted);line-height:1.55;text-align:center">Hpt. 2013. évi CCXXXVII. törvény — a hitelintézetekről és a pénzügyi vállalkozásokról szóló törvényi kereteket betartva fejlesztjük az ügyintézőket tanácsadóvá, hogy ne lépjék át a szigorúan szabályozott jogkörüket.</div>
 
-        <!-- ROOT BOX: centered at x=960, y=204 -->
-        <div style="position:absolute;left:710px;top:204px;width:500px;height:88px;background:var(--red);color:#fff;border-radius:10px;padding:14px 28px;font-family:Outfit;font-weight:800;font-size:23px;text-align:center;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px -8px rgba(212,32,54,.4)">Finanszírozási Partnerség</div>
-
-        <!-- VERTICAL DROP from root to Fin.Tan.Funkció box: x=959, y=292–364 -->
-        <div style="position:absolute;left:958px;top:292px;width:2px;height:72px;background:rgba(10,10,14,.2)"></div>
-
-        <!-- FINANSZÍROZÁSI TANÁCSADÓ FUNKCIÓ BOX: centered at x=960, y=364 -->
-        <div style="position:absolute;left:645px;top:364px;width:630px;height:62px;border:2px solid var(--green);background:rgba(31,143,74,.08);border-radius:8px;padding:12px 24px;font-family:Outfit;font-weight:700;font-size:16px;color:var(--ink);text-align:center;display:flex;align-items:center;justify-content:center">Finanszírozási Tanácsadó funkció</div>
-
-        <!-- CAREER SPINE: x=754, y=426–905 -->
-        <div style="position:absolute;left:753px;top:426px;width:2px;height:479px;background:rgba(10,10,14,.2)"></div>
-
-        <!-- HORIZONTAL TICKS from spine to career boxes -->
-        <div style="position:absolute;left:754px;top:457px;width:20px;height:2px;background:rgba(10,10,14,.2)"></div>
-        <div style="position:absolute;left:754px;top:597px;width:20px;height:2px;background:rgba(10,10,14,.2)"></div>
-        <div style="position:absolute;left:754px;top:737px;width:20px;height:2px;background:rgba(10,10,14,.2)"></div>
-
-        <!-- CAREER BOXES: left=774, width=430, centered near x=989 -->
-        <!-- Junior Finanszírozási Tanácsadó: y=432 -->
-        <div style="position:absolute;left:774px;top:432px;width:430px;height:50px;border:1.5px solid rgba(10,10,14,.15);background:#fff;border-radius:8px;padding:9px 16px;font-family:Outfit;font-weight:700;font-size:15px;color:var(--ink);text-align:center;display:flex;align-items:center;justify-content:center">Junior Finanszírozási Tanácsadó</div>
-        <!-- Senior Finanszírozási Tanácsadó: y=572 -->
-        <div style="position:absolute;left:774px;top:572px;width:430px;height:50px;border:1.5px solid rgba(10,10,14,.15);background:#fff;border-radius:8px;padding:9px 16px;font-family:Outfit;font-weight:700;font-size:15px;color:var(--ink);text-align:center;display:flex;align-items:center;justify-content:center">Senior Finanszírozási Tanácsadó</div>
-        <!-- Vezető Finanszírozási Tanácsadó: y=712 -->
-        <div style="position:absolute;left:774px;top:712px;width:430px;height:50px;border:1.5px solid rgba(10,10,14,.15);background:#fff;border-radius:8px;padding:9px 16px;font-family:Outfit;font-weight:700;font-size:15px;color:var(--ink);text-align:center;display:flex;align-items:center;justify-content:center">Vezető Finanszírozási Tanácsadó</div>
-
-        <!-- HIERARCHIA: right side of career boxes -->
-        <div style="position:absolute;left:1220px;top:590px;width:0;height:0;display:flex;align-items:center;justify-content:center">
-          <div style="font-family:Outfit;font-weight:700;font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);white-space:nowrap;transform:rotate(90deg);transform-origin:center center">HIERARCHIA</div>
+        <!-- ROOT BOX: green, centered at x=960, y=190 -->
+        <div style="position:absolute;left:700px;top:190px;width:530px;height:100px;background:linear-gradient(135deg,#1f8f4a,#146634);color:#fff;border-radius:12px;padding:14px 28px;font-family:Outfit;font-weight:700;font-size:20px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.3;box-shadow:0 8px 24px -8px rgba(31,143,74,.4)">
+          <span>Ügyintézési kiváróság</span>
+          <span style="font-size:18px;opacity:.8">+</span>
+          <span>Finanszírozási Partnerség</span>
         </div>
 
-        <!-- FULL-WIDTH BOTTOM QUOTE BOX -->
-        <div style="position:absolute;left:80px;top:860px;width:1760px;font-family:Outfit;font-weight:700;font-style:italic;font-size:16px;line-height:1.55;color:var(--ink);text-align:center;padding:16px 40px;background:rgba(212,32,54,.05);border:1.5px solid rgba(212,32,54,.2);border-radius:10px">
-          „A KAVOSZ jövőbeni szervezete nem az ügyintézők lecserélésére épül, hanem egy második, magasabb hozzáadott értékű ügyfélkapcsolati és finanszírozási kompetencia felépítésére."
+        <!-- VERTICAL DROP from root to Fin.Tan.Funkció box -->
+        <div style="position:absolute;left:964px;top:290px;width:2px;height:62px;background:rgba(10,10,14,.2)"></div>
+
+        <!-- FINANSZÍROZÁSI TANÁCSADÓ FUNKCIÓ BOX: centered at x=960, y=352 -->
+        <div style="position:absolute;left:680px;top:352px;width:560px;height:58px;border:2px solid var(--green);background:rgba(31,143,74,.07);border-radius:8px;font-family:Outfit;font-weight:700;font-size:17px;color:var(--ink);text-align:center;display:flex;align-items:center;justify-content:center">Finanszírozási Tanácsadó funkció</div>
+
+        <!-- CAREER SPINE: x=774, y=410–790 -->
+        <div style="position:absolute;left:773px;top:410px;width:2px;height:382px;background:rgba(10,10,14,.2)"></div>
+
+        <!-- HORIZONTAL TICKS -->
+        <div style="position:absolute;left:774px;top:445px;width:22px;height:2px;background:rgba(10,10,14,.2)"></div>
+        <div style="position:absolute;left:774px;top:587px;width:22px;height:2px;background:rgba(10,10,14,.2)"></div>
+        <div style="position:absolute;left:774px;top:729px;width:22px;height:2px;background:rgba(10,10,14,.2)"></div>
+
+        <!-- CAREER BOXES: left=796, width=440 -->
+        <div style="position:absolute;left:796px;top:420px;width:440px;height:52px;border:1.5px solid rgba(10,10,14,.15);background:#fff;border-radius:8px;font-family:Outfit;font-weight:700;font-size:16px;color:var(--ink);text-align:center;display:flex;align-items:center;justify-content:center">Junior Finanszírozási Tanácsadó</div>
+        <div style="position:absolute;left:796px;top:561px;width:440px;height:52px;border:1.5px solid rgba(10,10,14,.15);background:#fff;border-radius:8px;font-family:Outfit;font-weight:700;font-size:16px;color:var(--ink);text-align:center;display:flex;align-items:center;justify-content:center">Senior Finanszírozási Tanácsadó</div>
+        <div style="position:absolute;left:796px;top:703px;width:440px;height:52px;border:1.5px solid rgba(10,10,14,.15);background:#fff;border-radius:8px;font-family:Outfit;font-weight:700;font-size:16px;color:var(--ink);text-align:center;display:flex;align-items:center;justify-content:center">Vezető Finanszírozási Tanácsadó</div>
+
+        <!-- HIERARCHIA BOX: right of career boxes, spanning all three -->
+        <div style="position:absolute;left:1252px;top:420px;width:52px;height:335px;border:1.5px solid rgba(10,10,14,.15);background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center">
+          <div style="font-family:Outfit;font-weight:700;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);writing-mode:vertical-lr;transform:rotate(180deg)">HIERARCHIA</div>
         </div>
 
       </div>
@@ -1435,7 +1496,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
         <!-- Col 1: Kihívások -->
         <div class="glass-strong" style="flex:1 1 0;min-width:0;padding:18px;display:flex;flex-direction:column;gap:10px">
           <div style="font-family:Outfit;font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:2px">01 KIHÍVÁSOK</div>
-          <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Aggregált eredmények alapján azonosított fő kihívások</div>
+          <div class="ct ct-k">Aggregált eredmények alapján azonosított fő kihívások</div>
           <div style="width:40px;height:3px;background:var(--red);border-radius:2px"></div>
           <div style="font-family:Outfit;font-weight:700;font-size:13px;color:var(--red);margin-top:4px">Működési kihívások</div>
           <ul class="dots" style="margin-bottom:6px"><li style="font-size:18px;margin:4px 0">Eltérő irodai gyakorlatok</li><li style="font-size:18px;margin:4px 0">Túlzott adminisztrációs teher</li><li style="font-size:18px;margin:4px 0">Reaktív működési modell</li><li style="font-size:18px;margin:4px 0">Információáramlás</li></ul>
@@ -1447,7 +1508,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
         <!-- Col 2: Stratégia -->
         <div class="glass-strong" style="flex:1 1 0;min-width:0;padding:18px;display:flex;flex-direction:column;gap:10px">
           <div style="font-family:Outfit;font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:2px">02 STRATÉGIA</div>
-          <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Stratégiai szerep 1–5 éves távlatban</div>
+          <div class="ct ct-k">Stratégiai szerep 1–5 éves távlatban</div>
           <div style="width:40px;height:3px;background:var(--red);border-radius:2px"></div>
           <ul class="dots" style="margin-top:4px">
             <li style="font-size:18px;margin:5px 0"><b>Adminisztratív ügyintéző közvetítőből Finanszírozási Tanácsadó</b></li>
@@ -1464,10 +1525,10 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
         <!-- Col 3: Fejlesztési útiterv -->
         <div class="glass-strong" style="flex:1 1 0;min-width:0;padding:18px;display:flex;flex-direction:column;gap:0">
           <div style="font-family:Outfit;font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:8px">03 FEJLESZTÉSI ÚTITERV</div>
-          <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Fejlesztési lépések</div>
+          <div class="ct ct-k">Fejlesztési lépések</div>
           <div style="width:40px;height:3px;background:var(--red);border-radius:2px;margin-bottom:14px"></div>
           <!-- Vertical timeline -->
-          <div style="display:flex;flex-direction:column;gap:0;flex:1">
+          <div data-timeline style="display:flex;flex-direction:column;gap:0;flex:1">
             <div style="display:flex;gap:14px;align-items:flex-start">
               <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0"><div style="width:40px;height:40px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:Outfit;font-weight:700;font-size:15px;color:#fff">1</div><div style="width:2px;flex:1;background:rgba(212,32,54,.25);min-height:24px;margin:4px 0"></div></div>
               <div style="padding-top:8px;padding-bottom:12px"><div style="font-family:Outfit;font-weight:700;font-size:18px;color:var(--ink);line-height:1.3">Jelenlegi állapot — Ügyintézői és adminisztratív működés</div></div>
@@ -1510,28 +1571,28 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
         <div style="display:flex;gap:14px;align-items:stretch;flex:0 0 auto">
           <div class="glass-strong" style="padding:18px;flex:1;display:flex;flex-direction:column;gap:8px">
       <div style="font-family:Outfit;font-weight:800;font-size:33px;color:var(--red);line-height:.85">01</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Folyamatoptimalizálás</div>
+      <div class="ct ct-k">Folyamatoptimalizálás</div>
       <div style="font-family:Lexend;font-size:20px;color:var(--muted);line-height:1.4;flex:1;border-left:3px solid var(--red);padding-left:10px">Az ismétlődő adminisztratív feladatok standardizálása jelentősen csökkentheti az operatív terhelést</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <ul class="checks" style="min-height:120px"><li style="font-size:18px;margin:4px 0">Adminisztráció optimalizálása</li><li style="font-size:18px;margin:4px 0">Egységes munkafolyamatok kialakítása</li></ul>
     </div>
           <div class="glass-strong" style="padding:18px;flex:1;display:flex;flex-direction:column;gap:8px">
       <div style="font-family:Outfit;font-weight:800;font-size:33px;color:var(--red);line-height:.85">02</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Kapacitásmenedzsment</div>
+      <div class="ct ct-k">Kapacitásmenedzsment</div>
       <div style="font-family:Lexend;font-size:20px;color:var(--muted);line-height:1.4;flex:1;border-left:3px solid var(--red);padding-left:10px">A tanácsadói idők strukturáltabb kezelése közvetlenül javíthatja a kapacitáskihasználást és az ügyfélélményt</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <ul class="checks" style="min-height:120px"><li style="font-size:18px;margin:4px 0">ügyintézési limitidők meghatározása</li><li style="font-size:18px;margin:4px 0">Tervezhetőbb tanácsadói kapacitáskezelés</li></ul>
     </div>
           <div class="glass-strong" style="padding:18px;flex:1;display:flex;flex-direction:column;gap:8px">
       <div style="font-family:Outfit;font-weight:800;font-size:33px;color:var(--red);line-height:.85">03</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Kommunikáció</div>
+      <div class="ct ct-k">Kommunikáció</div>
       <div style="font-family:Lexend;font-size:20px;color:var(--muted);line-height:1.4;flex:1;border-left:3px solid var(--red);padding-left:10px">Az egységes kommunikáció gyorsabb ügyfélkiszolgálást és professzionálisabb megjelenést biztosít</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <ul class="checks" style="min-height:120px"><li style="font-size:18px;margin:4px 0">E-mail sablonrendszer kialakítása</li><li style="font-size:18px;margin:4px 0">Dokumentum és ajánlatminták egységesítése</li></ul>
     </div>
           <div class="glass-strong" style="padding:18px;flex:1;display:flex;flex-direction:column;gap:8px">
       <div style="font-family:Outfit;font-weight:800;font-size:33px;color:var(--red);line-height:.85">04</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">CRM és ügyfélgondozás</div>
+      <div class="ct ct-k">CRM és ügyfélgondozás</div>
       <div style="font-family:Lexend;font-size:20px;color:var(--muted);line-height:1.4;flex:1;border-left:3px solid var(--red);padding-left:10px">A strukturált ügyfélkezelés növeli az átláthatóságot, és támogatja az ügyfélporfólió kialakítását</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <ul class="checks" style="min-height:120px"><li style="font-size:18px;margin:4px 0">CRM rendszer bevezetésének támogatása</li><li style="font-size:18px;margin:4px 0">Ügyfélstátuszok követése</li><li style="font-size:18px;margin:4px 0">Automatizált emlékeztetők és utókövetések</li></ul>
@@ -1556,21 +1617,21 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
         <div style="display:flex;gap:14px;align-items:stretch;flex:0 0 auto">
           <div class="glass-strong" style="padding:18px;flex:1;display:flex;flex-direction:column;gap:8px">
       <div style="font-family:Outfit;font-weight:800;font-size:33px;color:var(--red);line-height:.85">01</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Ügyfélgondozás fejlesztése</div>
+      <div class="ct ct-k">Ügyfélgondozás fejlesztése</div>
       <div style="font-family:Lexend;font-size:20px;color:var(--muted);line-height:1.4;flex:1;border-left:3px solid var(--red);padding-left:10px">A strukturáltabb ügyfélkapcsolat-kezelés erősítheti a bizalmat, növelheti az ügyfélmegtartást és ezáltal támogatja a hosszú távú ügyfélkapcsolatokat</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <ul class="checks" style="min-height:200px"><li style="font-size:18px;margin:4px 0">Ügyfélutak és kapcsolódási pontok definiálása</li><li style="font-size:18px;margin:4px 0">Rendszeres utókövetési folyamat kialakítása</li><li style="font-size:18px;margin:4px 0">Ügyfél-elégedettség mérések bevezetése</li><li style="font-size:18px;margin:4px 0">Ügyfélkapcsolati felelősségi körök tisztázása</li><li style="font-size:18px;margin:4px 0">Ügyfél életűt kialakítása</li></ul>
     </div>
           <div class="glass-strong" style="padding:18px;flex:1;display:flex;flex-direction:column;gap:8px">
       <div style="font-family:Outfit;font-weight:800;font-size:33px;color:var(--red);line-height:.85">02</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Hibrid ügyintézési modell kialakítása</div>
+      <div class="ct ct-k">Hibrid ügyintézési modell kialakítása</div>
       <div style="font-family:Lexend;font-size:20px;color:var(--muted);line-height:1.4;flex:1;border-left:3px solid var(--red);padding-left:10px">Az online és személyes ügyintézés tudatos kombinációja növeli a rugalmasságot, kapacitáskihasználást és ügyfélélményt egyaránt</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <ul class="checks" style="min-height:200px"><li style="font-size:18px;margin:4px 0">Online konzultációs folyamatok standardizálása</li><li style="font-size:18px;margin:4px 0">Személyes találkozók hozzáadott értékének újra definiálása</li><li style="font-size:18px;margin:4px 0">Digitális ügyfélkiszolgálási pontok kialakítása</li><li style="font-size:18px;margin:4px 0">Hatékonyabb idő és erőforrás kihasználás</li></ul>
     </div>
           <div class="glass-strong" style="padding:18px;flex:1;display:flex;flex-direction:column;gap:8px">
       <div style="font-family:Outfit;font-weight:800;font-size:33px;color:var(--red);line-height:.85">03</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Proaktív értékesítési működés erősítése</div>
+      <div class="ct ct-k">Proaktív értékesítési működés erősítése</div>
       <div style="font-family:Lexend;font-size:20px;color:var(--muted);line-height:1.4;flex:1;border-left:3px solid var(--red);padding-left:10px">Az ügyféligények tudatosabb feltárása és a proaktív kapcsolattartás jelentős növekedési potenciált hordozhat</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <ul class="checks" style="min-height:200px"><li style="font-size:18px;margin:4px 0">Keresztértékesítési lehetőségek azonosítása</li><li style="font-size:18px;margin:4px 0">Tanácsadói kommunikáció fejlesztése</li><li style="font-size:18px;margin:4px 0">Ügyféligények előrejelzése és aktív kezelése</li><li style="font-size:18px;margin:4px 0">Értékesítési aktivitások strukturálása</li></ul>
@@ -1595,21 +1656,21 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
         <div style="display:flex;gap:14px;align-items:stretch;flex:0 0 auto">
           <div class="glass-strong" style="padding:18px;flex:1;display:flex;flex-direction:column;gap:8px">
       <div style="font-family:Outfit;font-weight:800;font-size:33px;color:var(--red);line-height:.85">01</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Motivációs rendszer egységesítése</div>
+      <div class="ct ct-k">Motivációs rendszer egységesítése</div>
       <div style="font-family:Lexend;font-size:20px;color:var(--muted);line-height:1.4;flex:1;border-left:3px solid var(--red);padding-left:10px">Az egységes és átlátható ösztönzési rendszer erősíti a munkavállalói elköteleződést és a teljesítményorientált működést</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <ul class="checks" style="min-height:200px"><li style="font-size:18px;margin:4px 0">Munkavállalói motivációs rendszer egységesítése</li><li style="font-size:18px;margin:4px 0">Teljesítményalapú ösztönzési elemek kialakítása</li><li style="font-size:18px;margin:4px 0">Egyértelmi KPI- és célrendszerek meghatározása</li><li style="font-size:18px;margin:4px 0">Motivációs és juttatási struktúrák felülvizsgálata</li></ul>
     </div>
           <div class="glass-strong" style="padding:18px;flex:1;display:flex;flex-direction:column;gap:8px">
       <div style="font-family:Outfit;font-weight:800;font-size:33px;color:var(--red);line-height:.85">02</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Szakmai hierarchia és karrierutak kialakítása</div>
+      <div class="ct ct-k">Szakmai hierarchia és karrierutak kialakítása</div>
       <div style="font-family:Lexend;font-size:20px;color:var(--muted);line-height:1.4;flex:1;border-left:3px solid var(--red);padding-left:10px">Szakmai szintek és fejlődési utak támogatják a szervezeti stabilitást és a tudatos kompetenciaépítést</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <ul class="checks" style="min-height:200px"><li style="font-size:18px;margin:4px 0">Szakmai hierarchia kialakítása tudásszint alapján</li><li style="font-size:18px;margin:4px 0">Karrierutak és előre lépési lehetőségek definiálása</li><li style="font-size:18px;margin:4px 0">Kompetencia- és felelősségi szintek tisztázása</li><li style="font-size:18px;margin:4px 0">Tudásmegosztás és mentorálási rendszer</li></ul>
     </div>
           <div class="glass-strong" style="padding:18px;flex:1;display:flex;flex-direction:column;gap:8px">
       <div style="font-family:Outfit;font-weight:800;font-size:33px;color:var(--red);line-height:.85">03</div>
-      <div style="font-family:Outfit;font-weight:800;font-size:23px;color:var(--ink);line-height:1.2">Szervezeti kultúra és működési stabilitás erősítése</div>
+      <div class="ct ct-k">Szervezeti kultúra és működési stabilitás erősítése</div>
       <div style="font-family:Lexend;font-size:20px;color:var(--muted);line-height:1.4;flex:1;border-left:3px solid var(--red);padding-left:10px">A transzparens működési keretek és a kiszámítható szervezeti működés hosszú távon növelhetik a belső hatékony együttműködést</div>
       <div class="divider-line" style="margin:4px 0"></div>
       <ul class="checks" style="min-height:200px"><li style="font-size:18px;margin:4px 0">Belső működési szabályrendszer egységesítése</li><li style="font-size:18px;margin:4px 0">Együttműködési keretek fejlesztése</li><li style="font-size:18px;margin:4px 0">Fluktuációs kockázatok csökkentése</li><li style="font-size:18px;margin:4px 0">Stabilabb és kiszámíthatóbb működési környezet kialakítása</li><li style="font-size:18px;margin:4px 0">Finanszírozási Tanácsadó onboarding kialakítása</li></ul>
@@ -1717,7 +1778,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
     <circle cx="709.66" cy="473.87" r="13" fill="#d42036" stroke="#fff" stroke-width="2"/>
     <!-- center dashed circle + internal arrows -->
     <circle cx="840" cy="348" r="103.7" fill="rgba(255,255,255,0.9)" stroke="none"/>
-    <path d="M 841,244.3 A 103.7,103.7 0 1 1 840,244.3" fill="none" stroke="#d42036" stroke-width="2.2" stroke-dasharray="6 5" marker-end="url(#mDash35)"/>
+    <path id="lpcRing35" d="M 841,244.3 A 103.7,103.7 0 1 1 840,244.3" fill="none" stroke="#d42036" stroke-width="2.2" stroke-dasharray="6 5" marker-end="url(#mDash35)"/>
     <path d="M 718.19,291.2 A 134.4 134.4 0 0 1 794.03,221.7" fill="none" stroke="#d42036" stroke-width="2.2" opacity="0.55"/>
     <path d="M 791.16,213.82 L 809.77,217.04 L 796.91,229.6 Z" fill="#d42036" opacity="0.55"/>
     <path d="M 961.81,404.8 A 134.4 134.4 0 0 1 885.97,474.3" fill="none" stroke="#d42036" stroke-width="2.2" opacity="0.55"/>
@@ -1940,7 +2001,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
                 </ul>
                 <div class="glass-strong" style="flex-shrink:0;width:186px;padding:14px 12px;text-align:center">
                   <div style="font-family:Lexend;font-size:13px;color:var(--muted);line-height:1.35;margin-bottom:6px">Ügyfélorientált kommunikáció</div>
-                  <div style="font-family:Outfit;font-weight:800;font-size:36px;color:var(--red);line-height:1">73,8%</div>
+                  <div class="anim-count" data-to="73.8" data-suffix="%" style="font-family:Outfit;font-weight:800;font-size:36px;color:var(--red);line-height:1">73,8%</div>
                 </div>
               </div>
             </div>
@@ -1978,24 +2039,24 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
       <h1 class="h-lg" style="color:#fff;line-height:1.0">HÍD A KAVOSZ ÉS <span style="color:#ff6271">AZ IRODÁK KÖZÖTT</span></h1>
       <div class="body-wrap" style="flex-direction:column;gap:10px">
         <!-- TOP ROW: 4 numbered steps -->
-        <div style="display:flex;align-items:stretch;gap:8px;flex-shrink:0">
-          <div style="flex:1;background:rgba(212,32,54,.18);border:1px solid rgba(212,32,54,.48);border-radius:10px;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
+        <div data-step-row style="display:flex;align-items:stretch;gap:8px;flex-shrink:0">
+          <div style="flex:1;background:rgba(212,32,54,.42);border:1.5px solid rgba(212,32,54,.8);border-radius:10px;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
             <div style="font-family:Outfit;font-weight:800;font-size:23px;color:#fff;line-height:1">01</div>
             <div style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">DIAGNÓZIS</div>
             <div style="font-family:Lexend;font-size:11px;color:rgba(255,255,255,.82);line-height:1.3;margin-top:3px">(6 hónapig felhasználható – GDPR szabályozás)</div>
           </div>
           <div style="display:flex;align-items:center;font-size:25px;color:rgba(255,255,255,.5);flex-shrink:0;padding:0 4px">→</div>
-          <div style="flex:1;background:rgba(212,32,54,.18);border:1px solid rgba(212,32,54,.48);border-radius:10px;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
+          <div style="flex:1;background:rgba(212,32,54,.42);border:1.5px solid rgba(212,32,54,.8);border-radius:10px;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
             <div style="font-family:Outfit;font-weight:800;font-size:23px;color:#fff;line-height:1">02</div>
             <div style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">FEJLESZTÉS</div>
           </div>
           <div style="display:flex;align-items:center;font-size:25px;color:rgba(255,255,255,.5);flex-shrink:0;padding:0 4px">→</div>
-          <div style="flex:1;background:rgba(212,32,54,.18);border:1px solid rgba(212,32,54,.48);border-radius:10px;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
+          <div style="flex:1;background:rgba(212,32,54,.42);border:1.5px solid rgba(212,32,54,.8);border-radius:10px;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
             <div style="font-family:Outfit;font-weight:800;font-size:23px;color:#fff;line-height:1">03</div>
             <div style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">IMPLEMENTÁCIÓ</div>
           </div>
           <div style="display:flex;align-items:center;font-size:25px;color:rgba(255,255,255,.5);flex-shrink:0;padding:0 4px">→</div>
-          <div style="flex:1;background:rgba(212,32,54,.18);border:1px solid rgba(212,32,54,.48);border-radius:10px;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
+          <div style="flex:1;background:rgba(212,32,54,.42);border:1.5px solid rgba(212,32,54,.8);border-radius:10px;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
             <div style="font-family:Outfit;font-weight:800;font-size:23px;color:#fff;line-height:1">04</div>
             <div style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">STABILIZÁCIÓ</div>
           </div>
@@ -2004,7 +2065,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
         <div style="display:flex;gap:12px;flex:0 0 auto;margin:auto 0">
           <!-- Valóság -->
           <div class="glass-dark" style="flex:1;padding:16px;display:flex;flex-direction:column">
-            <div style="font-family:Outfit;font-weight:800;font-size:23px;color:rgba(255,255,255,.9);margin-bottom:8px">Valóság</div>
+            <div class="ct ct-w">Valóság</div>
             <p style="font-family:Lexend;font-size:14px;color:rgba(255,255,255,.75);line-height:1.5;margin:0 0 10px 0">Az irodák működésének jelentős részét az adminisztratív és működési feladatok kötik le, miközben egyre nagyobb igény mutatkozik:</p>
             <ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px">
               <li style="font-family:Lexend;font-size:14px;color:rgba(255,255,255,.85)">az értékesítés</li>
@@ -2014,8 +2075,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
           </div>
           <!-- Megoldás -->
           <div class="glass-dark" style="flex:2;padding:16px;display:flex;flex-direction:column">
-            <div style="font-family:Outfit;font-weight:700;font-size:13px;color:#90C840;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">Megoldás</div>
-            <div style="font-family:Outfit;font-weight:700;font-size:16px;color:rgba(255,255,255,.9);margin-bottom:9px">ASAH LINE Kft. – Támogatjuk a hálózat teljes működését</div>
+            <div class="ct ct-g">Megoldás</div>
             <div style="display:flex;flex-direction:column;gap:4px;flex:1">
               <div style="background:rgba(112,173,71,.38);border:1px solid rgba(112,173,71,.75);border-radius:7px;padding:5px 10px;font-family:Lexend;font-size:13px;color:#fff">Területi képviselet és havi rendszeres helyi jelenlét</div>
               <div style="background:rgba(112,173,71,.38);border:1px solid rgba(112,173,71,.75);border-radius:7px;padding:5px 10px;font-family:Lexend;font-size:13px;color:#fff">Értékesítési folyamatok fejlesztése és támogatása</div>
@@ -2030,7 +2090,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
           </div>
           <!-- Miért az ASAH Line? -->
           <div class="glass-dark" style="flex:1.2;padding:16px;display:flex;flex-direction:column">
-            <div style="font-family:Outfit;font-weight:800;font-size:23px;color:rgba(255,255,255,.9);margin-bottom:8px">Miért az ASAH Line?</div>
+            <div class="ct ct-w">Miért az ASAH Line?</div>
             <ul class="checks" style="margin:0">
               <li style="font-size:15px;margin:5px 0">Több évtizedes szakmai tapasztalat</li>
               <li style="font-size:15px;margin:5px 0">Országos lefedettség és helyismeret</li>
@@ -2042,9 +2102,9 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
           </div>
         </div>
         <!-- BOTTOM ROW: 2 quote boxes -->
-        <div style="display:flex;gap:12px;flex-shrink:0">
-          <div class="quoteblk" style="flex:1;margin:0;background:rgba(0,0,0,.32);border-left-color:#ff6271;color:#fff;font-size:14px">Az ASAH Line az a működési és fejlesztési kapacitás, amely összeköti a KAVOSZ stratégiai céljait az irodák mindennapi eredményességével.</div>
-          <div class="quoteblk" style="flex:1;margin:0;background:rgba(0,0,0,.32);border-left-color:#ff6271;color:#fff;font-size:14px">Ott teremtünk értéket, ahol a legnagyobb szükség van rá: az értékesítésben, a tanácsadói szemlélet fejlesztésében, az információáramlásban és a hálózat teljesítményének növelésében.</div>
+        <div style="display:flex;gap:12px;flex-shrink:0;margin-top:-10px">
+          <div class="quoteblk" style="flex:1;margin:0;font-size:18px">Az ASAH Line az a működési és fejlesztési kapacitás, amely összeköti a KAVOSZ stratégiai céljait az irodák mindennapi eredményességével.</div>
+          <div class="quoteblk" style="flex:1;margin:0;font-size:18px">Ott teremtünk értéket, ahol a legnagyobb szükség van rá: az értékesítésben, a tanácsadói szemlélet fejlesztésében, az információáramlásban és a hálózat teljesítményének növelésében.</div>
         </div>
       </div>
     </div>
@@ -2083,13 +2143,13 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
           </div>
         </div>
         <!-- BOTTOM ROW: 2 big content boxes -->
-        <div style="display:flex;gap:14px;flex:0 0 auto;margin:auto 0">
+        <div data-bottom-row style="display:flex;gap:14px;flex:0 0 auto;margin:auto 0">
           <div class="glass-dark" style="flex:1;padding:18px;display:flex;flex-direction:column">
-            <div style="font-family:Outfit;font-weight:800;font-size:23px;color:rgba(255,255,255,.9);margin-bottom:10px">Amit az ASAH LINE biztosít</div>
+            <div class="ct ct-w" style="margin-bottom:10px">Amit az ASAH LINE biztosít</div>
             <ul class="checks"><li style="font-size:18px;margin:4px 0">Havi rendszeres személyes jelenlét az irodákban</li><li style="font-size:18px;margin:4px 0">KPI-ok és teljesítménymutatók folyamatos nyomon követése</li><li style="font-size:18px;margin:4px 0">Irodai működési feltételek monitorozása</li><li style="font-size:18px;margin:4px 0">Ügyfélélmény-mérések támogatása</li><li style="font-size:18px;margin:4px 0">Készség és Képességfejlesztési coaching</li><li style="font-size:18px;margin:4px 0">Azonnali visszajelzés az ügyintézőknek és tanácsadóknak</li><li style="font-size:18px;margin:4px 0">Gyors reagálás a működési eltérésekre</li><li style="font-size:18px;margin:4px 0">Rendszeres vezetői riportok a KAVOSZ számára</li></ul>
           </div>
           <div class="glass-dark" style="flex:1;padding:18px;display:flex;flex-direction:column">
-            <div style="font-family:Outfit;font-weight:800;font-size:23px;color:rgba(255,255,255,.9);margin-bottom:10px">Eredmény a KAVOSZ számára — Országos szintű rálátás:</div>
+            <div class="ct ct-w" style="margin-bottom:10px">Eredmény a KAVOSZ számára — Országos szintű rálátás:</div>
             <ul class="checks"><li style="font-size:18px;margin:4px 0">Irodai teljesítményre</li><li style="font-size:18px;margin:4px 0">Egyéni teljesítményre</li><li style="font-size:18px;margin:4px 0">Ügyfélélményre</li><li style="font-size:18px;margin:4px 0">Működési kockázatokra</li><li style="font-size:18px;margin:4px 0">Fejlesztési lehetőségekre</li></ul>
           </div>
         </div>
@@ -2109,7 +2169,7 @@ section[data-label="21"] .glass-strong [style*="font-family:Lexend"]:not(td):not
       <!-- Köszönjük — legfelül, egy sorban -->
       <h1 class="h-xl" style="color:#fff;text-align:center;line-height:1.0">Köszönjük <span style="color:#ff6271">a figyelmet</span></h1>
       <!-- Idézet — középen -->
-      <div style="max-width:1100px;align-self:center;text-align:center;font-family:Outfit;font-style:italic;font-weight:400;font-size:25px;line-height:1.44;color:rgba(255,255,255,.82);position:relative;padding:0 90px">
+      <div class="anim-quote" style="max-width:1100px;align-self:center;text-align:center;font-family:Outfit;font-style:italic;font-weight:400;font-size:25px;line-height:1.44;color:rgba(255,255,255,.82);position:relative;padding:0 90px">
         <div style="position:absolute;left:14px;top:-22px;font-family:Outfit;font-size:81px;font-weight:700;color:var(--red);line-height:1">„</div>
         Annál, hogy képezd az embereidet és elvadásszák Tőled, csak egy rosszabb dolog történhet: nem képzed őket és ott maradnak Nálad!
         <div style="margin-top:14px;font-style:normal;font-size:15px;color:rgba(255,255,255,.38);letter-spacing:.06em">— Zig Ziglar</div>
@@ -2153,85 +2213,19 @@ window.addEventListener("load",function(){
     requestAnimationFrame(function(){
       new Chart(document.getElementById("c13"),{type:"pie",data:{labels:["Elsődleges feladatok","Másodlagos feladatok","Utazás","Rendelkezésre állás"],datasets:[{data:[80.3,9.9,0.5,9.3],backgroundColor:["#d42036","#50505A","#c0c0c8","#8a8a95"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:50}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:22,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:20,clamp:false},legend:{position:"right",labels:{font:{size:19,weight:"bold"},color:"#50505A",padding:12,boxWidth:16}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
 new Chart(document.getElementById("c14"),{type:"pie",data:{labels:["Személyes","Telefon","E-mail","Online"],datasets:[{data:[70.3,17.8,7.4,4.5],backgroundColor:["#d42036","#50505A","#c0c0c8","#8a8a95"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:50}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:22,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:20,clamp:false},legend:{position:"right",labels:{font:{size:19,weight:"bold"},color:"#50505A",padding:12,boxWidth:16}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
-new Chart(document.getElementById("c15a"),{type:"pie",data:{labels:["Ügyfél","Partner","Munkatárs","KAVOSZ belső"],datasets:[{data:[73.8,15.3,7.4,3.5],backgroundColor:["#d42036","#50505A","#c0c0c8","#8a8a95"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:20,weight:"bold"},color:"#fff",anchor:"center",align:"center"},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
-new Chart(document.getElementById("c15b"),{type:"pie",data:{labels:["Ügyintézés / közvetítés","Egyeztetés","Megbeszélés"],datasets:[{data:[61.0,31.7,7.3],backgroundColor:["#d42036","#50505A","#c0c0c8"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:20,weight:"bold"},color:"#fff",anchor:"center",align:"center"},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
-new Chart(document.getElementById("c16a"),{type:"pie",data:{labels:["Meglévő ügyfél","Új ügyfél"],datasets:[{data:[74.3,25.7],backgroundColor:["#d42036","#50505A"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:20,weight:"bold"},color:"#fff",anchor:"center",align:"center"},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
-new Chart(document.getElementById("c16b"),{type:"pie",data:{labels:["Személyes","Telefon","E-mail","Online"],datasets:[{data:[84.9,11.3,2.7,1.1],backgroundColor:["#d42036","#50505A","#c0c0c8","#8a8a95"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:20,weight:"bold"},color:"#fff",anchor:"center",align:"center"},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
+new Chart(document.getElementById("c15a"),{type:"pie",data:{labels:["Ügyfél","Partner","Munkatárs","KAVOSZ belső"],datasets:[{data:[73.8,15.3,7.4,3.5],backgroundColor:["#d42036","#50505A","#c0c0c8","#8a8a95"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:55,right:90,bottom:55,left:90}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:18,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:22,clamp:false},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
+new Chart(document.getElementById("c15b"),{type:"pie",data:{labels:["Ügyintézés / közvetítés","Egyeztetés","Megbeszélés"],datasets:[{data:[61.0,31.7,7.3],backgroundColor:["#d42036","#50505A","#c0c0c8"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:55,right:90,bottom:55,left:90}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:18,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:22,clamp:false},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
+new Chart(document.getElementById("c16a"),{type:"pie",data:{labels:["Meglévő ügyfél","Új ügyfél"],datasets:[{data:[74.3,25.7],backgroundColor:["#d42036","#50505A"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:55,right:90,bottom:55,left:90}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:18,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:22,clamp:false},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
+new Chart(document.getElementById("c16b"),{type:"pie",data:{labels:["Személyes","Telefon","E-mail","Online"],datasets:[{data:[84.9,11.3,2.7,1.1],backgroundColor:["#d42036","#50505A","#c0c0c8","#8a8a95"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:55,right:90,bottom:55,left:90}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:18,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:22,clamp:false},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
 new Chart(document.getElementById("c19"),{type:"bar",data:{labels:["Bevezetés/Üdvözlés","Igényfelmérés","Előnyök/kockázatok","Feltételek","Összegzés","Jövőbeni kontakt","CRM"],datasets:[{label:"Jelen 2026",data:[0.094,0.116,0.127,0.399,0.239,0.025,0.0],backgroundColor:"rgba(237,167,0,.85)",borderRadius:3,borderWidth:0},{label:"Optimális",data:[0.05,0.2,0.15,0.3,0.2,0.05,0.05],backgroundColor:"rgba(84,163,84,.82)",borderRadius:3,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top",labels:{font:{size:13},color:"#50505A",boxWidth:14,padding:8}},tooltip:{callbacks:{label:c=>c.dataset.label+": "+(c.raw*100).toFixed(1)+"%"}},datalabels:{anchor:"end",align:"top",formatter:v=>v>0?(v*100).toFixed(1)+"%":"",font:{size:14,weight:"600"},color:"#14141a"}},scales:{x:{grid:{display:false},ticks:{color:"#50505A",font:{size:12},maxRotation:30}},y:{max:0.5,grid:{color:"rgba(0,0,0,.05)"},ticks:{color:"#9696A0",font:{size:12},callback:v=>(v*100).toFixed(0)+"%"},beginAtZero:true}}}})
 new Chart(document.getElementById("c20a"),{type:"bar",data:{labels:["Személyes","Telefon","E-mail","Online"],datasets:[{label:"Jelen 2026",data:[0.9074,0.0926,0,0],backgroundColor:"rgba(68,114,196,.88)",borderRadius:3,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(c.raw*100).toFixed(1)+"%"}},datalabels:{anchor:"end",align:"top",formatter:v=>v>0?(v*100).toFixed(0)+"%":"",font:{size:14,weight:"600"},color:"#14141a"}},scales:{x:{grid:{display:false},ticks:{color:"#50505A",font:{size:12}}},y:{max:1.1,grid:{color:"rgba(0,0,0,.05)"},ticks:{color:"#9696A0",font:{size:12},callback:v=>(v*100).toFixed(0)+"%"},beginAtZero:true}}}})
-new Chart(document.getElementById("c20"),{type:"bar",data:{labels:["Folyószámla hitel","Likviditási hitel","Lízing","Beruházási hitel","Mikrohitel","Agrár ber. hitel","Agrár forgóeszköz","Agrár Kártya"],datasets:[{label:"Jelen 2026",data:[0.497,0.131,0.126,0.056,0.044,0.022,0.008,0.117],backgroundColor:"rgba(68,114,196,.88)",borderRadius:3,borderWidth:0},{label:"VOSZ 2025",data:[0.559,0.065,0.161,0.147,0.068,0.0,0.0,0.0],backgroundColor:"rgba(255,165,0,.85)",borderRadius:3,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top",labels:{font:{size:12},color:"#50505A",boxWidth:12,padding:6}},tooltip:{callbacks:{label:c=>c.dataset.label+": "+(c.raw*100).toFixed(1)+"%"}},datalabels:{anchor:"end",align:"top",formatter:v=>v>0?(v*100).toFixed(1)+"%":"",font:{size:13,weight:"600"},color:"#14141a",display:ctx=>ctx.datasetIndex===0}},scales:{x:{grid:{display:false},ticks:{color:"#50505A",font:{size:11},maxRotation:30}},y:{max:0.65,grid:{color:"rgba(0,0,0,.05)"},ticks:{color:"#9696A0",font:{size:11},callback:v=>(v*100).toFixed(0)+"%"},beginAtZero:true}}}})
-new Chart(document.getElementById("c22"),{type:"bar",data:{labels:["Pénzügyi és banki ism.","Kommunikációs készségek","Ügyfélszolgálati készségek","Szervezési és adm. készségek","Jogszabályi ismeretek","Értékesítési készségek","Digitális ismeretek","Problémamegoldó készségek","Türelem és stressztűrés","Csapatmunka"],datasets:[{label:"OK arány",data:[95,100,89.5,94.4,94.4,89.5,100,100,100,100],backgroundColor:"rgba(212,32,54,.82)",borderRadius:2,borderWidth:0,barPercentage:0.5,categoryPercentage:0.85}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:"y",plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+"%"}},datalabels:{anchor:"end",align:"end",formatter:v=>v+"%",font:{size:14,weight:"bold"},color:"#14141a"}},scales:{x:{max:100,grid:{color:"rgba(0,0,0,.05)"},ticks:{color:"#9696A0",font:{size:12}}},y:{grid:{display:false},ticks:{color:"#50505A",font:{size:14}}}}}})
+new Chart(document.getElementById("c20"),{type:"bar",data:{labels:["Folyószámla hitel","Likviditási hitel","Lízing","Beruházási hitel","Mikrohitel","Agrár ber. hitel","Agrár forgóeszköz","Agrár Kártya"],datasets:[{label:"Jelen 2026",data:[0.497,0.131,0.126,0.056,0.044,0.022,0.008,0.117],backgroundColor:"rgba(68,114,196,.88)",borderRadius:3,borderWidth:0},{label:"VOSZ 2025",data:[0.559,0.065,0.161,0.147,0.068,0.0,0.0,0.0],backgroundColor:"rgba(255,165,0,.85)",borderRadius:3,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top",labels:{font:{size:12},color:"#50505A",boxWidth:12,padding:6}},tooltip:{callbacks:{label:c=>c.dataset.label+": "+(c.raw*100).toFixed(1)+"%"}},datalabels:{anchor:"end",align:"top",formatter:v=>v>0?(v*100).toFixed(1)+"%":"",font:{size:11,weight:"600"},color:function(ctx){return ctx.datasetIndex===0?"#14141a":"#8B5200"}}},scales:{x:{grid:{display:false},ticks:{color:"#50505A",font:{size:11},maxRotation:30}},y:{max:0.65,grid:{color:"rgba(0,0,0,.05)"},ticks:{color:"#9696A0",font:{size:11},callback:v=>(v*100).toFixed(0)+"%"},beginAtZero:true}}}})
+new Chart(document.getElementById("c22"),{type:"bar",data:{labels:["Pénzügyi és banki ism.","Kommunikációs készségek","Ügyfélszolgálati készségek","Szervezési és adm. készségek","Jogszabályi ismeretek","Értékesítési készségek","Digitális ismeretek","Problémamegoldó készségek","Türelem és stressztűrés","Csapatmunka"],datasets:[{label:"OK arány",data:[95,100,89.5,94.4,94.4,89.5,100,100,100,100],backgroundColor:"rgba(212,32,54,.82)",borderRadius:2,borderWidth:0,barPercentage:0.5,categoryPercentage:0.85}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:"y",layout:{padding:{right:70}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+"%"}},datalabels:{anchor:"end",align:"end",formatter:v=>v+"%",font:{size:15,weight:"bold"},color:"#14141a",clamp:false}},scales:{x:{max:100,grid:{color:"rgba(0,0,0,.05)"},ticks:{color:"#2a2a35",font:{size:13}}},y:{grid:{display:false},ticks:{color:"#14141a",font:{size:14}}}}}})
     });
   });
 });
-
-/* ── Footer: copyright left · dot tracker centre · domain right (1 sor) ── */
-(function(){
-  var TOTAL = 41;
-  var DIVIDERS = {1:1,4:1,9:1,12:1,25:1,39:1,41:1};
-  var slides = Array.from(document.querySelectorAll('section.slide'));
-  document.querySelectorAll('.ftr').forEach(function(ftr){
-    var slide = ftr.closest('section.slide');
-    var n = slides.indexOf(slide) + 1;
-    var isDark = slide.classList.contains('dark');
-    if (DIVIDERS[n]) {
-      ftr.innerHTML =
-        '<div>© Minden jog fenntartva 2006–2026</div>' +
-        '<div></div>' +
-        '<div style="text-align:right">asahline.hu</div>';
-      return;
-    }
-    var dotPast   = isDark ? 'rgba(212,32,54,.8)'    : 'rgba(212,32,54,.65)';
-    var dotFuture = isDark ? 'rgba(255,255,255,.28)' : 'rgba(10,10,14,.22)';
-    var dots = '';
-    for (var i = 1; i <= TOTAL; i++) {
-      if (i < n) {
-        dots += '<span style="width:14px;height:3px;border-radius:2px;background:' + dotPast + ';display:inline-block;flex-shrink:0;margin:0 1px"></span>';
-      } else if (i === n) {
-        dots += '<span style="width:20px;height:4px;border-radius:2px;background:#d42036;display:inline-block;flex-shrink:0;margin:0 1px"></span>';
-      } else {
-        dots += '<span style="width:12px;height:3px;border-radius:2px;background:' + dotFuture + ';display:inline-block;flex-shrink:0;margin:0 1px"></span>';
-      }
-    }
-    var pad = n < 10 ? '0' + n : '' + n;
-    var pgColor = isDark ? 'rgba(255,255,255,.6)' : '';
-    ftr.innerHTML =
-      '<div>© Minden jog fenntartva 2006–2026</div>' +
-      '<div style="display:flex;flex-direction:column;align-items:center;gap:2px">' +
-        '<div style="display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:nowrap;height:21px">' + dots + '</div>' +
-        '<div class="pg"' + (pgColor ? ' style="color:' + pgColor + '"' : '') + '>' + pad + ' / ' + TOTAL + '</div>' +
-      '</div>' +
-      '<div style="text-align:right">asahline.hu</div>';
-  });
-})();
 </script>
-<!-- SCREEN-ONLY: slide gap + navigation arrows — excluded from PDF -->
-<style>
-@media screen{deck-stage section.slide{margin-bottom:32px}}
-@media print{#slide-nav{display:none!important}}
-</style>
-<div id="slide-nav" style="position:fixed;bottom:28px;right:28px;display:flex;flex-direction:column;gap:10px;z-index:9999">
-  <button onclick="navSlide(-1)" title="Előző dia" style="width:48px;height:48px;border-radius:50%;background:#14141a;color:#fff;font-size:20px;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;transition:background .15s">▲</button>
-  <button onclick="navSlide(1)" title="Következő dia" style="width:48px;height:48px;border-radius:50%;background:#14141a;color:#fff;font-size:20px;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;transition:background .15s">▼</button>
-</div>
-<script>
-function navSlide(dir){
-  var slides=Array.from(document.querySelectorAll('section.slide'));
-  var wh=window.innerHeight;
-  var target=null;
-  if(dir>0){
-    for(var i=0;i<slides.length;i++){
-      if(slides[i].getBoundingClientRect().top>wh*0.1){target=slides[i];break;}
-    }
-    if(!target)target=slides[slides.length-1];
-  }else{
-    for(var i=slides.length-1;i>=0;i--){
-      if(slides[i].getBoundingClientRect().top<-wh*0.1){target=slides[i];break;}
-    }
-    if(!target)target=slides[0];
-  }
-  target.scrollIntoView({behavior:'smooth',block:'start'});
-}
-</script>
+<script src="presentation.js"></script>
+<script src="animations.js"></script>
 </body>
 </html>
