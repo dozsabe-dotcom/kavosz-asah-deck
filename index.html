@@ -174,8 +174,10 @@ section[data-label="39"] .quoteblk{background:rgba(0,0,0,.38)!important;border-l
 /* SCREENSHOT */
 .ss-wrap{position:relative;border-radius:18px;overflow:hidden;box-shadow:0 30px 60px -20px rgba(10,10,14,.3);border:1px solid rgba(255,255,255,.5)}
 .ss-wrap img{width:100%;display:block}
-/* Hide red bottom progress bars – dot tracker in footer is sufficient */
-/* progress bar tracker enabled */
+/* Footer tracker: active dot pulse */
+@keyframes pdPulse{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.5;transform:scaleY(.7)}}
+.pd-active{animation:pdPulse 2s ease-in-out infinite;transform-origin:center bottom}
+@media(prefers-reduced-motion:reduce){.pd-active{animation:none}}
 /* Content-fit + centered layout for card slides */
 section[data-label="03"] .body-wrap,
 section[data-label="05"] .body-wrap,
@@ -461,27 +463,123 @@ section.slide.prs-on [data-szuro]{
 section[data-label="35"].prs-on #lpcRing35{
   animation:lpcDashSpin 4s linear infinite;
 }
+
+/* ── Pipa belépő animáció ─────────────────────────────── */
+@keyframes aCheckBounce{
+  0%  {transform:scale(0) rotate(-20deg);opacity:0}
+  65% {transform:scale(1.35) rotate(6deg);opacity:1}
+  100%{transform:scale(1) rotate(0deg)}
+}
+.checks li.chk-in::before{
+  animation:aCheckBounce .32s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+/* ── Quoteblk border glow loop ──────────────────────── */
+@keyframes lQuoteGlow{
+  0%,100%{box-shadow:-4px 0 8px rgba(212,32,54,.15)}
+  50%    {box-shadow:-4px 0 20px rgba(212,32,54,.55)}
+}
+section.slide.prs-on .quoteblk{
+  animation:lQuoteGlow 3.5s ease-in-out infinite;
+  animation-delay:1s;
+}
+
+/* ── Új keyframe-ek ──────────────────────────────────── */
+@keyframes lFloatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes lOpacityBreathe{0%,100%{opacity:.08}50%{opacity:.16}}
+@keyframes lSepGlow{0%,100%{box-shadow:none;background:#fff}50%{box-shadow:0 0 14px rgba(212,32,54,.45);background:rgba(255,238,240,.95)}}
+@keyframes lEllipseScale{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@keyframes lIconPulse{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes lInnerRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes lScalePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes lDivPulse{0%,100%{transform:scaleX(1)}50%{transform:scaleX(1.5)}}
+@keyframes lHeartbeat{0%{transform:scale(1)}15%{transform:scale(1.08)}30%,100%{transform:scale(1)}}
+
+/* ── Watermark légzés — sötét diákon ──────────────────── */
+section.slide.dark.prs-on .wmark{
+  animation:lOpacityBreathe 5s ease-in-out infinite;
+}
+
+/* ── Divider-line lüktetés — csak divider diákon ──────── */
+section[data-label="01"].prs-on .divider-line,
+section[data-label="04"].prs-on .divider-line,
+section[data-label="09"].prs-on .divider-line,
+section[data-label="12"].prs-on .divider-line,
+section[data-label="25"].prs-on .divider-line,
+section[data-label="37"].prs-on .divider-line{
+  animation:lDivPulse 3s ease-in-out infinite;
+  animation-delay:1.5s;
+}
+
+/* ── Slide 35: belső körív forgás ─────────────────────── */
+section[data-label="35"].prs-on #lpcInnerRing{
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:lInnerRotate 12s linear infinite;
+}
+
+/* ── Slide 38: Venn ellipszisek lebegés ───────────────── */
+section[data-label="38"].prs-on svg ellipse{
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:lEllipseScale 3.2s ease-in-out infinite;
+}
+section[data-label="38"].prs-on svg ellipse:nth-of-type(1){animation-delay:0s}
+section[data-label="38"].prs-on svg ellipse:nth-of-type(2){animation-delay:1.1s}
+section[data-label="38"].prs-on svg ellipse:nth-of-type(3){animation-delay:2.2s}
+
+/* ── Slide 03: agenda számok lebegés (stagger) ────────── */
+section[data-label="03"].prs-on .glass-strong:nth-child(1) [style*="font-weight:800"]{animation:lFloatY 3.6s ease-in-out infinite;animation-delay:0s}
+section[data-label="03"].prs-on .glass-strong:nth-child(2) [style*="font-weight:800"]{animation:lFloatY 3.6s ease-in-out infinite;animation-delay:.7s}
+section[data-label="03"].prs-on .glass-strong:nth-child(3) [style*="font-weight:800"]{animation:lFloatY 3.6s ease-in-out infinite;animation-delay:1.4s}
+section[data-label="03"].prs-on .glass-strong:nth-child(4) [style*="font-weight:800"]{animation:lFloatY 3.6s ease-in-out infinite;animation-delay:2.1s}
+section[data-label="03"].prs-on .glass-strong:nth-child(5) [style*="font-weight:800"]{animation:lFloatY 3.6s ease-in-out infinite;animation-delay:2.8s}
+
+/* ── Slide 26: szeparátor → kör glow ─────────────────── */
+section[data-label="26"].prs-on [data-sep-arrow]{
+  animation:lSepGlow 2s ease-in-out infinite;
+}
+
+/* ── Slide 28: timeline körök scale pulse (stagger) ──── */
+section[data-label="28"].prs-on [data-timeline] [style*="border-radius:50%"]{
+  animation:lScalePulse 2.4s ease-in-out infinite;
+}
+section[data-label="28"].prs-on [data-timeline]>div:nth-child(1) [style*="border-radius:50%"]{animation-delay:2.0s}
+section[data-label="28"].prs-on [data-timeline]>div:nth-child(2) [style*="border-radius:50%"]{animation-delay:2.5s}
+section[data-label="28"].prs-on [data-timeline]>div:nth-child(3) [style*="border-radius:50%"]{animation-delay:3.0s}
+section[data-label="28"].prs-on [data-timeline]>div:nth-child(4) [style*="border-radius:50%"]{animation-delay:3.5s}
+section[data-label="28"].prs-on [data-timeline]>div:nth-child(5) [style*="border-radius:50%"]{animation-delay:4.0s}
+
+/* ── Slide 41: kontakt ikon pulse (stagger) ───────────── */
+section[data-label="41"].prs-on .glass-dark svg{
+  animation:lIconPulse 2.4s ease-in-out infinite;
+}
+section[data-label="41"].prs-on .glass-dark svg:nth-of-type(1){animation-delay:0s}
+section[data-label="41"].prs-on .glass-dark svg:nth-of-type(2){animation-delay:.8s}
+section[data-label="41"].prs-on .glass-dark svg:nth-of-type(3){animation-delay:1.6s}
+
 @media(prefers-reduced-motion:reduce){
-  [data-szuro],[id="lpcRing35"]{animation:none!important}
+  [data-szuro],[id="lpcRing35"],[id="lpcInnerRing"]{animation:none!important}
+  .checks li.chk-in::before,
+  section.slide .quoteblk,
+  section.slide.dark .wmark,
+  section.slide .divider-line,
+  section[data-label="38"] ellipse,
+  section[data-label="03"] [style*="font-weight:800"],
+  section[data-label="26"] [data-sep-arrow],
+  section[data-label="28"] [data-timeline] [style*="border-radius:50%"],
+  section[data-label="41"] .glass-dark svg{animation:none!important}
 }
 @media print{
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
 
-@media screen{
-  /* SCROLL MODE — presentation mode ideiglenesen kikapcsolva
-  html{overflow:hidden;height:100%}
-  body{overflow:hidden!important;width:100vw!important;height:100vh!important;background:#0a0a0e!important;position:relative!important;margin:0!important;padding:0!important}
-  deck-stage{position:absolute!important;top:0!important;left:0!important;height:1080px!important;transform-origin:0 0;overflow:hidden!important}
-  deck-stage section.slide{position:absolute!important;top:0!important;left:0!important;margin:0!important;opacity:0;transition:opacity .38s cubic-bezier(.4,0,.2,1);pointer-events:none!important;z-index:0}
-  deck-stage section.slide.prs-on{opacity:1!important;pointer-events:auto!important;z-index:2!important}
-  deck-stage section.slide.prs-out{opacity:0!important;z-index:1!important}
-  */
-  html{overflow:auto;height:auto}
-  body{overflow:auto!important;background:#111!important}
-  deck-stage{position:static!important;transform:none!important;height:auto!important;overflow:visible!important}
-  deck-stage section.slide{position:relative!important;opacity:1!important;pointer-events:auto!important;z-index:auto!important;margin-bottom:8px!important}
-}
+html{overflow:hidden;height:100%}
+body{overflow:hidden!important;width:100vw!important;height:100vh!important;background:#0a0a0e!important;position:relative!important;margin:0!important;padding:0!important}
+deck-stage{position:absolute!important;top:0!important;left:0!important;height:1080px!important;transform-origin:0 0;overflow:hidden!important}
+deck-stage section.slide{position:absolute!important;top:0!important;left:0!important;margin:0!important;opacity:0;transition:opacity .38s cubic-bezier(.4,0,.2,1);pointer-events:none!important;z-index:0}
+deck-stage section.slide.prs-on{opacity:1!important;pointer-events:auto!important;z-index:2!important}
+deck-stage section.slide.prs-out{opacity:0!important;z-index:1!important}
 </style>
 </head>
 <body>
@@ -1386,7 +1484,7 @@ section[data-label="35"].prs-on #lpcRing35{
 
           <!-- Visual separator -->
           <div style="flex:0 0 20px;background:transparent;border-left:4px solid rgba(0,0,0,.15);border-right:4px solid rgba(0,0,0,.15);position:relative">
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:28px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;z-index:2">→</div>
+            <div data-sep-arrow style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:28px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;z-index:2">→</div>
           </div>
 
           <!-- JÖVŐBENI MŰKÖDÉS — blue panel, 70% -->
@@ -1760,7 +1858,7 @@ section[data-label="35"].prs-on #lpcRing35{
   </marker>
 </defs>
 <rect x="0" y="0" width="1366" height="600" fill="none"/>
-<g id="ring">
+<g id="lpcRing35">
 <path d="M 473.49 447.00 A 250 250 0 0 1 440.04 317.64 L 418.04 317.25 L 480.51 273.64 L 532.02 319.24 L 510.03 318.86 A 180 180 0 0 0 534.12 412.00 Z" fill="url(#arrGradD)" fill-opacity="0.55" stroke="#d42036" stroke-width="2.2" stroke-dasharray="7 5"/>
 <path d="M 450.92 248.91 A 250 250 0 0 1 580.41 97.30 L 570.76 77.53 L 637.99 113.39 L 620.74 179.99 L 611.09 160.22 A 180 180 0 0 0 517.87 269.37 Z" fill="url(#arrGradD)" fill-opacity="0.55" stroke="#d42036" stroke-width="2.2" stroke-dasharray="7 5"/>
 <path d="M 646.59 75.80 A 250 250 0 0 1 767.25 84.24 L 774.05 63.31 L 797.50 135.80 L 738.82 171.73 L 745.62 150.81 A 180 180 0 0 0 658.74 144.73 Z" fill="url(#arrGrad)" stroke="#d42036" stroke-width="1.4"/>
@@ -1792,8 +1890,10 @@ section[data-label="35"].prs-on #lpcRing35{
 <circle cx="557.63" cy="152.58" r="9" fill="#2E5BA6"/>
 <circle cx="585.77" cy="133.96" r="9" fill="#2E5BA6"/>
 <circle cx="616.47" cy="119.97" r="9" fill="#2E5BA6"/>
+<g id="lpcInnerRing">
 <path d="M 745.00 226.74 A 110 110 0 1 1 604.51 252.77 L 596.74 246.48 L 633.79 241.72 L 630.94 274.17 L 623.17 267.88 A 86 86 0 1 0 733.00 247.52 Z" fill="url(#arrGrad)" stroke="#d42036" stroke-width="1.2"/>
 <path d="M 628.49 230.81 A 110 110 0 0 1 745.00 226.74 L 733.00 247.52 A 86 86 0 0 0 641.91 250.70 Z" fill="url(#arrGradD)" fill-opacity="0.6" stroke="#d42036" stroke-width="1.6" stroke-dasharray="6 4"/>
+</g>
 <line x1="694.12" y1="204.07" x2="696.07" y2="148.11" stroke="#7E9DD7" stroke-width="1.3" marker-end="url(#tipc)"/>
 <line x1="787.83" y1="256.02" x2="834.25" y2="224.70" stroke="#7E9DD7" stroke-width="1.3" marker-end="url(#tipc)"/>
 <line x1="794.19" y1="377.40" x2="843.63" y2="403.69" stroke="#7E9DD7" stroke-width="1.3" marker-end="url(#tipc)"/>
@@ -2041,17 +2141,17 @@ section[data-label="35"].prs-on #lpcRing35{
             <div style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">DIAGNÓZIS</div>
             <div style="font-family:Lexend;font-size:11px;color:rgba(255,255,255,.82);line-height:1.3;margin-top:3px">(6 hónapig felhasználható – GDPR szabályozás)</div>
           </div>
-          <div style="display:flex;align-items:center;font-size:31px;color:var(--red);flex-shrink:0;padding:0 4px">→</div>
+          <div data-szuro style="display:flex;align-items:center;font-size:31px;color:var(--red);flex-shrink:0;padding:0 4px">→</div>
           <div style="flex:1;background:rgba(212,32,54,.42);border:1.5px solid rgba(212,32,54,.8);border-radius:10px;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
             <div style="font-family:Outfit;font-weight:800;font-size:23px;color:#fff;line-height:1">02</div>
             <div style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">FEJLESZTÉS</div>
           </div>
-          <div style="display:flex;align-items:center;font-size:31px;color:var(--red);flex-shrink:0;padding:0 4px">→</div>
+          <div data-szuro style="display:flex;align-items:center;font-size:31px;color:var(--red);flex-shrink:0;padding:0 4px">→</div>
           <div style="flex:1;background:rgba(212,32,54,.42);border:1.5px solid rgba(212,32,54,.8);border-radius:10px;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
             <div style="font-family:Outfit;font-weight:800;font-size:23px;color:#fff;line-height:1">03</div>
             <div style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">IMPLEMENTÁCIÓ</div>
           </div>
-          <div style="display:flex;align-items:center;font-size:31px;color:var(--red);flex-shrink:0;padding:0 4px">→</div>
+          <div data-szuro style="display:flex;align-items:center;font-size:31px;color:var(--red);flex-shrink:0;padding:0 4px">→</div>
           <div style="flex:1;background:rgba(212,32,54,.42);border:1.5px solid rgba(212,32,54,.8);border-radius:10px;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
             <div style="font-family:Outfit;font-weight:800;font-size:23px;color:#fff;line-height:1">04</div>
             <div style="font-family:Outfit;font-weight:700;font-size:15px;color:#fff">STABILIZÁCIÓ</div>
@@ -2207,12 +2307,12 @@ Chart.register(ChartDataLabels);
 window.addEventListener("load",function(){
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
-      new Chart(document.getElementById("c13"),{type:"pie",data:{labels:["Elsődleges feladatok","Másodlagos feladatok","Utazás","Rendelkezésre állás"],datasets:[{data:[80.3,9.9,0.5,9.3],backgroundColor:["#d42036","#50505A","#c0c0c8","#8a8a95"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:50}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:22,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:20,clamp:false},legend:{position:"right",labels:{font:{size:19,weight:"bold"},color:"#50505A",padding:12,boxWidth:16}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
-new Chart(document.getElementById("c14"),{type:"pie",data:{labels:["Személyes","Telefon","E-mail","Online"],datasets:[{data:[70.3,17.8,7.4,4.5],backgroundColor:["#d42036","#50505A","#c0c0c8","#8a8a95"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:50}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:22,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:20,clamp:false},legend:{position:"right",labels:{font:{size:19,weight:"bold"},color:"#50505A",padding:12,boxWidth:16}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
-new Chart(document.getElementById("c15a"),{type:"pie",data:{labels:["Ügyfél","Partner","Munkatárs","KAVOSZ belső"],datasets:[{data:[73.8,15.3,7.4,3.5],backgroundColor:["#d42036","#50505A","#c0c0c8","#8a8a95"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:55,right:90,bottom:55,left:90}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:18,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:22,clamp:false},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
-new Chart(document.getElementById("c15b"),{type:"pie",data:{labels:["Ügyintézés / közvetítés","Egyeztetés","Megbeszélés"],datasets:[{data:[61.0,31.7,7.3],backgroundColor:["#d42036","#50505A","#c0c0c8"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:55,right:90,bottom:55,left:90}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:18,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:22,clamp:false},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
-new Chart(document.getElementById("c16a"),{type:"pie",data:{labels:["Meglévő ügyfél","Új ügyfél"],datasets:[{data:[74.3,25.7],backgroundColor:["#d42036","#50505A"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:55,right:90,bottom:55,left:90}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:18,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:22,clamp:false},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
-new Chart(document.getElementById("c16b"),{type:"pie",data:{labels:["Személyes","Telefon","E-mail","Online"],datasets:[{data:[84.9,11.3,2.7,1.1],backgroundColor:["#d42036","#50505A","#c0c0c8","#8a8a95"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:55,right:90,bottom:55,left:90}},plugins:{datalabels:{display:'auto',formatter:function(v){return v.toFixed(1)+"%"},font:{size:18,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:22,clamp:true},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+(c.raw*100).toFixed(1)+"%"}}}}})
+      new Chart(document.getElementById("c13"),{type:"pie",data:{labels:["Elsődleges feladatok","Másodlagos feladatok","Utazás","Rendelkezésre állás"],datasets:[{data:[80.3,9.9,0.5,9.3],backgroundColor:["#d42036","#50505A","#c0c0c8","#8a8a95"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:50}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:22,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:20,clamp:false},legend:{position:"right",labels:{font:{size:19,weight:"bold"},color:"#50505A",padding:12,boxWidth:16}},tooltip:{callbacks:{label:c=>c.label+": "+c.raw.toFixed(1)+"%"}}}}})
+new Chart(document.getElementById("c14"),{type:"pie",data:{labels:["Személyes","Telefon","E-mail","Online"],datasets:[{data:[70.3,17.8,7.4,4.5],backgroundColor:["#d42036","#50505A","#c0c0c8","#8a8a95"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:50}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:22,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:20,clamp:false},legend:{position:"right",labels:{font:{size:19,weight:"bold"},color:"#50505A",padding:12,boxWidth:16}},tooltip:{callbacks:{label:c=>c.label+": "+c.raw.toFixed(1)+"%"}}}}})
+new Chart(document.getElementById("c15a"),{type:"pie",data:{labels:["Ügyfél","Partner","Munkatárs","KAVOSZ belső"],datasets:[{data:[73.8,15.3,7.4,3.5],backgroundColor:["#d42036","#50505A","#c0c0c8","#8a8a95"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:55,right:90,bottom:55,left:90}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:18,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:22,clamp:false},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+c.raw.toFixed(1)+"%"}}}}})
+new Chart(document.getElementById("c15b"),{type:"pie",data:{labels:["Ügyintézés / közvetítés","Egyeztetés","Megbeszélés"],datasets:[{data:[61.0,31.7,7.3],backgroundColor:["#d42036","#50505A","#c0c0c8"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:55,right:90,bottom:55,left:90}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:18,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:22,clamp:false},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+c.raw.toFixed(1)+"%"}}}}})
+new Chart(document.getElementById("c16a"),{type:"pie",data:{labels:["Meglévő ügyfél","Új ügyfél"],datasets:[{data:[74.3,25.7],backgroundColor:["#d42036","#50505A"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:55,right:90,bottom:55,left:90}},plugins:{datalabels:{display:true,formatter:function(v){return v.toFixed(1)+"%"},font:{size:18,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:22,clamp:false},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+c.raw.toFixed(1)+"%"}}}}})
+new Chart(document.getElementById("c16b"),{type:"pie",data:{labels:["Személyes","Telefon","E-mail","Online"],datasets:[{data:[84.9,11.3,2.7,1.1],backgroundColor:["#d42036","#50505A","#c0c0c8","#8a8a95"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:55,right:90,bottom:55,left:90}},plugins:{datalabels:{display:'auto',formatter:function(v){return v.toFixed(1)+"%"},font:{size:18,weight:"bold"},color:"#14141a",anchor:"end",align:"end",offset:22,clamp:true},legend:{position:"right",labels:{font:{size:16,weight:"bold"},color:"#50505A",padding:10,boxWidth:14}},tooltip:{callbacks:{label:c=>c.label+": "+c.raw.toFixed(1)+"%"}}}}})
 new Chart(document.getElementById("c19"),{type:"bar",data:{labels:["Bevezetés/Üdvözlés","Igényfelmérés","Előnyök/kockázatok","Feltételek","Összegzés","Jövőbeni kontakt","CRM"],datasets:[{label:"Jelen 2026",data:[0.094,0.116,0.127,0.399,0.239,0.025,0.0],backgroundColor:"rgba(237,167,0,.85)",borderRadius:3,borderWidth:0},{label:"Optimális",data:[0.05,0.2,0.15,0.3,0.2,0.05,0.05],backgroundColor:"rgba(84,163,84,.82)",borderRadius:3,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top",labels:{font:{size:13},color:"#50505A",boxWidth:14,padding:8}},tooltip:{callbacks:{label:c=>c.dataset.label+": "+(c.raw*100).toFixed(1)+"%"}},datalabels:{anchor:"end",align:"top",formatter:v=>v>0?(v*100).toFixed(1)+"%":"",font:{size:14,weight:"600"},color:"#14141a"}},scales:{x:{grid:{display:false},ticks:{color:"#50505A",font:{size:12},maxRotation:30}},y:{max:0.5,grid:{color:"rgba(0,0,0,.05)"},ticks:{color:"#9696A0",font:{size:12},callback:v=>(v*100).toFixed(0)+"%"},beginAtZero:true}}}})
 new Chart(document.getElementById("c20a"),{type:"bar",data:{labels:["Személyes","Telefon","E-mail","Online"],datasets:[{label:"Jelen 2026",data:[0.9074,0.0926,0,0],backgroundColor:"rgba(68,114,196,.88)",borderRadius:3,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(c.raw*100).toFixed(1)+"%"}},datalabels:{anchor:"end",align:"top",formatter:v=>v>0?(v*100).toFixed(0)+"%":"",font:{size:14,weight:"600"},color:"#14141a"}},scales:{x:{grid:{display:false},ticks:{color:"#50505A",font:{size:12}}},y:{max:1.1,grid:{color:"rgba(0,0,0,.05)"},ticks:{color:"#9696A0",font:{size:12},callback:v=>(v*100).toFixed(0)+"%"},beginAtZero:true}}}})
 new Chart(document.getElementById("c20"),{type:"bar",data:{labels:["Folyószámla hitel","Likviditási hitel","Lízing","Beruházási hitel","Mikrohitel","Agrár ber. hitel","Agrár forgóeszköz","Agrár Kártya"],datasets:[{label:"Jelen 2026",data:[0.497,0.131,0.126,0.056,0.044,0.022,0.008,0.117],backgroundColor:"rgba(68,114,196,.88)",borderRadius:3,borderWidth:0},{label:"VOSZ 2025",data:[0.559,0.065,0.161,0.147,0.068,0.0,0.0,0.0],backgroundColor:"rgba(255,165,0,.85)",borderRadius:3,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top",labels:{font:{size:12},color:"#50505A",boxWidth:12,padding:6}},tooltip:{callbacks:{label:c=>c.dataset.label+": "+(c.raw*100).toFixed(1)+"%"}},datalabels:{anchor:"end",align:"top",formatter:v=>v>0?(v*100).toFixed(1)+"%":"",font:{size:11,weight:"600"},color:function(ctx){return ctx.datasetIndex===0?"#14141a":"#8B5200"}}},scales:{x:{grid:{display:false},ticks:{color:"#50505A",font:{size:11},maxRotation:30}},y:{max:0.65,grid:{color:"rgba(0,0,0,.05)"},ticks:{color:"#9696A0",font:{size:11},callback:v=>(v*100).toFixed(0)+"%"},beginAtZero:true}}}})
@@ -2221,8 +2321,6 @@ new Chart(document.getElementById("c22"),{type:"bar",data:{labels:["Pénzügyi �
   });
 });
 </script>
-<script src="presentation.js"></script>
-<script src="animations.js"></script>
 <script>
 /* ── Footer: copyright left · dot tracker centre · page number ── */
 (function(){
@@ -2242,7 +2340,7 @@ new Chart(document.getElementById("c22"),{type:"bar",data:{labels:["Pénzügyi �
     var dots='';
     for(var i=1;i<=TOTAL;i++){
       if(i<n)       dots+='<span style="width:14px;height:3px;border-radius:2px;background:'+dotPast+';display:inline-block;flex-shrink:0;margin:0 1px"></span>';
-      else if(i===n)dots+='<span style="width:20px;height:4px;border-radius:2px;background:#d42036;display:inline-block;flex-shrink:0;margin:0 1px"></span>';
+      else if(i===n)dots+='<span class="pd-active" style="width:20px;height:4px;border-radius:2px;background:#d42036;display:inline-block;flex-shrink:0;margin:0 1px"></span>';
       else          dots+='<span style="width:12px;height:3px;border-radius:2px;background:'+dotFuture+';display:inline-block;flex-shrink:0;margin:0 1px"></span>';
     }
     var pad=n<10?'0'+n:''+n;
@@ -2257,5 +2355,7 @@ new Chart(document.getElementById("c22"),{type:"bar",data:{labels:["Pénzügyi �
   });
 })();
 </script>
+<script src="presentation.js"></script>
+<script src="animations.js"></script>
 </body>
 </html>
