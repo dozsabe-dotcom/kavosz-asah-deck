@@ -6,7 +6,8 @@ var W = 1920, H = 1080;
 
 /* ── state ─────────────────────────────────────────── */
 var stage, slides, total, current = 0, busy = false;
-var jumpEl = null; /* floating jump input */
+var jumpEl = null;
+var jumpOpen = false; /* track jump overlay state explicitly */
 
 /* ── scale-to-fit ──────────────────────────────────── */
 function rescale() {
@@ -49,9 +50,9 @@ function toggleFS() {
 
 /* ── keyboard ──────────────────────────────────────── */
 function onKey(e) {
-  if (jumpEl && jumpEl.style.display !== 'none') {
+  if (jumpOpen) {
     if (e.key === 'Escape') { closeJump(); e.preventDefault(); }
-    return; /* let input handle its own keys */
+    return;
   }
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
   switch (e.key) {
@@ -78,15 +79,16 @@ function openJump(anchorRect) {
   if (!jumpEl) return;
   var inp = jumpEl.querySelector('input');
   inp.value = '';
-  /* position above the clicked element in viewport coords */
   jumpEl.style.left = Math.round(anchorRect.left + anchorRect.width / 2 - 80) + 'px';
-  jumpEl.style.top  = Math.round(anchorRect.top - 56) + 'px';
+  jumpEl.style.top  = Math.round(Math.max(8, anchorRect.top - 56)) + 'px';
   jumpEl.style.display = 'flex';
+  jumpOpen = true;
   inp.focus();
 }
 
 function closeJump() {
   if (jumpEl) jumpEl.style.display = 'none';
+  jumpOpen = false;
 }
 
 /* ── nav UI ────────────────────────────────────────── */
@@ -192,6 +194,14 @@ function init() {
   document.addEventListener('keydown', onKey);
   document.addEventListener('touchstart', onTouchStart, { passive: true });
   document.addEventListener('touchend',   onTouchEnd,   { passive: true });
+  /* prevent native scroll; use wheel to navigate */
+  document.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    if (!jumpOpen) {
+      if (e.deltaY > 0 || e.deltaX > 0) go(current + 1);
+      else go(current - 1);
+    }
+  }, { passive: false });
 
   buildUI();
 }
