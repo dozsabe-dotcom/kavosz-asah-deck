@@ -200,19 +200,17 @@ function buildUI() {
   document.body.appendChild(notesPanel);
   document.getElementById('prs-notes-close').addEventListener('click', toggleNotes);
 
-  /* ── left: fullscreen + prev ── */
+  /* ── left: prev ── */
   var left = document.createElement('div');
   left.className = 'prs-side';
-  left.innerHTML =
-    '<button class="pb" id="pb-fs" title="Teljes képernyő (F)">&#x26F6;</button>' +
-    '<button class="pb" id="pb-prev">&#8592; El&#337;z&#337;</button>';
+  left.innerHTML = '<button class="pb" id="pb-prev">&#8592; El&#337;z&#337;</button>';
 
   /* ── center: clickable counter ── */
   var mid = document.createElement('div');
   mid.className = 'prs-side';
   mid.innerHTML = '<button class="pb" id="pb-ctr" title="Ugrás diára">01 / ' + total + '</button>';
 
-  /* ── right: next + notes ── */
+  /* ── right: next + notes + fullscreen ── */
   var right = document.createElement('div');
   right.className = 'prs-side';
   right.innerHTML =
@@ -225,7 +223,8 @@ function buildUI() {
         '<line x1="3.5" y1="6.5" x2="8.5" y2="6.5" stroke="currentColor" stroke-width="1.2"/>' +
       '</svg>' +
       'Notes' +
-    '</button>';
+    '</button>' +
+    '<button class="pb" id="pb-fs" title="Teljes képernyő (F)">&#x26F6;</button>';
 
   var ui = document.createElement('div');
   ui.id = 'prs-ui';
