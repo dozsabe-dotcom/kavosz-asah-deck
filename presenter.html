@@ -174,8 +174,10 @@ section[data-label="39"] .quoteblk{background:rgba(0,0,0,.38)!important;border-l
 /* SCREENSHOT */
 .ss-wrap{position:relative;border-radius:18px;overflow:hidden;box-shadow:0 30px 60px -20px rgba(10,10,14,.3);border:1px solid rgba(255,255,255,.5)}
 .ss-wrap img{width:100%;display:block}
-/* Hide red bottom progress bars – dot tracker in footer is sufficient */
-/* progress bar tracker enabled */
+/* Footer tracker: active dot pulse */
+@keyframes pdPulse{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.5;transform:scaleY(.7)}}
+.pd-active{animation:pdPulse 2s ease-in-out infinite;transform-origin:center bottom}
+@media(prefers-reduced-motion:reduce){.pd-active{animation:none}}
 /* Content-fit + centered layout for card slides */
 section[data-label="03"] .body-wrap,
 section[data-label="05"] .body-wrap,
@@ -2232,8 +2234,6 @@ new Chart(document.getElementById("c22"),{type:"bar",data:{labels:["Pénzügyi �
   });
 });
 </script>
-<script src="presentation.js"></script>
-<script src="animations.js"></script>
 <script>
 /* ── Footer: copyright left · dot tracker centre · page number ── */
 (function(){
@@ -2253,7 +2253,7 @@ new Chart(document.getElementById("c22"),{type:"bar",data:{labels:["Pénzügyi �
     var dots='';
     for(var i=1;i<=TOTAL;i++){
       if(i<n)       dots+='<span style="width:14px;height:3px;border-radius:2px;background:'+dotPast+';display:inline-block;flex-shrink:0;margin:0 1px"></span>';
-      else if(i===n)dots+='<span style="width:20px;height:4px;border-radius:2px;background:#d42036;display:inline-block;flex-shrink:0;margin:0 1px"></span>';
+      else if(i===n)dots+='<span class="pd-active" style="width:20px;height:4px;border-radius:2px;background:#d42036;display:inline-block;flex-shrink:0;margin:0 1px"></span>';
       else          dots+='<span style="width:12px;height:3px;border-radius:2px;background:'+dotFuture+';display:inline-block;flex-shrink:0;margin:0 1px"></span>';
     }
     var pad=n<10?'0'+n:''+n;
@@ -2268,5 +2268,7 @@ new Chart(document.getElementById("c22"),{type:"bar",data:{labels:["Pénzügyi �
   });
 })();
 </script>
+<script src="presentation.js"></script>
+<script src="animations.js"></script>
 </body>
 </html>
