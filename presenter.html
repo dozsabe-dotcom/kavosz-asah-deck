@@ -574,14 +574,12 @@ section[data-label="41"].prs-on .glass-dark svg:nth-of-type(3){animation-delay:1
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
 
-@media screen{
-  html{overflow:hidden;height:100%}
-  body{overflow:hidden!important;width:100vw!important;height:100vh!important;background:#0a0a0e!important;position:relative!important;margin:0!important;padding:0!important}
-  deck-stage{position:absolute!important;top:0!important;left:0!important;height:1080px!important;transform-origin:0 0;overflow:hidden!important}
-  deck-stage section.slide{position:absolute!important;top:0!important;left:0!important;margin:0!important;opacity:0;transition:opacity .38s cubic-bezier(.4,0,.2,1);pointer-events:none!important;z-index:0}
-  deck-stage section.slide.prs-on{opacity:1!important;pointer-events:auto!important;z-index:2!important}
-  deck-stage section.slide.prs-out{opacity:0!important;z-index:1!important}
-}
+html{overflow:hidden;height:100%}
+body{overflow:hidden!important;width:100vw!important;height:100vh!important;background:#0a0a0e!important;position:relative!important;margin:0!important;padding:0!important}
+deck-stage{position:absolute!important;top:0!important;left:0!important;height:1080px!important;transform-origin:0 0;overflow:hidden!important}
+deck-stage section.slide{position:absolute!important;top:0!important;left:0!important;margin:0!important;opacity:0;transition:opacity .38s cubic-bezier(.4,0,.2,1);pointer-events:none!important;z-index:0}
+deck-stage section.slide.prs-on{opacity:1!important;pointer-events:auto!important;z-index:2!important}
+deck-stage section.slide.prs-out{opacity:0!important;z-index:1!important}
 </style>
 </head>
 <body>
