@@ -200,10 +200,23 @@ function buildUI() {
   document.body.appendChild(notesPanel);
   document.getElementById('prs-notes-close').addEventListener('click', toggleNotes);
 
-  /* ── left: notes + prev ── */
+  /* ── left: fullscreen + prev ── */
   var left = document.createElement('div');
   left.className = 'prs-side';
   left.innerHTML =
+    '<button class="pb" id="pb-fs" title="Teljes képernyő (F)">&#x26F6;</button>' +
+    '<button class="pb" id="pb-prev">&#8592; El&#337;z&#337;</button>';
+
+  /* ── center: clickable counter ── */
+  var mid = document.createElement('div');
+  mid.className = 'prs-side';
+  mid.innerHTML = '<button class="pb" id="pb-ctr" title="Ugrás diára">01 / ' + total + '</button>';
+
+  /* ── right: next + notes ── */
+  var right = document.createElement('div');
+  right.className = 'prs-side';
+  right.innerHTML =
+    '<button class="pb" id="pb-next">K&#246;vetkez&#337; &#8594;</button>' +
     '<button class="pb" id="pb-notes" title="Megjegyzések (N)">' +
       '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="vertical-align:middle;margin-right:5px">' +
         '<rect x="1" y="1" width="12" height="9" rx="2" stroke="currentColor" stroke-width="1.4"/>' +
@@ -212,20 +225,7 @@ function buildUI() {
         '<line x1="3.5" y1="6.5" x2="8.5" y2="6.5" stroke="currentColor" stroke-width="1.2"/>' +
       '</svg>' +
       'Notes' +
-    '</button>' +
-    '<button class="pb" id="pb-prev">&#8592; El&#337;z&#337;</button>';
-
-  /* ── center: clickable counter ── */
-  var mid = document.createElement('div');
-  mid.className = 'prs-side';
-  mid.innerHTML = '<button class="pb" id="pb-ctr" title="Ugrás diára">01 / ' + total + '</button>';
-
-  /* ── right: next + fullscreen ── */
-  var right = document.createElement('div');
-  right.className = 'prs-side';
-  right.innerHTML =
-    '<button class="pb" id="pb-next">K&#246;vetkez&#337; &#8594;</button>' +
-    '<button class="pb" id="pb-fs">&#x26F6;</button>';
+    '</button>';
 
   var ui = document.createElement('div');
   ui.id = 'prs-ui';
