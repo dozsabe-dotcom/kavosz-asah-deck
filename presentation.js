@@ -3,12 +3,10 @@
 
 /* ── constants ─────────────────────────────────────── */
 var W = 1920, H = 1080;
-var DIVIDERS = {1:1,4:1,9:1,12:1,25:1,39:1,41:1};
 
 /* ── state ─────────────────────────────────────────── */
 var stage, slides, total, current = 0, busy = false;
-var dotEls = [];
-var ctrl, hideTimer;
+var jumpEl = null; /* floating jump input */
 
 /* ── scale-to-fit ──────────────────────────────────── */
 function rescale() {
@@ -35,25 +33,9 @@ function go(idx) {
   }, 420);
 }
 
-/* ── update nav counter + dots ─────────────────────── */
+/* ── sync slide number in footer ───────────────────── */
 function syncUI() {
-  var ctr = document.getElementById('prs-ctr');
-  if (ctr) ctr.textContent = (current + 1) + ' / ' + total;
-  dotEls.forEach(function (d, i) {
-    d.classList.toggle('prs-dot-on', i === current);
-  });
-}
-
-/* ── nav show / hide ───────────────────────────────── */
-function showCtrl() {
-  clearTimeout(hideTimer);
-  if (ctrl) ctrl.style.opacity = '1';
-}
-function scheduleHide() {
-  clearTimeout(hideTimer);
-  hideTimer = setTimeout(function () {
-    if (ctrl) ctrl.style.opacity = '0';
-  }, 1800);
+  /* nothing extra needed — footer pg is part of each slide */
 }
 
 /* ── fullscreen toggle ─────────────────────────────── */
@@ -67,6 +49,10 @@ function toggleFS() {
 
 /* ── keyboard ──────────────────────────────────────── */
 function onKey(e) {
+  if (jumpEl && jumpEl.style.display !== 'none') {
+    if (e.key === 'Escape') { closeJump(); e.preventDefault(); }
+    return; /* let input handle its own keys */
+  }
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
   switch (e.key) {
     case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown':
@@ -87,113 +73,104 @@ function onTouchEnd(e) {
   if (Math.abs(dx) > 48) { dx < 0 ? go(current + 1) : go(current - 1); }
 }
 
-/* ── drag scrub ────────────────────────────────────── */
-var dragging = false;
-function scrubTo(e) {
-  var track = document.getElementById('prs-track');
-  if (!track) return;
-  var rect = track.getBoundingClientRect();
-  var ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-  var idx = Math.round(ratio * (total - 1));
-  if (idx !== current && !busy) go(idx);
+/* ── jump overlay (appears near .pg click) ─────────── */
+function openJump(anchorRect) {
+  if (!jumpEl) return;
+  var inp = jumpEl.querySelector('input');
+  inp.value = '';
+  /* position above the clicked element in viewport coords */
+  jumpEl.style.left = Math.round(anchorRect.left + anchorRect.width / 2 - 80) + 'px';
+  jumpEl.style.top  = Math.round(anchorRect.top - 56) + 'px';
+  jumpEl.style.display = 'flex';
+  inp.focus();
+}
+
+function closeJump() {
+  if (jumpEl) jumpEl.style.display = 'none';
 }
 
 /* ── nav UI ────────────────────────────────────────── */
 function buildUI() {
   var s = document.createElement('style');
   s.textContent =
-    '#prs-ui{position:fixed;bottom:0;left:0;right:0;z-index:99999;pointer-events:none}' +
     '@media print{#prs-ui{display:none!important}}' +
-    '#prs-ctrl{' +
-      'display:flex;align-items:center;justify-content:space-between;' +
-      'padding:10px 24px;gap:12px;' +
-      'pointer-events:auto;' +        /* always clickable */
-      'opacity:0;transition:opacity .25s}' +
-    '.pb{background:rgba(10,10,14,.65);border:1px solid rgba(255,255,255,.15);color:#fff;' +
+    /* edge button strip — always visible */
+    '#prs-ui{position:fixed;bottom:0;left:0;right:0;z-index:99999;' +
+      'display:flex;justify-content:space-between;align-items:flex-end;' +
+      'padding:0 0 14px 0;pointer-events:none}' +
+    '.prs-side{display:flex;gap:8px;padding:0 20px;pointer-events:auto}' +
+    '.pb{background:rgba(10,10,14,.55);border:1px solid rgba(255,255,255,.15);color:#fff;' +
       'border-radius:8px;padding:7px 18px;cursor:pointer;' +
       'font:600 13px/1.4 Outfit,sans-serif;letter-spacing:.1em;' +
-      'transition:background .15s}' +
-    '.pb:hover{background:rgba(10,10,14,.88)}' +
-    '#prs-ctr{color:rgba(255,255,255,.65);font:400 13px/1 Outfit,sans-serif;' +
-      'letter-spacing:.18em;min-width:52px;text-align:center;flex-shrink:0}' +
-    '#prs-track{display:flex;align-items:center;gap:5px;flex:1;justify-content:center;' +
-      'padding:8px 12px;cursor:pointer;user-select:none}' +
-    '.prs-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;' +
-      'background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.18);' +
-      'transition:background .2s,transform .2s,border-color .2s;cursor:pointer;' +
-      'pointer-events:auto}' +
-    '.prs-dot:hover{background:rgba(255,255,255,.65);transform:scale(1.5)}' +
-    '.prs-dot.prs-dot-on{background:#d42036;border-color:#ff6271;transform:scale(1.6);box-shadow:0 0 6px rgba(212,32,54,.7)}' +
-    '.prs-dot[data-div]{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.1)}' +
-    '.prs-dot[data-div].prs-dot-on{background:#ff6271;border-color:#ff6271}';
+      'transition:background .15s,opacity .15s;' +
+      'opacity:.55}' +
+    '.pb:hover{background:rgba(10,10,14,.88);opacity:1}' +
+    /* jump overlay */
+    '#prs-jump{position:fixed;z-index:100000;display:none;' +
+      'background:rgba(10,10,14,.88);border:1px solid rgba(255,255,255,.18);' +
+      'border-radius:10px;padding:8px 10px;gap:6px;align-items:center;' +
+      'box-shadow:0 8px 32px rgba(0,0,0,.4)}' +
+    '#prs-jump input{width:48px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);' +
+      'border-radius:6px;color:#fff;font:700 15px/1 Outfit,sans-serif;' +
+      'text-align:center;padding:5px 4px;outline:none}' +
+    '#prs-jump span{color:rgba(255,255,255,.5);font:400 13px/1 Outfit,sans-serif}' +
+    /* footer pg cursor — inside scaled slides */
+    '.ftr .pg{cursor:pointer;user-select:none;' +
+      'transition:color .15s}' +
+    '.ftr .pg:hover{color:var(--red)!important}';
   document.head.appendChild(s);
+
+  /* ── left: prev ── */
+  var left = document.createElement('div');
+  left.className = 'prs-side';
+  left.innerHTML = '<button class="pb" id="pb-prev">&#8592; El&#337;z&#337;</button>';
+
+  /* ── right: next + fullscreen ── */
+  var right = document.createElement('div');
+  right.className = 'prs-side';
+  right.innerHTML =
+    '<button class="pb" id="pb-next">K&#246;vetkez&#337; &#8594;</button>' +
+    '<button class="pb" id="pb-fs">&#x26F6;</button>';
 
   var ui = document.createElement('div');
   ui.id = 'prs-ui';
-  ui.innerHTML =
-    '<div id="prs-ctrl">' +
-      '<button class="pb" id="pb-prev">&#8592; El&#337;z&#337;</button>' +
-      '<div id="prs-track"></div>' +
-      '<div style="display:flex;align-items:center;gap:8px;flex-shrink:0">' +
-        '<span id="prs-ctr">1&nbsp;/&nbsp;41</span>' +
-        '<button class="pb" id="pb-next">K&#246;vetkez&#337; &#8594;</button>' +
-        '<button class="pb" id="pb-fs">&#x26F6;&nbsp;Teljes k&#233;perny&#337;</button>' +
-      '</div>' +
-    '</div>';
+  ui.appendChild(left);
+  ui.appendChild(right);
   document.body.appendChild(ui);
 
-  ctrl = document.getElementById('prs-ctrl');
+  /* ── jump input overlay ── */
+  jumpEl = document.createElement('div');
+  jumpEl.id = 'prs-jump';
+  jumpEl.innerHTML =
+    '<input id="prs-jump-inp" type="number" min="1" max="' + total +
+    '" placeholder="' + (current + 1) + '">' +
+    '<span>/ ' + total + '</span>';
+  document.body.appendChild(jumpEl);
 
-  /* show nav when mouse nears the bottom 80px of viewport */
-  document.addEventListener('mousemove', function (e) {
-    if (e.clientY > window.innerHeight - 80) {
-      showCtrl();
-    } else {
-      scheduleHide();
+  var jumpInp = document.getElementById('prs-jump-inp');
+  jumpInp.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      var n = parseInt(jumpInp.value, 10);
+      if (!isNaN(n) && n >= 1 && n <= total) go(n - 1);
+      closeJump();
+      e.preventDefault();
     }
+    if (e.key === 'Escape') { closeJump(); e.preventDefault(); }
   });
-  ctrl.addEventListener('mouseenter', showCtrl);
-  ctrl.addEventListener('mouseleave', scheduleHide);
+  /* close on outside click */
+  document.addEventListener('click', function (e) {
+    if (jumpEl.style.display !== 'none' && !jumpEl.contains(e.target)) closeJump();
+  }, true);
 
-  /* build dots */
-  var track = document.getElementById('prs-track');
-  slides.forEach(function (slide, i) {
-    var label = parseInt(slide.dataset.label || (i + 1), 10);
-    var d = document.createElement('span');
-    d.className = 'prs-dot';
-    d.title = label + '. dia';
-    if (DIVIDERS[label]) d.setAttribute('data-div', '');
-    d.addEventListener('click', function (e) {
+  /* ── wire footer .pg clicks ── */
+  slides.forEach(function (slide) {
+    var pg = slide.querySelector('.ftr .pg');
+    if (!pg) return;
+    pg.addEventListener('click', function (e) {
       e.stopPropagation();
-      go(i);
+      var rect = pg.getBoundingClientRect();
+      openJump(rect);
     });
-    track.appendChild(d);
-    dotEls.push(d);
-  });
-
-  /* scroll wheel on tracker */
-  track.addEventListener('wheel', function (e) {
-    e.preventDefault();
-    if (e.deltaY > 0 || e.deltaX > 0) go(current + 1);
-    else go(current - 1);
-  }, { passive: false });
-
-  /* drag scrub — only activate on actual drag (mousemove while down) */
-  track.addEventListener('mousedown', function (e) {
-    dragging = false; /* reset; set true only on move */
-    e.preventDefault();
-    var onMove = function (ev) {
-      dragging = true;
-      scrubTo(ev);
-    };
-    var onUp = function (ev) {
-      if (!dragging) scrubTo(ev); /* treat as click if no movement */
-      dragging = false;
-      document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup', onUp);
-    };
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onUp);
   });
 
   document.getElementById('pb-prev').addEventListener('click', function () { go(current - 1); });
@@ -217,7 +194,6 @@ function init() {
   document.addEventListener('touchend',   onTouchEnd,   { passive: true });
 
   buildUI();
-  syncUI();
 }
 
 if (document.readyState === 'loading') {
