@@ -461,7 +461,7 @@ section.slide.prs-on [data-szuro]{
   animation:lpcArrowPulse var(--loop-dur) var(--loop-ease) infinite;
 }
 section[data-label="35"].prs-on #lpcRing35{
-  animation:lpcDashSpin 4s linear infinite;
+  animation:lpcDashSpin 5.2s linear infinite;
 }
 
 /* ── Pipa belépő animáció ─────────────────────────────── */
@@ -557,6 +557,17 @@ section[data-label="41"].prs-on .glass-dark svg{
 section[data-label="41"].prs-on .glass-dark svg:nth-of-type(1){animation-delay:0s}
 section[data-label="41"].prs-on .glass-dark svg:nth-of-type(2){animation-delay:.8s}
 section[data-label="41"].prs-on .glass-dark svg:nth-of-type(3){animation-delay:1.6s}
+
+/* ── Slide 02: glass-strong hover — 3D pop ───────────── */
+section[data-label="02"].prs-on .glass-strong{
+  transition:transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .28s ease;
+  position:relative;
+}
+section[data-label="02"].prs-on .glass-strong:hover{
+  transform:scale(1.025) translateY(-4px);
+  box-shadow:0 24px 48px rgba(0,0,0,.12),0 4px 16px rgba(212,32,54,.1);
+  z-index:10;
+}
 
 @media(prefers-reduced-motion:reduce){
   [data-szuro],[id="lpcRing35"],[id="lpcInnerRing"]{animation:none!important}

@@ -36,8 +36,11 @@ function go(idx) {
 
 /* ── sync slide number in footer ───────────────────── */
 function syncUI() {
-  /* nothing extra needed — footer pg is part of each slide */
+  var ctr = document.getElementById('pb-ctr');
+  if (ctr) ctr.textContent = pad2(current + 1) + ' / ' + pad2(total);
 }
+
+function pad2(n) { return n < 10 ? '0' + n : '' + n; }
 
 /* ── fullscreen toggle ─────────────────────────────── */
 function toggleFS() {
@@ -127,6 +130,11 @@ function buildUI() {
   left.className = 'prs-side';
   left.innerHTML = '<button class="pb" id="pb-prev">&#8592; El&#337;z&#337;</button>';
 
+  /* ── center: clickable counter ── */
+  var mid = document.createElement('div');
+  mid.className = 'prs-side';
+  mid.innerHTML = '<button class="pb" id="pb-ctr" title="Ugrás diára">01 / ' + total + '</button>';
+
   /* ── right: next + fullscreen ── */
   var right = document.createElement('div');
   right.className = 'prs-side';
@@ -137,6 +145,7 @@ function buildUI() {
   var ui = document.createElement('div');
   ui.id = 'prs-ui';
   ui.appendChild(left);
+  ui.appendChild(mid);
   ui.appendChild(right);
   document.body.appendChild(ui);
 
@@ -178,6 +187,10 @@ function buildUI() {
   document.getElementById('pb-prev').addEventListener('click', function () { go(current - 1); });
   document.getElementById('pb-next').addEventListener('click', function () { go(current + 1); });
   document.getElementById('pb-fs').addEventListener('click', toggleFS);
+  document.getElementById('pb-ctr').addEventListener('click', function () {
+    var rect = this.getBoundingClientRect();
+    openJump(rect);
+  });
 }
 
 /* ── init ──────────────────────────────────────────── */
