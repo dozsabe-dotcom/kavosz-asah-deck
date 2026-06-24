@@ -34,7 +34,7 @@ window.DECK_NOTES = {
   "24": "",
   "25": "",
   "26": "<p>MAI működés  Jövőbeni működés, vagyis Ügyintézőből  Finanszírozási Tanácsadó</p>",
-  "27": "<p>Finanszírozási Tanácsadó hierarchia azért fontos, mert különbséget kell tenni az ügyintézők között. Egy új belépő nem kerülhet ugyanabba a státuszba mint egy régi munkatárs. A végzettségek alapján is érdemes különbséget tenni, mert így magasabban kvalifikált munkavállalóknak is érdekes lehet a munkakőr. A hierarchia egy karrier utat is biztosít, vagyis van továbblépési lehetőség.</p><p>A Funkció új elnevezése is azt sugallja, hogy az Ügyintézőnél már komolyabb feladatot lát el, a szolgáltatási tevékenységre szakosodott az elnevezés. Viszont azt is világosan jelzi, hogy nem pénzügyi tanácsadó, amihez sokkal szerte ágazóbb ismeretekre lenne szükség. Ezért is jelenítettük meg a JOGI KERETRENDSZERT.</p>",
+  "27": "<p>Finanszírozási Tanácsadó hierarchia azért fontos, mert különbséget kell tenni az ügyintézők között. Egy új belépő nem kerülhet ugyanabba a státuszba mint egy régi munkatárs. A végzettségek alapján is érdemes különbséget tenni, mert így magasabban kvalifikált ügyintézőknek is érdekes lehet a munkakőr. A hierarchia egy karrier utat is biztosít, vagyis van továbblépési lehetőség.</p><p>A Funkció új elnevezése is azt sugallja, hogy az Ügyintézőnél már komolyabb feladatot lát el, a szolgáltatási tevékenységre szakosodott az elnevezés. Viszont azt is világosan jelzi, hogy nem pénzügyi tanácsadó, amihez sokkal szerte ágazóbb ismeretekre lenne szükség. Ezért is jelenítettük meg a JOGI KERETRENDSZERT.</p>",
   "28": "",
   "29": "",
   "30": "",
