@@ -1,9 +1,7 @@
 /*
  * DECK NOTES — speaker notes / comments per slide
- *
  * Key = data-label attribute on the <section class="slide"> element.
- * Value = HTML string shown in the notes panel.
- * (Újraszámozva 2026-06-24: 23-24. hőtérkép dia törlése után, 39 dia.)
+ * (Eredeti data-label kulcsok visszaállítva; 23-24. hőtérkép dia törölve.)
  */
 window.DECK_NOTES = {
   "01": "",
@@ -28,21 +26,21 @@ window.DECK_NOTES = {
   "20": "<p>Ügyintézés – Finanszírozás közvetítés jellege grafikon</p><p>Megmutatja, hogy milyen csatornákon történt és milyen arányban az ügyfél kiszolgálás. A táblázatban látjuk az ügylet számokat, amiből átlagoltuk, hogy egy irodára a 3 napra mennyi ügylet jut (10,28 db), ez egy napra eső ügylet: 3,42 db</p><p>Termékportfólió</p><p>Az mutatja meg, mely termékek a slágerek az ügyfeleink körében. A számokból több következtetés is levonható:</p><ul><li>Ügyfelek határozzák meg a termékeink iránti keresletet</li><li>Az ügyintézők nem befolyásolják még az ügyfélportfólió változást – nincs proaktivitás</li><li>Amiből kevés az ügyintézés, ott felmerülhet szakmai hiányosság is nem elég meggyőző az ügyintéző a termék ajánlásban.</li></ul>",
   "21": "<p>Az ügyintézők kompetencia vizsgálata során azt mutatjuk meg, hogy milyen mintázattokat kerestünk a vizsgált napokon az ügyintéző tevékenysége során.</p><p>Erre azért volt szükség, hogy átlássuk, megvannak-e azok az alap kompetenciák, ami egy Finanszírozási Tanácsadó munkakőr betöltéséhez szükséges.</p>",
   "22": "",
-  "23": "",
-  "24": "<p>MAI működés  Jövőbeni működés, vagyis Ügyintézőből  Finanszírozási Tanácsadó</p>",
-  "25": "<p>Finanszírozási Tanácsadó hierarchia azért fontos, mert különbséget kell tenni az ügyintézők között. Egy új belépő nem kerülhet ugyanabba a státuszba mint egy régi munkatárs. A végzettségek alapján is érdemes különbséget tenni, mert így magasabban kvalifikált ügyintézőknek is érdekes lehet a munkakőr. A hierarchia egy karrier utat is biztosít, vagyis van továbblépési lehetőség.</p><p>A Funkció új elnevezése is azt sugallja, hogy az Ügyintézőnél már komolyabb feladatot lát el, a szolgáltatási tevékenységre szakosodott az elnevezés. Viszont azt is világosan jelzi, hogy nem pénzügyi tanácsadó, amihez sokkal szerte ágazóbb ismeretekre lenne szükség. Ezért is jelenítettük meg a JOGI KERETRENDSZERT.</p>",
-  "26": "",
-  "27": "",
+  "25": "",
+  "26": "<p>MAI működés  Jövőbeni működés, vagyis Ügyintézőből  Finanszírozási Tanácsadó</p>",
+  "27": "<p>Finanszírozási Tanácsadó hierarchia azért fontos, mert különbséget kell tenni az ügyintézők között. Egy új belépő nem kerülhet ugyanabba a státuszba mint egy régi munkatárs. A végzettségek alapján is érdemes különbséget tenni, mert így magasabban kvalifikált ügyintézőknek is érdekes lehet a munkakőr. A hierarchia egy karrier utat is biztosít, vagyis van továbblépési lehetőség.</p><p>A Funkció új elnevezése is azt sugallja, hogy az Ügyintézőnél már komolyabb feladatot lát el, a szolgáltatási tevékenységre szakosodott az elnevezés. Viszont azt is világosan jelzi, hogy nem pénzügyi tanácsadó, amihez sokkal szerte ágazóbb ismeretekre lenne szükség. Ezért is jelenítettük meg a JOGI KERETRENDSZERT.</p>",
   "28": "",
   "29": "",
   "30": "",
   "31": "",
   "32": "",
-  "33": "<p>Ügyfél életpálya: Nem egyszeri szolgáltatást értékesítünk, hanem akár több szolgáltatást éveken át.</p><p>Ábra értelmezés:</p><p>Aktív szakasz: Az ügyféllel a kapcsolatfelvételtől – a befogadáson át – az ügyfél – elégedettség mérésig szinte folyamatos kapcsolatban állunk. Az ügylet befogadás után következik a passzív szakasz az ügyfél életében, itt kell a Finanszírozási Tanácsadónak aktívnak lennie, hogy évente minimum egyszer, de inkább többszőr kapcsolatba kerüljön az ügyféllel (felülvizsgálat, Rendezvény, EDM, Képzés, Előadás stb..) E interakciók (akvizíció) során azonosítjuk, hogy mikor jön el az a pillanat, amikor ismét szolgáltatást értékesíthetünk ügyfelünk számára. Amikor azonosítottuk a lehetőséget, akkor újra indul az Aktív ügyfél szakasz. Ez ismétlődik folyamatosan.</p>",
+  "33": "",
   "34": "",
-  "35": "",
+  "35": "<p>Ügyfél életpálya: Nem egyszeri szolgáltatást értékesítünk, hanem akár több szolgáltatást éveken át.</p><p>Ábra értelmezés:</p><p>Aktív szakasz: Az ügyféllel a kapcsolatfelvételtől – a befogadáson át – az ügyfél – elégedettség mérésig szinte folyamatos kapcsolatban állunk. Az ügylet befogadás után következik a passzív szakasz az ügyfél életében, itt kell a Finanszírozási Tanácsadónak aktívnak lennie, hogy évente minimum egyszer, de inkább többszőr kapcsolatba kerüljön az ügyféllel (felülvizsgálat, Rendezvény, EDM, Képzés, Előadás stb..) E interakciók (akvizíció) során azonosítjuk, hogy mikor jön el az a pillanat, amikor ismét szolgáltatást értékesíthetünk ügyfelünk számára. Amikor azonosítottuk a lehetőséget, akkor újra indul az Aktív ügyfél szakasz. Ez ismétlődik folyamatosan.</p>",
   "36": "",
   "37": "",
   "38": "",
-  "39": ""
+  "39": "",
+  "40": "",
+  "41": ""
 };

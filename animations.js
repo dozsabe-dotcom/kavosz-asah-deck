@@ -435,6 +435,9 @@ A[40]=function(s,ids){
 
 /* ── MutationObserver per slide ── */
 var slides=Array.from(document.querySelectorAll('section.slide'));
+/* A 23-24. (hőtérkép) dia törlése után az A[] tömb pozíciói elcsúsztak.
+   Új pozíció (idx) → eredeti A[] index: idx<22 változatlan, utána +2. */
+var aIdx=function(i){ return i<22 ? i : i+2; };
 
 slides.forEach(function(slide,idx){
   var ids=[];
@@ -444,7 +447,7 @@ slides.forEach(function(slide,idx){
   if(idx===0&&wasOn){
     requestAnimationFrame(function(){
       requestAnimationFrame(function(){
-        if(A[idx]) A[idx](slide,ids);
+        if(A[aIdx(idx)]) A[aIdx(idx)](slide,ids);
         staggerChecks(slide,380,ids);
       });
     });
@@ -455,7 +458,7 @@ slides.forEach(function(slide,idx){
     if(isOn&&!wasOn){
       wasOn=true;
       ids.push(D(function(){
-        if(A[idx]) A[idx](slide,ids);
+        if(A[aIdx(idx)]) A[aIdx(idx)](slide,ids);
         staggerChecks(slide,380,ids);
       },80));
     } else if(!isOn&&wasOn){
